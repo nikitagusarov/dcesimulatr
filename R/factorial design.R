@@ -7,10 +7,10 @@
 ##############################
 # 0 - Install missing libraries
 ##############################
-list.of.packages <- c("mvtnorm", "matrixcalc", "evd", "scatterplot3d")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
-rm(new.packages, list.of.packages)
+# list.of.packages <- c("mvtnorm", "matrixcalc", "evd", "scatterplot3d")
+# new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+# if(length(new.packages)) install.packages(new.packages)
+# rm(new.packages, list.of.packages)
 
 ##############################
 # 1 - Source files and libraries
