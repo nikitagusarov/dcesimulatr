@@ -5,7 +5,7 @@
 #############################################################
 
 ##############################
-# 1 - Matrix random generation functions
+# 1 - Matrices random generation functions
 ##############################
 
 #' @title generation
