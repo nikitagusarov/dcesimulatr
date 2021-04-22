@@ -96,7 +96,7 @@ gen_student <- function(n, m, param){
 
   if(matrixcalc::is.positive.definite(param$scale) & matrixcalc::is.symmetric.matrix(param$scale)){
     #the matrix whose lines characterizes every decision makers
-    return(evd::rmvt(n = n, delta=as.vector(param$location), sigma=param$scale, df=param$df))
+    return(mvtnorm::rmvt(n = n, delta=as.vector(param$location), sigma=param$scale, df=param$df))
   } else {
     print("The scale matrix is not a covariance matrix")
   }
@@ -153,7 +153,7 @@ gen_gumbel <- function(n, m, param){
   if(is.null(param$scale)){param$scale <- 1}
 
   if(param$scale <= 0) stop("The scale parameter should be positive")
-  return(matrix(rgumbel(n*m, loc=param$location, scale=param$scale), ncol=m, nrow=n))
+  return(matrix(evd::rgumbel(n*m, loc=param$location, scale=param$scale), ncol=m, nrow=n))
 }
 
 #' @title information

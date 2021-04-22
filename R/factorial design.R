@@ -5,19 +5,6 @@
 #############################################################
 
 ##############################
-# 0 - Install missing libraries
-##############################
-# list.of.packages <- c("mvtnorm", "matrixcalc", "evd", "scatterplot3d")
-# new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-# if(length(new.packages)) install.packages(new.packages)
-# rm(new.packages, list.of.packages)
-
-##############################
-# 1 - Source files and libraries
-##############################
-library("scatterplot3d")
-
-##############################
 # 1 - Utility function
 ##############################
 
@@ -248,7 +235,7 @@ FactorialDesign$methods(map = function(dim1, dim2){
   if(length(dim2_id)==0){dim2_id <- which(colnames(S)==dim2); B <- S; dim2_in_x <- FALSE}
   if(length(dim2_id)==0){stop("dim2 unknown attribute")}
 
-  colors_list <- brewer.pal(n = .self$J, name = "Set1")
+  colors_list <- RColorBrewer::brewer.pal(n = .self$J, name = "Set1")
   mat <- c()
   colors <- c()
   for(i in 1:.self$J){
@@ -261,7 +248,7 @@ FactorialDesign$methods(map = function(dim1, dim2){
   }
   mat <- data.frame(mat)
   colnames(mat) <- c(dim1, dim2, "Utility")
-  s3d <- scatterplot3d(mat, color=colors,  pch = 16)
+  s3d <- scatterplot3d::scatterplot3d(mat, color=colors,  pch = 16)
   legend("bottom", legend = .self$AT_names, inset = -0.25, xpd = TRUE, horiz = TRUE,
          col =  colors_list, pch = 16)
 }
