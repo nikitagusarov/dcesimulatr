@@ -49,6 +49,8 @@ generation <- function(law, n, m, param){
 #'
 #' @export alternatives data, consumers data
 #'
+#' @import matrixcalc
+#' @import mvtnorm
 
 gen_normal <- function(n, m, param){
   if(is.null(param$mu)){param$mu <- rep(0, m)}
@@ -82,6 +84,8 @@ gen_normal <- function(n, m, param){
 #'
 #' @export alternatives data, consumers data
 #'
+#' @import matrixcalc
+#' @import mvtnorm
 
 gen_student <- function(n, m, param){
   if(is.null(param$location)){param$location <- rep(0, m)}
@@ -147,6 +151,7 @@ gen_discrete_uniform <- function(n, m, param){
 #'
 #' @export alternatives data, consumers data
 #'
+#' @import evd
 
 gen_gumbel <- function(n, m, param){
   if(is.null(param$location)){param$location <- 0}

@@ -221,6 +221,9 @@ FactorialDesign$methods(best_choice = function(){
 #' @description The method of the Factorial design class which draws a preferenc mapping
 #'
 #' @examples
+#'
+#' @import scatterplot3d
+#' @import RColorBrewer
 
 FactorialDesign$methods(map = function(dim1, dim2){
   dim1_id <- which(colnames(X)==dim1)

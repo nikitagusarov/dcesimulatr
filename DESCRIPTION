@@ -4,9 +4,17 @@ Title: This package provide convenient tools for synthetic RUM model evaluation
 Version: 0.1.0
 Author: Antoine Dubois
 Maintainer: Antoine Dubois <antoine.dubois.fr@gmail.com>
-Imports: matrixcalc, mvtnorm, evd, scatterplot3d, RColorBrewer
+Imports: evd, 
+  matrixcalc,
+  mvtnorm,
+  RColorBrewer,
+  scatterplot3d
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
