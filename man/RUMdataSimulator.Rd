@@ -16,9 +16,9 @@ library("clusterGeneration") # This packages provides functions generating rando
 # Generation of synthetic dataset
 ##############################
 N <- 10
-DM_att_names <- list("A", "B", "C")
+DM_att_names <- list("S1", "S2", "S3")
 AT_names <- list("good1", "good2")
-AT_att_names <- list("D", "E", "F")
+AT_att_names <- list("X1", "X2", "X3")
 no_choice <- TRUE
 J <- length(AT_names)+no_choice
 FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N, no_choice=no_choice)
