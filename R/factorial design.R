@@ -74,7 +74,8 @@ FactorialDesign$methods(
 #'
 #' @optional_parameter characteristics of the chosen distribution
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
 #' DM_att_names <- list("A", "B", "C")
 #' AT_att_names <- list("D", "E", "F")
 #' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
@@ -106,7 +107,8 @@ FactorialDesign$methods(
 #'
 #' @optional_parameter characteristics of the chosen distribution
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
 #' DM_att_names <- list("A", "B", "C")
 #' AT_att_names <- list("D", "E", "F")
 #' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
@@ -136,8 +138,10 @@ FactorialDesign$methods(
 #'
 #' @optional_parameter distribution The distribution which generates the chosen columns.
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2")
-#' DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
 #' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
 #' FD$gen_preference_coefficients("student", heterogeneity=TRUE, location=-100,  scale=1, df=4, which=c(1:4))
 #' FD$gen_preference_coefficients("normal", heterogeneity=TRUE, mu=0, sd=2, which=c(5))
@@ -165,7 +169,8 @@ FactorialDesign$methods(
 #' a decision maker and the alternatives of an alternative weighted by the preference coefficients.
 #' However, the user can choose whatever function with whatever coefficients
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
 #' DM_att_names <- list("A", "B", "C")
 #' AT_att_names <- list("D", "E", "F")
 #' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
@@ -206,7 +211,8 @@ FactorialDesign$methods(representative_utility = function(func=NULL){
 #'
 #' @optional_parameter distribution The distribution which generates the perturbations
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
 #' DM_att_names <- list("A", "B", "C")
 #' AT_att_names <- list("D", "E", "F")
 #' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
@@ -249,7 +255,8 @@ FactorialDesign$methods(
 #'
 #' @description The method of the Factorial design class which computes the optimal decision makers' choice
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
 #' DM_att_names <- list("A", "B", "C")
 #' AT_att_names <- list("D", "E", "F")
 #' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)

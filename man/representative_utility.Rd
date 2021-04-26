@@ -12,7 +12,8 @@ However, the user can choose whatever function with whatever coefficients}
 The method of the Factorial design class which computes the representative utility
 }
 \examples{
-N <- 10; AT_names <- list("good1", "good2")
+N <- 10
+AT_names <- list("good1", "good2")
 DM_att_names <- list("A", "B", "C")
 AT_att_names <- list("D", "E", "F")
 FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)

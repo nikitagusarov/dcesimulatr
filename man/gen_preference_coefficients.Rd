@@ -10,8 +10,10 @@
 The method of the Factorial design class which generates some preference coefficients' attributes
 }
 \examples{
-N <- 10; AT_names <- list("good1", "good2")
-DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
+N <- 10
+AT_names <- list("good1", "good2")
+DM_att_names <- list("A", "B", "C")
+AT_att_names <- list("D", "E", "F")
 FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
 FD$gen_preference_coefficients("student", heterogeneity=TRUE, location=-100,  scale=1, df=4, which=c(1:4))
 FD$gen_preference_coefficients("normal", heterogeneity=TRUE, mu=0, sd=2, which=c(5))
