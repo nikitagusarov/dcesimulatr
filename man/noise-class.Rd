@@ -19,8 +19,11 @@ The class noise
 }
 
 \examples{
-N <- 10; p <- 3; a <- ob_decision_makers_att$new(N=N, p=p);
-          a$gen("student", param=list(location=rep(100, 3), df=3)); a$gen(); a$gen("help")
+N <- 10; p <- 3
+a <- ob_decision_makers_att$new(N=N, p=p);
+a$gen("student", param=list(location=rep(100, 3), df=3))
+a$gen()
+a$gen("help")
 
 N <- 10; J <- 5; a <- noise$new(N=N, J=J);
           a$gen()
