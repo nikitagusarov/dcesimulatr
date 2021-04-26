@@ -19,6 +19,7 @@ gen_gumbel(n, m, param)
 A function generating a random matrix with gumbel distribution
 }
 \examples{
-gen_gumbel(10, 5, param=list(location=3)); gen_gumbel(10, 5, param=list(location=3, scale=4))
+gen_gumbel(10, 5, param=list(location=3))
+gen_gumbel(10, 5, param=list(location=3, scale=4))
 
 }

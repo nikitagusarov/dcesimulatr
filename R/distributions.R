@@ -10,7 +10,11 @@
 
 #' @title generation
 #'
-#' @description A function looking for the queried distribution
+#' @name generation
+#'
+#' @description 3 distributions are currently available: normal, student,
+#' discrete, gumbel. In addition, gen("hepl") provides information about how to call
+#' the optional parameters
 #'
 #' @param n The number rows
 #'
@@ -18,10 +22,12 @@
 #'
 #' @param law The distribution generating the matrix
 #'
-#' @examples generation("student", 10, 5, param=list(location=rep(100, 5))); generation("help")
+#' @examples generation("student", 10, 5, param=list(location=rep(100, 5)))
+#' generation("help")
 #'
 #' @export alternatives data, consumers data
 #'
+
 
 generation <- function(law, n, m, param){
   if(law=="normal"){gen_normal(n, m, param)}
@@ -147,7 +153,8 @@ gen_discrete_uniform <- function(n, m, param){
 #'
 #' @param scale The optional scale, a positive number
 #'
-#' @examples gen_gumbel(10, 5, param=list(location=3)); gen_gumbel(10, 5, param=list(location=3, scale=4))
+#' @examples gen_gumbel(10, 5, param=list(location=3))
+#' gen_gumbel(10, 5, param=list(location=3, scale=4))
 #'
 #' @export alternatives data, consumers data
 #'

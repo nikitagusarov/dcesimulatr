@@ -11,6 +11,8 @@
 
 #' @title FactorialDesign
 #'
+#' @name FactorialDesign
+#'
 #' @description The reference class whose methods generate a Factorial Design
 #'
 #' @param N The number of decision makers
@@ -21,9 +23,11 @@
 #'
 #' @param q The number of attributes of each alternatives
 #'
-#' @examples DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           AT_names <- list("good1", "good2"); N <- 10
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' @examples DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' AT_names <- list("good1", "good2")
+#' N <- 10
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
 #'
 
 FactorialDesign <- setRefClass("Factorial Design", fields = list(
@@ -60,6 +64,8 @@ FactorialDesign$methods(
 
 #' @title gen_DM_attributes
 #'
+#' @name gen_DM_attributes
+#'
 #' @description The method of the Factorial design class which generates some decision makers' attributes
 #'
 #' @param law The name of the distribution generating the attributes
@@ -68,10 +74,14 @@ FactorialDesign$methods(
 #'
 #' @optional_parameter characteristics of the chosen distribution
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2"); DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
-#'           FD$gen_DM_attributes("discrete_uniform", b=5, which=c(1,3))
-#'           FD$gen_DM_attributes("normal", which=c(2,4,5)); FD$S
+#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$gen_DM_attributes("discrete_uniform", a=0, b=1, which="A")
+#' FD$gen_DM_attributes("normal", which=c("B","C"))
+#' FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("B","C"))
+#' FD$S
 #'
 
 FactorialDesign$methods(
@@ -86,6 +96,8 @@ FactorialDesign$methods(
 
 #' @title gen_AT_attributes
 #'
+#' @name gen_AT_attributes
+#'
 #' @description The method of the Factorial design class which generates some alternatives' attributes
 #'
 #' @param law The name of the distribution generating the attributes
@@ -94,10 +106,13 @@ FactorialDesign$methods(
 #'
 #' @optional_parameter characteristics of the chosen distribution
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2"); DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
-#'           FD$gen_AT_attributes("discrete_uniform", b=2, which=c(1,3))
-#'           FD$gen_AT_attributes("normal", which=c(2,4)); FD$X
+#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$gen_AT_attributes("discrete_uniform", b=2, which=c("D","F"))
+#' FD$gen_AT_attributes("normal", which=c("E"))
+#' FD$X
 #'
 
 FactorialDesign$methods(
@@ -113,18 +128,21 @@ FactorialDesign$methods(
 
 #' @title gen_preference_coefficients
 #'
+#' @name gen_preference_coefficients
+#'
 #' @description The method of the Factorial design class which generates some preference coefficients' attributes
 #'
 #' @param which The number of the columns which should be generated
 #'
 #' @optional_parameter distribution The distribution which generates the chosen columns.
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2"); DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
-#'           FD$gen_preference_coefficients("student", heterogeneity=TRUE, location=rep(-100,5),  scale=diag(1,5), which=c(1:5))
-#'           FD$gen_preference_coefficients("normal", heterogeneity=TRUE, mu=rep(0,3),  sd=diag(1,3), which=c(6:8))
-#'           FD$gen_preference_coefficients("discrete_uniform", heterogeneity=TRUE, a=1, b=5, which=c(9))
-#'           FD$beta
+#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$gen_preference_coefficients("student", heterogeneity=TRUE, location=-100,  scale=1, df=4, which=c(1:4))
+#' FD$gen_preference_coefficients("normal", heterogeneity=TRUE, mu=0, sd=2, which=c(5))
+#' FD$gen_preference_coefficients("discrete_uniform", heterogeneity=TRUE, a=1, b=5, which=6)
+#' FD$beta
 #'
 
 FactorialDesign$methods(
@@ -139,15 +157,23 @@ FactorialDesign$methods(
 
 #' @title representative_utility
 #'
+#' @name representative_utility
+#'
 #' @description The method of the Factorial design class which computes the representative utility
 #'
 #' @param funct By default, the representative utility function is the sum of the alternatives of
 #' a decision maker and the alternatives of an alternative weighted by the preference coefficients.
 #' However, the user can choose whatever function with whatever coefficients
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2"); DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
-#'           FD$representative_utility(); FD$V
+#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$gen_DM_attributes()
+#' FD$gen_AT_attributes()
+#' FD$gen_preference_coefficients()
+#' FD$representative_utility()
+#' FD$V
 #'
 
 FactorialDesign$methods(representative_utility = function(func=NULL){
@@ -174,17 +200,30 @@ FactorialDesign$methods(representative_utility = function(func=NULL){
 
 #' @title total_utility
 #'
+#' @name total_utility
+#'
 #' @description The method of the Factorial design class which generates the utility of the agents for each good
 #'
 #' @optional_parameter distribution The distribution which generates the perturbations
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2"); DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
-#'           FD$gen_AT_attributes(); FD$gen_DM_attributes(); FD$gen_preference_coefficients();
-#'           FD$representative_utility()
-#'           FD$total_utility(); FD$Epsilon; FD$U; FD$choice_order
-#'           FD$total_utility("student", mu=3, df=4); FD$total_utility("discrete_uniform"); FD$Epsilon; FD$U; FD$choice_order
-#'           FD$Epsilon; FD$U; FD$choice_order
+#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$gen_AT_attributes()
+#' FD$gen_DM_attributes()
+#' FD$gen_preference_coefficients()
+#' FD$representative_utility()
+#' FD$total_utility()
+#' FD$Epsilon; FD$U; FD$choice_order
+#' FD$total_utility("student", mu=3, df=4) # Some examples
+#' FD$total_utility("discrete_uniform") # Some examples
+#' FD$Epsilon
+#' FD$U
+#' FD$choice_order
+#' FD$Epsilon
+#' FD$U
+#' FD$choice_order
 #'
 
 FactorialDesign$methods(
@@ -206,9 +245,30 @@ FactorialDesign$methods(
 
 #' @title best_choice
 #'
+#' @name best_choice
+#'
 #' @description The method of the Factorial design class which computes the optimal decision makers' choice
 #'
-#' @examples
+#' @examples N <- 10; AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$gen_AT_attributes()
+#' FD$gen_DM_attributes()
+#' FD$gen_preference_coefficients()
+#' FD$representative_utility()
+#' FD$total_utility()
+#' FD$Epsilon; FD$U; FD$choice_order
+#' FD$total_utility("student", mu=3, df=4) # Some examples
+#' FD$total_utility("discrete_uniform") # Some examples
+#' FD$Epsilon
+#' FD$U
+#' FD$choice_order
+#' FD$Epsilon
+#' FD$U
+#' FD$choice_order
+#' FD$best_choice()
+#' FD$choice
 
 FactorialDesign$methods(best_choice = function(){
   choice <<- apply(FD$choice_order, 1, which.min)
@@ -218,9 +278,17 @@ FactorialDesign$methods(best_choice = function(){
 
 #' @title map
 #'
+#' @name map
+#'
 #' @description The method of the Factorial design class which draws a preferenc mapping
 #'
-#' @examples
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$factorial_design()
+#' FD$map("A", "D")
 #'
 #' @import scatterplot3d
 #' @import RColorBrewer
@@ -260,12 +328,19 @@ FactorialDesign$methods(map = function(dim1, dim2){
 
 #' @title factorial_design
 #'
+#' @name factorial_design
+#'
 #' @description The method of the Factorial design class which generates a factorial design with default distributions
 #'
-#' @examples N <- 10; AT_names <- list("good1", "good2"); DM_att_names <- list("A", "B", "C"); AT_att_names <- list("D", "E", "F")
-#'           FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
-#'           FD$factorial_design()
-#'           FD$U; FD$choice_order
+#' @examples N <- 10
+#' AT_names <- list("good1", "good2")
+#' DM_att_names <- list("A", "B", "C")
+#' AT_att_names <- list("D", "E", "F")
+#' FD <- FactorialDesign(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,N=N)
+#' FD$factorial_design()
+#' FD$U
+#' FD$choice_order
+#' FD$map("A", "D")
 #'
 
 FactorialDesign$methods(factorial_design = function(){

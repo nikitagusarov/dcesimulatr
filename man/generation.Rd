@@ -14,9 +14,12 @@ generation(law, n, m, param)
 \item{m}{The number of columns}
 }
 \description{
-A function looking for the queried distribution
+3 distributions are currently available: normal, student,
+discrete, gumbel. In addition, gen("hepl") provides information about how to call
+the optional parameters
 }
 \examples{
-generation("student", 10, 5, param=list(location=rep(100, 5))); generation("help")
+generation("student", 10, 5, param=list(location=rep(100, 5)))
+generation("help")
 
 }

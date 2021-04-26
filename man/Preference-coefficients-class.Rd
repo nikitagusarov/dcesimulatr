@@ -17,9 +17,10 @@ Class of preference coefficients
 }
 
 \examples{
-S <- matrix(rnorm(100), nrow = 20, byrow = TRUE); X <- matrix(rnorm(20), nrow = 4, byrow = TRUE)
-choice <- c(rep(1,5), rep(2,5), rep(3,5), rep(4,5));
-estimator <- preference_coef(N=20, p=5, q=5); estimator$fit(S, X, choice)
+S <- matrix(rnorm(100), nrow = 20, byrow = TRUE)
+X <- matrix(rnorm(20), nrow = 4, byrow = TRUE)
+choice <- c(rep(1,5), rep(2,5), rep(3,5), rep(4,5))
+estimator <- preference_coef(N=20, p=5, q=5)
 
 a <- preference_coef(N=20, p=5, q=5); a$gen(law="student"); a$gen(heterogeneity=TRUE)
 
