@@ -28,12 +28,18 @@
 #' @export alternatives data, consumers data
 #'
 
-
 generation <- function(law, n, m, param){
   if(law=="normal"){gen_normal(n, m, param)}
   else if(law=="student"){gen_student(n, m, param)}
   else if(law=="discrete_uniform"){gen_discrete_uniform(n, m, param)}
+  else if(law=="continuous_uniform"){gen_continuous_uniform(n, m, param)}
+  else if(law=="beta"){gen_beta(n, m, param)}
   else if(law=="gumbel"){gen_gumbel(n, m, param)}
+  else if(law=="chi2"){gen_chi2(n, m, param)}
+  else if(law=="poisson"){gen_poisson(n, m, param)}
+  else if(law=="exp"){gen_exp(n, m, param)}
+  else if(law=="geo"){gen_geo(n, m, param)}
+  else if(law=="empirical"){gen_empirical(n, m, param)}#empirical distribution
   else if(law=="help"){information()}
   else {cat("The available distributions are 'normal', 'student', 'discrete_uniform' and 'gumbel'")}
 }
@@ -57,6 +63,7 @@ generation <- function(law, n, m, param){
 #'
 #' @import matrixcalc
 #' @import mvtnorm
+#'
 
 gen_normal <- function(n, m, param){
   if(is.null(param$mu)){param$mu <- rep(0, m)}
@@ -73,6 +80,7 @@ gen_normal <- function(n, m, param){
     print("The sd matrix is not a covariance matrix")
   }
 }
+
 
 #' @title gen_student
 #'
@@ -92,6 +100,7 @@ gen_normal <- function(n, m, param){
 #'
 #' @import matrixcalc
 #' @import mvtnorm
+#'
 
 gen_student <- function(n, m, param){
   if(is.null(param$location)){param$location <- rep(0, m)}
@@ -112,6 +121,7 @@ gen_student <- function(n, m, param){
   }
 }
 
+
 #' @title gen_discrete_uniform
 #'
 #' @description A function generating a random matrix with discrete uniform distribution
@@ -126,6 +136,8 @@ gen_student <- function(n, m, param){
 #'
 #' @examples gen_discrete_uniform(10, 2, param=list(a=2, b=3))
 #'
+#' @import stats
+#'
 #' @export alternatives data, consumers data
 #'
 
@@ -135,11 +147,76 @@ gen_discrete_uniform <- function(n, m, param){
 
   if(param$a <= param$b){
     #the matrix whose lines characterizes every decision makers
-    return(matrix(round(runif(n*m, min=param$a, max=param$b)), ncol=m, nrow=n))
+    return(matrix(round(stats::runif(n*m, min=param$a, max=param$b)), ncol=m, nrow=n))
   } else {
     print("The support's lower bound should be smaller then the support's upper bound")
   }
 }
+
+
+#' @title gen_continuous_uniform
+#'
+#' @description A function generating a random matrix with continuous uniform distribution
+#'
+#' @param n The number rows
+#'
+#' @param m The number of columns
+#'
+#' @param a Lower bound of the distribution's support
+#'
+#' @param b Upper bound of the distribution's support
+#'
+#' @examples gen_continuous_uniform(10, 2, param=list(a=2, b=3))
+#'
+#' @import stats
+#'
+#' @export alternatives data, consumers data
+#'
+
+gen_continuous_uniform <- function(n, m, param){
+  if(is.null(param$a)){param$a <- 0}
+  if(is.null(param$b)){param$b <- 1}
+
+  if(param$a <= param$b){
+    #the matrix whose lines characterizes every decision makers
+    return(matrix(stats::runif(n*m, min=param$a, max=param$b), ncol=m, nrow=n))
+  } else {
+    print("The support's lower bound should be smaller then the support's upper bound")
+  }
+}
+
+
+#' @title gen_beta
+#'
+#' @description A function generating a random matrix with beta distribution
+#'
+#' @param n The number rows
+#'
+#' @param m The number of columns
+#'
+#' @param shape1 The first shape parameter
+#'
+#' @param shape2 The second shape parameter
+#'
+#' @param ncp The non-centrality parameter
+#'
+#' @examples gen_beta(10, 2, param=list(shape1=2, shape2=3, ncp=0.5))
+#'
+#' @import stats
+#'
+#' @export alternatives data, consumers data
+#'
+
+gen_beta <- function(n, m, param){
+  if(is.null(param$shape1)){param$shape1 <- 0.5}
+  if(is.null(param$shape2)){param$shape2 <- 0.5}
+  if(is.null(param$ncp)){param$ncp <- 0}
+
+  if(param$shape1 < 0 || param$shape2 < 0) stop("The shape parameters should be positive")
+    #the matrix whose lines characterizes every decision makers
+  return(matrix(stats::rbeta(n*m, shape1=param$shape1, shape2=param$shape2, ncp=param$ncp), ncol=m, nrow=n))
+}
+
 
 #' @title gen_gumbel
 #'
@@ -168,6 +245,125 @@ gen_gumbel <- function(n, m, param){
   return(matrix(evd::rgumbel(n*m, loc=param$location, scale=param$scale), ncol=m, nrow=n))
 }
 
+
+#' @title gen_chi2
+#'
+#' @description A function generating a random matrix with chi-2 distribution
+#'
+#' @param n The number rows
+#'
+#' @param m The number of columns
+#'
+#' @param df Degree of freedom
+#'
+#' @param ncp The non-centrality parameter
+#'
+#' @examples gen_chi2(10, 5, param=list(df=3, ncp=1))
+#'
+#' @export alternatives data, consumers data
+#'
+#' @import stats
+
+gen_chi2 <- function(n, m, param){
+  if(is.null(param$df)){param$df <- 1}
+  if(is.null(param$ncp)){param$ncp <- 0}# non centrality parameter
+
+  if(param$ncp < 0) stop("The non-centrality parameter should be positive")
+  return(matrix(stats::rchisq(n*m, df=param$df, ncp=param$ncp), ncol=m, nrow=n))
+}
+
+
+#' @title gen_poisson
+#'
+#' @description A function generating a random matrix with Poisson distribution
+#'
+#' @param n The number rows
+#'
+#' @param m The number of columns
+#'
+#' @param lambda rate
+#'
+#' @examples gen_poisson(10, 5, param=list(lambda=3))
+#'
+#' @export alternatives data, consumers data
+#'
+#' @import stats
+
+gen_poisson <- function(n, m, param){
+  if(is.null(param$lambda)){param$lambda <- 1}
+
+  if(param$lambda < 0) stop("The rate should be positive")
+  return(matrix(stats::rpois(n*m, lambda = param$lambda), ncol=m, nrow=n))
+}
+
+
+#' @title gen_exp
+#'
+#' @description A function generating a random matrix with exponential distribution
+#'
+#' @param n The number rows
+#'
+#' @param m The number of columns
+#'
+#' @param lambda Rate
+#'
+#' @examples gen_exp(10, 5, param=list(lambda=3))
+#'
+#' @export alternatives data, consumers data
+#'
+#' @import stats
+
+gen_exp <- function(n, m, param){
+  if(is.null(param$lambda)){param$lambda <- 1}
+
+  if(param$lambda < 0) stop("The rate should be positive")
+  return(matrix(stats::rexp(n*m, rate = param$lambda), ncol=m, nrow=n))
+}
+
+
+#' @title gen_geo
+#'
+#' @description A function generating a random matrix with geometric distribution
+#'
+#' @param n The number rows
+#'
+#' @param m The number of columns
+#'
+#' @param prob Probability of success
+#'
+#' @examples gen_geo(10, 5, param=list(prob=0.5))
+#'
+#' @export alternatives data, consumers data
+#'
+#' @import stats
+
+gen_geo <- function(n, m, param){
+  if(is.null(param$prob)){param$prob <- 0.5}
+
+  if(param$prob < 0 || param$prob >1) stop("The probability of success should belong to [0; 1]")
+  return(matrix(stats::rgeom(n*m, prob = param$prob), ncol=m, nrow=n))
+}
+
+#' @title gen_empirical
+#'
+#' @description A function generating a random matrix from an empirical distribution
+#'
+#' @param n The number rows
+#'
+#' @param data Data set from which to extract the empirical distribution
+#'
+#' @examples gen_empirical(10, param=list(data=data.frame(S1=c(0.5, 0, 12, 6, 7.3))))
+#'
+#' @export alternatives data, consumers data
+#'
+#' @import stats
+
+gen_empirical <- function(n, m=NULL, param){
+  those <- round(stats::runif(n=n, min=1, max=nrow(param$data)) ,0)
+  return(param$data[those,])
+}
+
+
 #' @title information
 #'
 #' @description A function providing information about how to use the functions gen_
@@ -178,8 +374,8 @@ gen_gumbel <- function(n, m, param){
 #'
 
 information <- function(){
-  DF <- data.frame(Distributions=c("normal", "student", "discrete_uniform", "gumbel", "help"),
-                   Parameters=c("mu, sd", "location, scale, df", "a, b", "location, scale", "None"))
+  DF <- data.frame(Distributions=c("normal", "student", "discrete_uniform", "continuous_uniform", "beta", "gumbel", "chi2", "poisson", "exp", "empirical", "help"),
+                   Parameters=c("mu, sd", "location, scale, df", "a, b", "a, b", "shape1, shape2, ncp", "location, scale", "df, ncp", "lambda", "lambda", "data", "None"))
   cat("The available distributions and the name of their respective parameters\n")
-  DF
+  return(DF)
 }

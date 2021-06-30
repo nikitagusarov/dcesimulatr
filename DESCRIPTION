@@ -1,6 +1,6 @@
-Package: RUMdataSimulator
+Package: RUMdesignSimulator
 Type: Package
-Title: This package provide convenient tools for synthetic RUM model evaluation
+Title: RUM design Simulator
 Version: 0.1.0
 Author: Antoine Dubois
 Maintainer: Antoine Dubois <antoine.dubois.fr@gmail.com>
@@ -10,9 +10,8 @@ Imports:
   mvtnorm,
   RColorBrewer,
   scatterplot3d
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: This package provide convenient tools for generating experimental design from synthetic data for RUM analysis.
+License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

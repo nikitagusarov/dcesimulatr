@@ -27,4 +27,4 @@
 
 
 ob_decision_makers_att <- setRefClass("Decision makers' attributes", fields = list(N="numeric", p="numeric"),
-                                      methods = list(gen=function(law="normal", n=N, m=p, param=list()){generation(law, n, m, param)}))
+                                      methods = list(gen=function(law="normal", n=.self$N, m=.self$p, param=list()){generation(law, n, m, param)}))
