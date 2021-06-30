@@ -1,0 +1,20 @@
+Package: RUMdesignSimulator
+Type: Package
+Title: RUM design Simulator
+Version: 0.1.0
+Author: Antoine Dubois
+Maintainer: Antoine Dubois <antoine.dubois.fr@gmail.com>
+Imports:
+  evd,
+  matrixcalc,
+  mvtnorm,
+  RColorBrewer,
+  scatterplot3d
+Description: This package provide convenient tools for generating experimental design from synthetic data for RUM analysis.
+License: GPL
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
