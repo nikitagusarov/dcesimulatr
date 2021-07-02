@@ -66,34 +66,37 @@ fullfactorialdesign <- function(A, B, U, choice_set_size, J, no_choice){
   AT_att_names <- colnames(B)
   AT_names <- row.names(B)
   all_combi <- combn(J -no_choice, choice_set_size)
-  experimental_design <- data.frame(matrix(ncol = (p + q + 4), nrow = 0))
+  experimental_design <- data.frame(matrix(ncol = (3 + p + (q + 1)*choice_set_size), nrow = 0))
 
 for(k in 1:N){
   for(i in 1:ncol(all_combi)){
+    conca <- unlist(c(k, i, A[k,]))
     for(j in 1:nrow(all_combi)){
-      conca <- cbind(k, i, AT_names[all_combi[j,i]+ no_choice], A[k,], B[(all_combi[j,i]+no_choice),], U[k,(all_combi[j,i]+no_choice)])
-      colnames(conca) <- c()
-      conca <- as.matrix(conca, nrow=1)
-      experimental_design <- rbind(experimental_design, conca)
+      conca <- unlist(c(conca, AT_names[all_combi[j,i]+ no_choice], B[(all_combi[j,i]+no_choice),], U[k,(all_combi[j,i]+no_choice)]))
     }
-  }
-}
-colnames(experimental_design) <- c("DM_id", "choice_set", "alternative", DM_att_names, AT_att_names, "utility")
+    experimental_design <- rbind(experimental_design, conca)
 
-chosen <- rep(0, nrow(experimental_design))
-for(i in 1:(nrow(experimental_design)/choice_set_size)){
-  best_in_choice_set <- which.max(as.numeric(experimental_design$utility[((i-1)*choice_set_size+1):(i*choice_set_size)]))
-  if(no_choice){
-    id <- experimental_design$DM_id[((i-1)*choice_set_size+1)]
-    if(U[id, 1] < max(as.numeric(experimental_design$utility[((i-1)*choice_set_size+1):(i*choice_set_size)]))){
-      chosen[(i-1)*choice_set_size + best_in_choice_set] <- 1
-    }
-  }else{
-    chosen[(i-1)*choice_set_size + best_in_choice_set] <- 1
   }
 }
-experimental_design$choice <- chosen
-rownames(experimental_design) <- 1:nrow(experimental_design)
+colnames(experimental_design)[1:(length(DM_att_names)+2)] <- c("DM_id", "choice_set", DM_att_names)
+col_names <- c()
+for(i in 1:nrow(all_combi)){
+  col_names <- cbind(col_names, paste(c("alternative", AT_att_names, "utility"), i, sep="."))
+}
+colnames(experimental_design)[(length(DM_att_names)+3):ncol(experimental_design)] <- col_names
+
+for_max_utility <- data.frame(matrix(nrow=nrow(experimental_design), ncol=0))
+for(i in 1:nrow(all_combi)){
+  for_max_utility <- cbind(for_max_utility, experimental_design[paste("utility", i, sep=".")])
+}
+
+if(no_choice){
+  for_max_utility <- cbind(0, for_max_utility)
+  experimental_design$choice <- (apply(for_max_utility, 1, which.max) -1)
+}else{
+  experimental_design$choice <- (apply(for_max_utility, 1, which.max) -1)
+}
+
 return(experimental_design)
 }
 
@@ -126,14 +129,11 @@ fractionalfactorialdesign <- function(A, B, U, choice_set_size, J, no_choice, nb
   experimental_design <- fullfactorialdesign(A=A, B=B, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice)
   nb_DM <- max(as.integer(experimental_design$DM_id))
   nb_choice_sets <- max(as.integer(experimental_design$choice_set))
-  lines_for_each_id <- choice_set_size*nb_choice_sets
-  which_questions <- c()
+  questions_for_DM <- c()
   for(i in 1:nb_DM){
-    questions_for_DM <- sample(1:nb_choice_sets, nb_questions)*choice_set_size
-    questions_for_DM <- sort(c(questions_for_DM, questions_for_DM-1))
-    which_questions <- c(which_questions, as.integer(questions_for_DM + (i-1)*lines_for_each_id))
+    questions_for_DM <- c(questions_for_DM, sample(1:nb_choice_sets, nb_questions) + (i-1)*nb_choice_sets)
   }
-  experimental_design <- experimental_design[which_questions,]
+  experimental_design <- experimental_design[questions_for_DM,]
   rownames(experimental_design) <- 1:nrow(experimental_design)
   return(experimental_design)
 }

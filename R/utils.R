@@ -158,3 +158,24 @@ long_format <- function(design_expe, characterisnics_names){ # to work on that
   return(long)
 }
 
+
+library("mlogit")
+data("Heating", package = "mlogit")
+H <- dfidx(Heating, choice = "depvar", varying = c(3:12))
+m <- mlogit(depvar ~ ic + oc | 0, H)
+summary(m)
+
+
+library("dfidx"); library("AER")
+data("TravelMode", package = "AER")
+head(TravelMode)
+dfidx(TravelMode, drop.index = FALSE)
+
+
+
+dfidx(FFD, drop.index = FALSE, idx = c("DM_id", "choice_set"))
+
+
+
+
+

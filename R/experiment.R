@@ -48,7 +48,7 @@ Experiment <- setRefClass("Experiment", fields = list(
 )
 
 
-Experiment$methods(initialize = function(AT_names, AT_att_names, groups, DM_att_names, normalize=FALSE, no_choice=FALSE){
+Experiment$methods(initialize = function(AT_names, AT_att_names, groups, DM_att_names, normalize=TRUE, no_choice=FALSE){
     .self$normalize <<- normalize
     .self$no_choice <<- no_choice
     if(.self$no_choice){.self$AT_names <<- append("no_choice", AT_names)}
@@ -432,13 +432,13 @@ Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self
 
   Design <- call_design(name=name, A=A, B=B, U=U, choice_set_size=choice_set_size,
                      J=.self$J, no_choice=.self$no_choice, nb_questions=nb_questions)
-  #Design <- na.omit(Design)
+  Design <- na.omit(Design)
   info <<- infoDesign(name=name, experimental_design=Design, AT_names=.self$AT_names, choice_set_size=choice_set_size, J=.self$J,
-              no_choice=.self$no_choice, DM_att_names=colnames(S), AT_att_names=colnames(X))
+             no_choice=.self$no_choice, DM_att_names=colnames(S), AT_att_names=colnames(X))
   print(info)
   if(format=="long"){design_expe <<- Design}
   else{print(colnames(S))
-    design_expe <<- long_format(Design, colnames(S))}
+    design_expe <<- long_format(Design, colnames(S), colnames(X), choice_set_size)}
 
   return(design_expe)
 })
