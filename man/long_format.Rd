@@ -4,7 +4,12 @@
 \alias{long_format}
 \title{long_format}
 \usage{
-long_format(design_expe, characterisnics_names)
+long_format(
+  design_expe,
+  characterisnics_names,
+  attributes_names,
+  choice_set_size
+)
 }
 \arguments{
 \item{design_expe}{An experimental design of format wide}

@@ -151,30 +151,51 @@ summary.Exepriment <- function(FD){
 #' @return The long format of a wide format experimental design
 #'
 
-long_format <- function(design_expe, characterisnics_names){ # to work on that
+long_format <- function(design_expe, characterisnics_names, attributes_names, choice_set_size){ # to work on that
   design_expe[c(1, 2, 4:7, length(design_expe))]
+  attributes_names_2 <- c()
+  utility_2 <- c()
+  alternative_2 <- c()
+  for(i in 1:choice_set_size){
+    attributes_names_2 <- c(attributes_names_2, paste(attributes_names, i, sep="."))
+    utility_2 <- c(utility_2, paste("utility", i, sep="."))
+    alternative_2 <- c(alternative_2, paste("alternative", i, sep="."))
+  }
+  print(attributes_names_2)
+  print(utility_2)
+  print(alternative_2)
   long <- reshape(design_expe, direction = "wide", idvar = c("DM_id", characterisnics_names),
-                  timevar = c("choice_set"), v.names = c("choice"))
+                  timevar = c("choice_set"),
+                  v.names = c( attributes_names_2, utility_2, alternative_2, "choice"), sep="_")
   return(long)
 }
 
 
-library("mlogit")
-data("Heating", package = "mlogit")
-H <- dfidx(Heating, choice = "depvar", varying = c(3:12))
-m <- mlogit(depvar ~ ic + oc | 0, H)
-summary(m)
 
-
-library("dfidx"); library("AER")
-data("TravelMode", package = "AER")
-head(TravelMode)
-dfidx(TravelMode, drop.index = FALSE)
+#View(reshape(FFD, direction="wide", idvar = c("DM_id", "S1", "S2", "S3"), timevar = c("choice_set"), v.names = c("choice", "utility.1", "utility.2",  "alternative.1", "alternative.2", "X1.1", "X2.1", "X3.1", "X1.2", "X2.2", "X3.2"), sep="_"))
 
 
 
-dfidx(FFD, drop.index = FALSE, idx = c("DM_id", "choice_set"))
 
+# library("mlogit")
+# data("Heating", package = "mlogit")
+# H <- dfidx(Heating, choice = "depvar", varying = c(3:12))
+# m <- mlogit(depvar ~ ic + oc | 0, H)
+# summary(m)
+#
+#
+# library("dfidx"); library("AER")
+# data("TravelMode", package = "AER")
+# head(TravelMode)
+# dfidx(TravelMode, drop.index = FALSE)
+#
+#
+# FFD_no_u <- View(FFD[-c(10, 15)])
+#
+# dfidx(FFD, drop.index = FALSE, idx = c(1:5), varying = c(6:16))
+#
+# dfidx(FFD, drop.index = FALSE, idx = c("DM_id", "choice_set"), varying = )
+# View(FFD)
 
 
 
