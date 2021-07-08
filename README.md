@@ -6,7 +6,7 @@ devtools::install_github("AntoineDubois/RUMdesignSimulator")
 
 # Developpement
 Some user may need more tools than the actual ones. Anticipating future needs, we 
-organized the code files so that only one file need to be altered.
+organized the code files so that only one file need to be altered.\\
 To add new distributions: 
 * open the file distribution.R
 * add a new distribution
