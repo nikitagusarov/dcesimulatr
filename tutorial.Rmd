@@ -48,8 +48,8 @@ FD$X
 and decision makers' preferences
 ```{r}
 #Generation of beta whose components law's are different:
-FD$gen_preference_coefficients("student", heterogeneity=TRUE, location=-100,  scale=1, df=4, which=c(1:4), group=1) # generation of the variables from 1 to 4 of the alternatives within the group 1
-FD$gen_preference_coefficients("student", heterogeneity=FALSE, location=100,  scale=1, df=4, which=c(1:4), group=2) # generation of the variables from 1 to 4 of the alternatives within the group 2
+FD$gen_preference_coefficients("student", heterogeneity=TRUE, location=-2,  scale=1, df=4, which=c(1:4), group=1) # generation of the variables from 1 to 4 of the alternatives within the group 1
+FD$gen_preference_coefficients("student", heterogeneity=FALSE, location=2,  scale=1, df=4, which=c(1:4), group=2) # generation of the variables from 1 to 4 of the alternatives within the group 2
 FD$gen_preference_coefficients("normal", heterogeneity=FALSE, mu=0, sd=2, which=5) # generation of the fifth variable within every group
 FD$gen_preference_coefficients("discrete_uniform", heterogeneity=TRUE, a=1, b=5, which="X2") # rectification, the variable X2 follows a discrete uniform distribution
 FD$gen_preference_coefficients(heterogeneity=TRUE, which=c("X3", "I(X1^2)")) # generation of the variable X3 and I(X1^2) according to the default distribution: the standardized normal distribution
