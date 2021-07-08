@@ -162,6 +162,7 @@ summary.Exepriment <- function(FD){
 #'
 #' @return The value of the loss function at its optimal parameter as well as the value of this optimal parameter
 #'
+#' @import optimx
 
 
 loss <- function(experimental_design, choice_set_size){
@@ -188,7 +189,7 @@ loss <- function(experimental_design, choice_set_size){
 fit <- function(experimental_design, choice_set_size){
   conditionnal_loss <- loss(experimental_design = experimental_design, choice_set_size = choice_set_size)
   nb_param <- length(setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice")))
-  solution <- optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead")
+  solution <- optimix::optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead")
   value <- solution[(nb_param+1)]
   solution <- solution[c(1:nb_param)]
   colnames(solution) <- setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice"))
