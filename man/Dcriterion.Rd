@@ -4,10 +4,15 @@
 \alias{Dcriterion}
 \title{Dcriterion}
 \usage{
-Dcriterion(experimental_design)
+Dcriterion(experimental_design, DM_att_names, AT_att_names, choice_set_size)
 }
 \arguments{
 \item{experimental_design}{The design matrix}
+}
+\value{
+The D-score of the experimental design
+
+Data Frame of a full factorial design
 }
 \description{
 The function which computes the determinant of the information matrix.

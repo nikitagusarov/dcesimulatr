@@ -4,7 +4,7 @@
 \alias{InfoMatrix}
 \title{InfoMatrix}
 \usage{
-InfoMatrix(experimental_design)
+InfoMatrix(experimental_design, DM_att_names, AT_att_names, choice_set_size)
 }
 \arguments{
 \item{experimental_design}{The table representation of an experimental design}

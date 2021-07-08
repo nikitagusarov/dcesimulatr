@@ -1,5 +1,5 @@
 # RUMdataSimulator
-The package RUMdataSimulator proposes convenient tools for generating synthetic data for decision theory.
+The package RUMdesignSimulator proposes convenient tools for generating synthetic data for decision theory.
 
 # Installation:
 devtools::install_github("AntoineDubois/RUMdesignSimulator")

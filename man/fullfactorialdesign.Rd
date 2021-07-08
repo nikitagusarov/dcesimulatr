@@ -4,7 +4,7 @@
 \alias{fullfactorialdesign}
 \title{fullfactorialdesign}
 \usage{
-fullfactorialdesign(A, B, U, choice_set_size, J, no_choice)
+fullfactorialdesign(A, B, U, choice_set_size, J, no_choice, format = "long")
 }
 \arguments{
 \item{A}{matrix of decision makers data}
@@ -18,9 +18,6 @@ fullfactorialdesign(A, B, U, choice_set_size, J, no_choice)
 \item{J}{number of alternatives (no_choice included)}
 
 \item{no_choice}{TRUE FALSE indicator}
-}
-\value{
-Data Frame of a full factorial design
 }
 \description{
 The method of the Experiment class which generate a full factorial design

@@ -90,8 +90,12 @@ categorization <- function(X, nb_levels){
 #' @param experimental_design The table representation of an experimental design
 #'
 
-InfoMatrix <- function(experimental_design){
-  B <- experimental_design[,4:(ncol(experimental_design)-2)]
+InfoMatrix <- function(experimental_design, DM_att_names, AT_att_names, choice_set_size){
+  att_names <- c()
+  for(i in 1:choice_set_size){
+    att_names <- c(att_names, paste(AT_att_names, i, sep="."))
+  }
+  B <- experimental_design[c(DM_att_names, att_names)]
   info_matrix <- matrix(0, nrow = ncol(B), ncol = ncol(B))
   for(i in 1:nrow(B)){
     info_matrix <- info_matrix + matrix(as.numeric(B[i,]), ncol=1) %*% matrix(as.numeric(B[i,]), nrow=1)/nrow(experimental_design)
@@ -108,10 +112,16 @@ InfoMatrix <- function(experimental_design){
 #'
 #' @param experimental_design The design matrix
 #'
+#' @return The D-score of the experimental design
+#'
+#' @return Data Frame of a full factorial design
+#'
+#' @import MASS
+#'
 
-Dcriterion <- function(experimental_design){
-  M <- InfoMatrix(experimental_design)
-  return(det(M))
+Dcriterion <- function(experimental_design, DM_att_names, AT_att_names, choice_set_size){
+  M <- InfoMatrix(experimental_design, DM_att_names, AT_att_names, choice_set_size)
+  return(round(det(MASS::ginv(M)), digit=5))
 }
 
 
@@ -140,63 +150,47 @@ summary.Exepriment <- function(FD){
 }
 
 
-#' @title long_format
+#' @title fit
 #'
-#' @name long_format
+#' @name fit
 #'
-#' @description This function transforms a wide format experimental design into a long format design
+#' @description This function gives the best estimate of the preference coefficients
 #'
-#' @param design_expe An experimental design of format wide
+#' @param experimental_design The experimental design tableau (should be of format long)
 #'
-#' @return The long format of a wide format experimental design
+#' @param choice_set_size The size of each choice set
+#'
+#' @return The value of the loss function at its optimal parameter as well as the value of this optimal parameter
 #'
 
-long_format <- function(design_expe, characterisnics_names, attributes_names, choice_set_size){ # to work on that
-  design_expe[c(1, 2, 4:7, length(design_expe))]
-  attributes_names_2 <- c()
-  utility_2 <- c()
-  alternative_2 <- c()
-  for(i in 1:choice_set_size){
-    attributes_names_2 <- c(attributes_names_2, paste(attributes_names, i, sep="."))
-    utility_2 <- c(utility_2, paste("utility", i, sep="."))
-    alternative_2 <- c(alternative_2, paste("alternative", i, sep="."))
+
+loss <- function(experimental_design, choice_set_size){
+  conditional_loss <- function(beta){
+    X <- experimental_design[setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice") )]
+    X <- data.matrix(X)
+    Y <- X %*% beta
+
+    weight <- c()
+    nb_questions <- nrow(experimental_design)/(choice_set_size)
+    for(i in 1:nb_questions){
+      weight <- c(weight, sum(Y[c(((i-1)*choice_set_size +1): (i*choice_set_size))]))
+    }
+    weight <- rep(weight, rep(choice_set_size, length(weight)))
+    proba <- log(Y/weight)
+    proba_chosen <- proba * experimental_design$choice
+    loss <- sum(proba_chosen)
+    return(loss)
   }
-  print(attributes_names_2)
-  print(utility_2)
-  print(alternative_2)
-  long <- reshape(design_expe, direction = "wide", idvar = c("DM_id", characterisnics_names),
-                  timevar = c("choice_set"),
-                  v.names = c( attributes_names_2, utility_2, alternative_2, "choice"), sep="_")
-  return(long)
+  return(conditional_loss)
 }
 
 
-
-#View(reshape(FFD, direction="wide", idvar = c("DM_id", "S1", "S2", "S3"), timevar = c("choice_set"), v.names = c("choice", "utility.1", "utility.2",  "alternative.1", "alternative.2", "X1.1", "X2.1", "X3.1", "X1.2", "X2.2", "X3.2"), sep="_"))
-
-
-
-
-# library("mlogit")
-# data("Heating", package = "mlogit")
-# H <- dfidx(Heating, choice = "depvar", varying = c(3:12))
-# m <- mlogit(depvar ~ ic + oc | 0, H)
-# summary(m)
-#
-#
-# library("dfidx"); library("AER")
-# data("TravelMode", package = "AER")
-# head(TravelMode)
-# dfidx(TravelMode, drop.index = FALSE)
-#
-#
-# FFD_no_u <- View(FFD[-c(10, 15)])
-#
-# dfidx(FFD, drop.index = FALSE, idx = c(1:5), varying = c(6:16))
-#
-# dfidx(FFD, drop.index = FALSE, idx = c("DM_id", "choice_set"), varying = )
-# View(FFD)
-
-
-
-
+fit <- function(experimental_design, choice_set_size){
+  conditionnal_loss <- loss(experimental_design = experimental_design, choice_set_size = choice_set_size)
+  nb_param <- length(setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice")))
+  solution <- optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead")
+  value <- solution[(nb_param+1)]
+  solution <- solution[c(1:nb_param)]
+  colnames(solution) <- setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice"))
+  return(list(solution=solution, value=value))
+}

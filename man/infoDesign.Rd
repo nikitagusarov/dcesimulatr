@@ -6,19 +6,19 @@
 \usage{
 infoDesign(
   name,
-  experimental_design,
+  experimental_design_long,
+  experimental_design_wide,
   AT_names,
   choice_set_size,
   J,
   no_choice,
   DM_att_names,
-  AT_att_names
+  AT_att_names,
+  beta
 )
 }
 \arguments{
 \item{name}{The name of the chosen design}
-
-\item{experimental_design}{A generated experimental design}
 
 \item{choice_set_size}{the number of alternative per choice set}
 
@@ -29,6 +29,8 @@ infoDesign(
 \item{DM_att_names}{The names of the decision makers' attributes}
 
 \item{AT_att_names}{The names of the alternatives' attributes}
+
+\item{experimental_design}{A generated experimental design}
 }
 \description{
 A function which provides a summary about an experimental design

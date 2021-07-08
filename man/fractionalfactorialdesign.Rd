@@ -4,7 +4,16 @@
 \alias{fractionalfactorialdesign}
 \title{fractionalfactorialdesign}
 \usage{
-fractionalfactorialdesign(A, B, U, choice_set_size, J, no_choice, nb_questions)
+fractionalfactorialdesign(
+  A,
+  B,
+  U,
+  choice_set_size,
+  J,
+  no_choice,
+  nb_questions,
+  format = "long"
+)
 }
 \arguments{
 \item{A}{matrix of decision makers data}

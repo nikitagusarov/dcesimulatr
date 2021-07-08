@@ -4,7 +4,17 @@
 \alias{call_design}
 \title{call_design}
 \usage{
-call_design(name, A, B, U, choice_set_size, J, no_choice, nb_questions)
+call_design(
+  name,
+  A,
+  B,
+  U,
+  choice_set_size,
+  J,
+  no_choice,
+  nb_questions,
+  format = "long"
+)
 }
 \arguments{
 \item{name}{The name of the chosen experimental design}

@@ -15,6 +15,9 @@
 
 \item{format}{If "long" (default) the design is expressed in long format and wide format otherwise.}
 }
+\value{
+an Experimental Design as well as a some pieces of information such as the D-score, defined as the determinant of the covariance matrix of the preference parameter (a good D-score should be small), and an estimation of the preference parameters.
+}
 \description{
 The method of the Experiment class which generate a full factorial design
 }
@@ -28,7 +31,10 @@ FD$gen_AT_attributes()
 FD$gen_DM_attributes()
 FD$gen_preference_coefficients()
 FD$utility()
-FD$design(choice_set_size=2, clustered=0)
-FD$design(choice_set_size=2, clustered=1, nb_levels_DM=c(3,3,4), nb_levels_AT=c(3, 2, 2))
-FD$design(choice_set_size=2, clustered=2, nb_levels_DM=c(3,3,4), nb_levels_AT=c(3, 2, 2))
+FFD <- FD$design(choice_set_size=2, clustered=0) # generation of the full factorial design with row data
+#by default, name="FuFD", choice_set_size = nb_alternatives
+FFD1 <- FD$design(name="FuFD",choice_set_size=2, clustered=1, nb_levels_DM=c(3, 3, 4, 2), nb_levels_AT=c(3, 2, 2, 4), format="wide") # generation of the full factorial design with glustered data
+FFD2 <- FD$design(choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2)) # generation of the full factorial design with categorical data
+FFD3 <- FD$design(name="FrFD", choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2), nb_questions = 2) # Generation a a random fractional factorial design with categorical data
+FFD4 <- FD$design(name="FrFD", choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(3, 3, 3, 3), nb_questions = 2, format="wide") # Yet, we want to express this design in wide format
 }

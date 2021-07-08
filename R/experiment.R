@@ -350,6 +350,8 @@ Experiment$methods(best_choice = function(){
 #'
 #' @param format If "long" (default) the design is expressed in long format and wide format otherwise.
 #'
+#' @return an Experimental Design as well as a some pieces of information such as the D-score, defined as the determinant of the covariance matrix of the preference parameter (a good D-score should be small), and an estimation of the preference parameters.
+#'
 #' @examples DM_att_names <- list("S1", "S2", "S3")
 #' AT_att_names <- list("X1", "X2", "X3")
 #' AT_names <- list("good1", "good2", "good3", "good4")
@@ -359,13 +361,17 @@ Experiment$methods(best_choice = function(){
 #' FD$gen_DM_attributes()
 #' FD$gen_preference_coefficients()
 #' FD$utility()
-#' FD$design(choice_set_size=2, clustered=0)
-#' FD$design(choice_set_size=2, clustered=1, nb_levels_DM=c(3,3,4), nb_levels_AT=c(3, 2, 2))
-#' FD$design(choice_set_size=2, clustered=2, nb_levels_DM=c(3,3,4), nb_levels_AT=c(3, 2, 2))
+#' FFD <- FD$design(choice_set_size=2, clustered=0) # generation of the full factorial design with row data
+#' #by default, name="FuFD", choice_set_size = nb_alternatives
+#' FFD1 <- FD$design(name="FuFD",choice_set_size=2, clustered=1, nb_levels_DM=c(3, 3, 4, 2), nb_levels_AT=c(3, 2, 2, 4), format="wide") # generation of the full factorial design with glustered data
+#' FFD2 <- FD$design(choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2)) # generation of the full factorial design with categorical data
+#' FFD3 <- FD$design(name="FrFD", choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2), nb_questions = 2) # Generation a a random fractional factorial design with categorical data
+#' FFD4 <- FD$design(name="FrFD", choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(3, 3, 3, 3), nb_questions = 2, format="wide") # Yet, we want to express this design in wide format
 
 
 Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self$no_choice),
                                      clustered = 0, nb_levels_DM, nb_levels_AT, nb_questions=NULL, format="long"){
+  if(choice_set_size > (.self$J-.self$no_choice) | choice_set_size<0){stop("Unconsistent choice set size")}
   if(clustered==0){A <- S; B <- X}
   else if(clustered==1){
     clustering <- categorization(S, nb_levels = nb_levels_DM)
@@ -376,7 +382,6 @@ Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self
       duplicates <- list(Decision_makers_duplicates=rownames(S)[is.duplicate])
       warning("Decision makers have ", sum(is.duplicate)," duplicates.")
       print(duplicates)
-      #S_clustered <<- unique(S_clustered)
     }
 
     DF <- data.frame(clustering$category); colnames(DF) <- colnames(S)
@@ -392,7 +397,6 @@ Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self
         warning("Alternative ", .self$AT_names[is.duplicate], " is a duplicate.")
       }else{
         warning("Alternative ", list(.self$AT_names[is.duplicate]), " are duplicates.")}
-      #X_clustered <<- unique(X_clustered)
     }
 
     DF <- data.frame(clustering$category); colnames(DF) <- colnames(X)
@@ -423,24 +427,29 @@ Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self
       if(sum(is.duplicate)==1){
         warning("Alternative ", .self$AT_names[is.duplicate], " is a duplicate.")
       }else{
-      warning("Alternative ", .self$AT_names[is.duplicate], " are duplicates.")}
-      #X_category <<- unique(X_category)
+        warning("Alternative ", .self$AT_names[is.duplicate], " are duplicates.")}
     }
     A <- S_category; B <- X_category
   }else{cat("The variable 'clustered' may be equal to 0 for building a design with raw data,
            to 1 with clustered data and to 2 with categorical data")}
 
-  Design <- call_design(name=name, A=A, B=B, U=U, choice_set_size=choice_set_size,
-                     J=.self$J, no_choice=.self$no_choice, nb_questions=nb_questions)
-  Design <- na.omit(Design)
-  info <<- infoDesign(name=name, experimental_design=Design, AT_names=.self$AT_names, choice_set_size=choice_set_size, J=.self$J,
-             no_choice=.self$no_choice, DM_att_names=colnames(S), AT_att_names=colnames(X))
+  Design_long <- call_design(name=name, A=A, B=B, U=U, choice_set_size=choice_set_size,
+                     J=.self$J, no_choice=.self$no_choice, nb_questions=nb_questions, format="long")
+  Design_wide <- call_design(name=name, A=A, B=B, U=U, choice_set_size=choice_set_size,
+                        J=.self$J, no_choice=.self$no_choice, nb_questions=nb_questions, format="wide")
+  info <<- infoDesign(name=name, experimental_design_long=Design_long, experimental_design_wide=Design_wide,
+                      AT_names=.self$AT_names, choice_set_size=choice_set_size, J=.self$J,
+             no_choice=.self$no_choice, DM_att_names=colnames(S), AT_att_names=colnames(X), beta)
   print(info)
-  if(format=="long"){design_expe <<- Design}
-  else{print(colnames(S))
-    design_expe <<- long_format(Design, colnames(S), colnames(X), choice_set_size)}
+  if(format=="long"){
+    Design <- Design_long
+  } else if(format=="wide"){
+    Design <- Design_wide
+  }else{
+    stop("The two formats are 'long' and 'wide'")
+  }
 
-  return(design_expe)
+  return(Design)
 })
 
 
