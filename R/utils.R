@@ -136,18 +136,22 @@ Dcriterion <- function(experimental_design, DM_att_names, AT_att_names, choice_s
 #' @return Some information about an instance of the class Experiment
 #'
 
-summary.Exepriment <- function(FD){
-  cat("Alternatives' names:", unlist(FD$AT_names), "\n")
-  cat("Attributes' alternatives' names:", unlist(FD$info$Alternatives_attributes_names), "\n")
-  if(length(FD$groups)==1){
-    cat("Number of Decision Makers:", FD$groups, "\n")
-  }else{
-    cat("Groups of Decision makers:", FD$groups, "\n")
-  }
-  cat("Decision Makers' characteristics' names:", unlist(FD$info$Decision_Makers_attributes_names), "\n")
-  cat("Choice set size:", FD$info$choice_set_size, "\n")
-  cat("D-score:", FD$info$D_criterion)
-}
+# summary.Exepriment <- function(FD){
+#   cat("Alternatives' names:", unlist(FD$AT_names), "\n")
+#   cat("Attributes' alternatives' names:", unlist(FD$info$Alternatives_attributes_names), "\n")
+#   if(length(FD$groups)==1){
+#     cat("Number of Decision Makers:", FD$groups, "\n")
+#   }else{
+#     cat("Groups of Decision makers:", FD$groups, "\n")
+#   }
+#   cat("Decision Makers' characteristics' names:", unlist(FD$info$Decision_Makers_attributes_names))
+#   #cat("Choice set size:", FD$info$choice_set_size, "\n")
+#   #cat("D-score:", FD$info$D_score, "\n")
+#   #cat("real beta: \n")
+#   #print(FD$info$mean_real_beta)
+#   #cat("estimated beta: \n")
+#   #print(FD$info$beta_hat)
+# }
 
 
 #' @title fit
@@ -189,7 +193,7 @@ loss <- function(experimental_design, choice_set_size){
 fit <- function(experimental_design, choice_set_size){
   conditionnal_loss <- loss(experimental_design = experimental_design, choice_set_size = choice_set_size)
   nb_param <- length(setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice")))
-  solution <- optimix::optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead")
+  solution <- optimx::optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead")
   value <- solution[(nb_param+1)]
   solution <- solution[c(1:nb_param)]
   colnames(solution) <- setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice"))

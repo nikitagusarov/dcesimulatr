@@ -2,8 +2,7 @@ Package: RUMdesignSimulator
 Type: Package
 Title: RUM design Simulator
 Version: 0.1.0
-Authors@R: c(person("Antoine", "Dubois", role=c("aut", "cre")), 
-  person("Nikita", "Gusarov"), person("Amirreza", "Talebijamalabad"))
+Authors: Antoine Dubois, Nikita Gusarov, Amirreza Talebijamalabad
 Maintainer: Antoine Dubois <antoine.dubois.fr@gmail.com>
 Imports:
   evd,
