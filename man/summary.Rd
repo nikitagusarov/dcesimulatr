@@ -2,25 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{summary}
 \alias{summary}
-\alias{loss}
+\alias{summary.Exepriment}
 \title{summary}
 \usage{
-loss(experimental_design, choice_set_size)
+\method{summary}{Exepriment}(FD)
 }
 \arguments{
-\item{experimental_design}{The experimental design tableau (should be of format long)}
-
-\item{choice_set_size}{The size of each choice set}
-
 \item{FD}{An instance of the class Experiment}
 }
 \value{
 Some information about an instance of the class Experiment
-
-The value of the loss function at its optimal parameter as well as the value of this optimal parameter
 }
 \description{
 This function returns a summary of the class Experiment
-
-This function gives the best estimate of the preference coefficients
 }

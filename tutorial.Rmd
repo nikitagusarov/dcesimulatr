@@ -12,7 +12,7 @@ This is an R Markdown present the package RUMdesignSimulator. This package gener
 First of all, we need to install and load the package. One should install the package devtools if necessary. 
 
 ```{r}
-# devtools::install_github("AntoineDubois/RUMdesignSimulator")
+devtools::install_github("AntoineDubois/RUMdesignSimulator")
 library(RUMdesignSimulator)
 ```
 Now, we can define the setup of the experiment. Thus, we define the name of the alternatives as well as their attributes. In addition, we define the number of decision makers as well as their characteristics.

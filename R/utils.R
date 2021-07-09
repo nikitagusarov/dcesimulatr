@@ -136,22 +136,22 @@ Dcriterion <- function(experimental_design, DM_att_names, AT_att_names, choice_s
 #' @return Some information about an instance of the class Experiment
 #'
 
-# summary.Exepriment <- function(FD){
-#   cat("Alternatives' names:", unlist(FD$AT_names), "\n")
-#   cat("Attributes' alternatives' names:", unlist(FD$info$Alternatives_attributes_names), "\n")
-#   if(length(FD$groups)==1){
-#     cat("Number of Decision Makers:", FD$groups, "\n")
-#   }else{
-#     cat("Groups of Decision makers:", FD$groups, "\n")
-#   }
-#   cat("Decision Makers' characteristics' names:", unlist(FD$info$Decision_Makers_attributes_names))
-#   #cat("Choice set size:", FD$info$choice_set_size, "\n")
-#   #cat("D-score:", FD$info$D_score, "\n")
-#   #cat("real beta: \n")
-#   #print(FD$info$mean_real_beta)
-#   #cat("estimated beta: \n")
-#   #print(FD$info$beta_hat)
-# }
+summary.Exepriment <- function(FD){
+  cat("Alternatives' names:", unlist(FD$AT_names), "\n")
+  cat("Attributes' alternatives' names:", unlist(FD$info$Alternatives_attributes_names), "\n")
+  if(length(FD$groups)==1){
+    cat("Number of Decision Makers:", FD$groups, "\n")
+  }else{
+    cat("Groups of Decision makers:", FD$groups, "\n")
+  }
+  cat("Decision Makers' characteristics' names:", unlist(FD$info$Decision_Makers_attributes_names))
+  #cat("Choice set size:", FD$info$choice_set_size, "\n")
+  #cat("D-score:", FD$info$D_score, "\n")
+  #cat("real beta: \n")
+  #print(FD$info$mean_real_beta)
+  #cat("estimated beta: \n")
+  #print(FD$info$beta_hat)
+}
 
 
 #' @title fit
@@ -183,7 +183,7 @@ loss <- function(experimental_design, choice_set_size){
     weight <- rep(weight, rep(choice_set_size, length(weight)))
     proba <- log(Y/weight)
     proba_chosen <- proba * experimental_design$choice
-    loss <- sum(proba_chosen)
+    loss <- -sum(proba_chosen) # there is a minus sign since the loss is equal to the opposit of the likelihood and we inted to minimize the loss
     return(loss)
   }
   return(conditional_loss)
