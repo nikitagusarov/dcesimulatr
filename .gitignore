@@ -53,3 +53,6 @@ vignettes/*.pdf
 # VSCode folder
 .vscode
 *.vscode
+
+# Some other files
+.DS_Store
