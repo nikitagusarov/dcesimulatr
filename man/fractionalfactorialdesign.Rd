@@ -5,8 +5,8 @@
 \title{fractionalfactorialdesign}
 \usage{
 fractionalfactorialdesign(
-  A,
-  B,
+  X,
+  Z,
   U,
   choice_set_size,
   J,
@@ -16,9 +16,9 @@ fractionalfactorialdesign(
 )
 }
 \arguments{
-\item{A}{matrix of decision makers data}
+\item{X}{matrix of decision makers data}
 
-\item{B}{matrix of alternatives data}
+\item{Z}{matrix of alternatives data}
 
 \item{U}{Utility matrix}
 

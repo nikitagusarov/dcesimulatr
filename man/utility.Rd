@@ -7,8 +7,8 @@
 The method of the Experiment class which generates the utility of the agents for each good
 }
 \examples{
-DM_att_names <- list("S1", "S2", "S3")
-AT_att_names <- list("X1", "X2", "X3")
+DM_att_names <- list("X1", "SX2", "X3")
+AT_att_names <- list("Z1", "Z2", "Z3")
 AT_names <- list("good1", "good2")
 groups <- c(10, 20)
 FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)

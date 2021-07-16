@@ -16,9 +16,9 @@
 #'
 #' @param name The name of the chosen experimental design
 #'
-#' @param A matrix of decision makers data
+#' @param X matrix of decision makers data
 #'
-#' @param B matrix of alternatives data
+#' @param Z matrix of alternatives data
 #'
 #' @param U Utility matrix
 #'
@@ -29,9 +29,9 @@
 #' @param no_choice TRUE FALSE indicator
 #'
 
-call_design <- function(name, A, B, U, choice_set_size, J, no_choice, nb_questions, format="long"){
-  if(name=="FuFD"){fullfactorialdesign(A=A, B=B, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice, format=format)}
-  else if(name=="FrFD"){fractionalfactorialdesign(A=A, B=B, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice, nb_questions=nb_questions, format=format)}
+call_design <- function(name, X, Z, U, choice_set_size, J, no_choice, nb_questions, format="long"){
+  if(name=="FuFD"){fullfactorialdesign(X=X, Z=Z, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice, format=format)}
+  else if(name=="FrFD"){fractionalfactorialdesign(X=X, Z=Z, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice, nb_questions=nb_questions, format=format)}
   else{cat("The available experimental designs are FuFD and FrFD")}
 
 }
@@ -43,9 +43,9 @@ call_design <- function(name, A, B, U, choice_set_size, J, no_choice, nb_questio
 #'
 #' @description The method of the Experiment class which generate a full factorial design
 #'
-#' @param A matrix of decision makers data
+#' @param X matrix of decision makers data
 #'
-#' @param B matrix of alternatives data
+#' @param Z matrix of alternatives data
 #'
 #' @param U Utility matrix
 #'
@@ -56,13 +56,13 @@ call_design <- function(name, A, B, U, choice_set_size, J, no_choice, nb_questio
 #' @param no_choice TRUE FALSE indicator
 #'
 
-fullfactorialdesign <- function(A, B, U, choice_set_size, J, no_choice, format="long"){
-  p <- ncol(A)
-  q <- ncol(B)
-  N <- nrow(A)
-  DM_att_names <- colnames(A)
-  AT_att_names <- colnames(B)
-  AT_names <- row.names(B)
+fullfactorialdesign <- function(X, Z, U, choice_set_size, J, no_choice, format="long"){
+  p <- ncol(X)
+  q <- ncol(Z)
+  N <- nrow(X)
+  DM_att_names <- colnames(X)
+  AT_att_names <- colnames(Z)
+  AT_names <- row.names(Z)
   all_combi <- combn(J -no_choice, choice_set_size)
 
 if(format=="long"){ # build in long format
@@ -71,8 +71,8 @@ if(format=="long"){ # build in long format
   for(k in 1:N){
     for(i in 1:ncol(all_combi)){
       for(j in 1:nrow(all_combi)){
-        experimental_design <- rbind(experimental_design, unlist(c(k, i, A[k,],
-                                      AT_names[all_combi[j,i]+ no_choice], B[(all_combi[j,i]+no_choice),], U[k,(all_combi[j,i]+no_choice)])))
+        experimental_design <- rbind(experimental_design, unlist(c(k, i, X[k,],
+                                      AT_names[all_combi[j,i]+ no_choice], Z[(all_combi[j,i]+no_choice),], U[k,(all_combi[j,i]+no_choice)])))
       }
     }
   }
@@ -98,9 +98,9 @@ if(format=="long"){ # build in long format
   experimental_design <- data.frame(matrix(ncol = (3 + p + (q + 1)*choice_set_size), nrow = 0))
   for(k in 1:N){
     for(i in 1:ncol(all_combi)){
-      conca <- c(k, i, A[k,])
+      conca <- c(k, i, X[k,])
       for(j in 1:nrow(all_combi)){
-        conca <- unlist(c(conca, AT_names[(all_combi[j,i]+ no_choice)], B[(all_combi[j,i]+no_choice),], U[k,(all_combi[j,i]+no_choice)]))
+        conca <- unlist(c(conca, AT_names[(all_combi[j,i]+ no_choice)], Z[(all_combi[j,i]+no_choice),], U[k,(all_combi[j,i]+no_choice)]))
       }
       experimental_design <- rbind(experimental_design, conca)
     }
@@ -137,9 +137,9 @@ return(experimental_design)
 #'
 #' @description The method of the Experiment class which generate a full factorial design
 #'
-#' @param A matrix of decision makers data
+#' @param X matrix of decision makers data
 #'
-#' @param B matrix of alternatives data
+#' @param Z matrix of alternatives data
 #'
 #' @param U Utility matrix
 #'
@@ -154,9 +154,9 @@ return(experimental_design)
 #' @return Data Frame of a random fractional factorial design
 #'
 
-fractionalfactorialdesign <- function(A, B, U, choice_set_size, J, no_choice, nb_questions, format="long"){
+fractionalfactorialdesign <- function(X, Z, U, choice_set_size, J, no_choice, nb_questions, format="long"){
   nb_questions <- as.integer(nb_questions)
-  experimental_design <- fullfactorialdesign(A=A, B=B, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice, format = format)
+  experimental_design <- fullfactorialdesign(X=X, Z=Z, U=U, choice_set_size=choice_set_size, J=J, no_choice=no_choice, format = format)
   nb_DM <- max(as.integer(experimental_design$DM_id))
   nb_choice_sets <- max(as.integer(experimental_design$choice_set))
   if(format=="long"){

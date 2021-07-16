@@ -26,9 +26,9 @@ library(RUMdesignSimulator)
 ```
 Now, we can define the setup of the experiment. Thus, we define the name of the alternatives as well as their attributes. In addition, we define the number of decision makers as well as their characteristics.
 ```{r}
-DM_att_names <- list("S1", "S2", "S3") # the list of the decision makers' characteristics
+DM_att_names <- list("X1", "X2", "X3") # the list of the decision makers' characteristics
 AT_names <- list("good1", "good2", "good3", "good4") # the list of the alternatives' names
-AT_att_names <- list("X1", "X2", "X3") # the list of the alternatives' attributes
+AT_att_names <- list("Z1", "Z2", "Z3") # the list of the alternatives' attributes
 groups <- c(10, 20) # the groups of decision makers
 ```
 Then, we initialize the instance of the class Experiment. Furthermore, Experiment is a \textit{reference class}. This type of class is the most flexible embeded in R.
@@ -42,21 +42,21 @@ information()
 ```
 We have chosen the distributions underneath for generating decision makers characteristics.
 ```{r}
- # the characteristics of S1 are drawn from a data set
-FD$gen_DM_attributes("empirical", data = data.frame(S1=c(0.5, 0, 12, 6, 7.3)), which = "S1")
+ # the characteristics of X1 are drawn from a data set
+FD$gen_DM_attributes("empirical", data = data.frame(X1=c(0.5, 0, 12, 6, 7.3)), which = "X1")
 
-# the characteristics S2 and S3 follow a standardized normal distribution within the group 1
-FD$gen_DM_attributes("normal", which=c("S2", "S3"), group=1) 
+# the characteristics X2 and X3 follow a standardized normal distribution within the group 1
+FD$gen_DM_attributes("normal", which=c("X2", "X3"), group=1) 
 
-# the characteristics S2 and S3 follow a normal distribution with mean 1 and 2 standard deviation within the group 2
-FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("S2","S3"), group=2)
+# the characteristics X2 and X3 follow a normal distribution with mean 1 and 2 standard deviation within the group 2
+FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("X2","X3"), group=2)
 
-FD$S
+FD$X
 ```
 In addition, we can observe cross efffects between the decision makers' characteristics.
 ```{r}
-FD$gen_DM_attributes(observation=~S1+S2+S3+I(S1*S2))
-FD$S
+FD$gen_DM_attributes(observation=~X1+X2+X3+I(X1*X2))
+FD$X
 ```
 Similarly, we generate alternatives' attributes
 ```{r}
@@ -67,9 +67,9 @@ sigma <- clusterGeneration::genPositiveDefMat(3)$sigma
 FD$gen_AT_attributes(mu=c(-1,2,0), sd=sigma) 
 
 # observation of complex effects between the alternatives' attributes
-FD$gen_AT_attributes(observation=~X1+X2+X3+I(X1^2))
+FD$gen_AT_attributes(observation=~Z1+Z2+Z3+I(Z1^2))
 
-FD$X
+FD$Z
 ```
 and decision makers' preferences
 ```{r}
@@ -84,11 +84,11 @@ FD$gen_preference_coefficients("student", heterogeneity=FALSE, location=2,  scal
 # generation of the fifth variable within every group
 FD$gen_preference_coefficients("normal", heterogeneity=FALSE, mu=0, sd=2, which=5) 
 
-# rectification, the variable X2 follows a discrete uniform distribution
-FD$gen_preference_coefficients("discrete_uniform", heterogeneity=TRUE, a=1, b=5, which="X2") 
+# rectification, the variable Z2 follows a discrete uniform distribution
+FD$gen_preference_coefficients("discrete_uniform", heterogeneity=TRUE, a=1, b=5, which="Z2") 
 
-# generation of the variable X3 and I(X1^2) according to the default distribution: the standardized normal distribution
-FD$gen_preference_coefficients(heterogeneity=TRUE, which=c("X3", "I(X1^2)")) 
+# generation of the variable Z3 and I(Z1^2) according to the default distribution: the standardized normal distribution
+FD$gen_preference_coefficients(heterogeneity=TRUE, which=c("Z3", "I(Z1^2)")) 
 
 FD$beta
 ```
@@ -119,16 +119,16 @@ A good advantage of the package RUMdesignSimulator consists in its plot method. 
 ```{r}
 # Drawing a 3D preference mapping:
 
-# Map representing the choice of the decision makers and the utility provided by this choice according to the value of X1 and X3
-FD$map("X1", "X3") 
+# Map representing the choice of the decision makers and the utility provided by this choice according to the value of Z1 and Z3
+FD$map("Z1", "Z3") 
 
-FD$map("S1", "X3")
+FD$map("X1", "Z3")
 
-FD$map("S1", "S2")
+FD$map("X1", "X2")
 ```
 
 
-```{r}
+```{r, warning = FALSE}
 # Generation of designs:
 
 # generation of the full factorial design with row data
@@ -140,21 +140,21 @@ Henceforth, the alternatives, decision makers, preference coefficients and assoc
 Below, we build a full factorial experimental design where the number of alternatives within each choice set is 2. Moreover, the attributes and characteristics are not treated.
 
 Often, the data is treated. Sometimes, the data is clustered. The number of each cluster is called \textit{level}. Furthermore, the clusters are formed by running k-means algorithms. Finally, after clustering, the new value of an attribute or a characteristic is the average of its cluster.
-```{r}
+```{r, warning = FALSE}
 FFD <- FD$design(name="FuFD",choice_set_size=2, clustered=1, nb_levels_DM=c(3, 3, 4, 2), nb_levels_AT=c(3, 2, 2, 4)) # generation of the full factorial design with glustered data
 ```
 In addition, after clustering, the new value of an attribute or a characteristic may be the numero of its cluster. This is done by defining \textbf{clustered=2}.
-```{r}
+```{r, warning = FALSE}
 # generation of the full factorial design with categorial data
 FFD1 <- FD$design(choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2))
 ```
 Unfortunately, the number of questions asked to each decision maker is most of the time too big to be realistic. In consequence, only a random subset of questions can be asked to the decision makers. The result is a \textit{random fractional factorial design}.
 The number of question asked to each decision maker is \textbf{nb_question=2}.
-```{r}
+```{r, warning = FALSE}
 FFD2 <- FD$design(name="FrFD", choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2), nb_questions = 2) # Generation a a random fractional factorial design with categorial data
 ```
 Yet, we want to express this design in wide format.
-```{r}
+```{r, warning = FALSE}
 FFD3 <- FD$design(name="FrFD", choice_set_size=2, clustered=2, nb_levels_DM=c(2, 3, 4, 2), nb_levels_AT=c(2, 2, 2, 2), nb_questions = 2, format="wide") 
 ```
 Finally, a small summary function calls some elements back.
