@@ -1,32 +1,15 @@
 ###############
-# Common part #
+# R gitignore #
 ###############
-
-# VS Code files
-.vscode/*
-.vscode
-
-
-
-##########
-# R part #
-##########
-
-# Rproj files
-.Rproj*
-.Rproj.user*
-.Rproj.user/*
 
 # History files
 .Rhistory
 .Rapp.history
 
 # Session Data files
-*/.RData
 .RData
 
 # User-specific files
-*/.Ruserdata
 .Ruserdata
 
 # Example code in package build process
@@ -59,8 +42,12 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
 
-# translation temp files
-po/*~
+
+####################
+# VSCode gitignore #
+####################
+
+# VSCode folder
+.vscode
+*.vscode
