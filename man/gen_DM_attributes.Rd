@@ -18,14 +18,14 @@
 The method of the Experiment class which generates some decision makers' attributes
 }
 \examples{
-DM_att_names <- list("S1", "S2", "S3")
-AT_att_names <- list("X1", "X2", "X3")
+DM_att_names <- list("X1", "X2", "X3")
+AT_att_names <- list("Z1", "Z2", "Z3")
 AT_names <- list("good1", "good2")
 groups <- c(10, 20)
 FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
-FD$gen_DM_attributes("discrete_uniform", a=0, b=1, which="S1")
-FD$gen_DM_attributes("normal", which=c("S2", "S3"), group=1)
-FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("S2","S3"), group=2)
-FD$S
+FD$gen_DM_attributes("discrete_uniform", a=0, b=1, which="X1")
+FD$gen_DM_attributes("normal", which=c("X2", "X3"), group=1)
+FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("X2","X3"), group=2)
+FD$X
 
 }

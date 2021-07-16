@@ -16,14 +16,14 @@
 \item{format}{If "long" (default) the design is expressed in long format and wide format otherwise.}
 }
 \value{
-an Experimental Design as well as a some pieces of information such as the D-score, defined as the determinant of the covariance matrix of the preference parameter (a good D-score should be small), and an estimation of the preference parameters.
+an Experimental Design as well as a some pieces of information such as the D-score, defined as the determinant of the covariance matri<- of the preference parameter (a good D-score should be small), and an estimation of the preference parameters.
 }
 \description{
 The method of the Experiment class which generate a full factorial design
 }
 \examples{
-DM_att_names <- list("S1", "S2", "S3")
-AT_att_names <- list("X1", "X2", "X3")
+DM_att_names <- list("X1", "X2", "X3")
+AT_att_names <- list("Z1", "Z2", "Z3")
 AT_names <- list("good1", "good2", "good3", "good4")
 groups <- c(10, 20)
 FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names, groups=groups)

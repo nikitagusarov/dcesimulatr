@@ -38,13 +38,5 @@ preference_coef <- setRefClass("Preference coefficients", fields = list(N="numer
                     gen=function(law="normal", n=N, m=p, heterogeneity=FALSE, param=list()){
                       if(heterogeneity){generation(law, n, m, param)}
                       else{matrix(generation(law, n=1, m, param), ncol=m, nrow=n, byrow=TRUE)}
-                      },
-
-                    fit=function(a=data.matrix(S), b=data.matrix(X), c=choice, model="logit"){
-                      if(model=="logit"){
-                        inv_log_logit_L <- function(beta){return(-log(logit_L(a, b, c, beta)))}
-                      }
-                      beta_estim <- optim(fn=inv_log_logit_L, par=rep(1, (p+q)), lower=-Inf, upper=Inf)$par
-                      return(matrix(beta_estim, nrow=1))
                       }
                 ))

@@ -29,8 +29,8 @@
 #'
 #' @param q The number of attributes of each alternatives
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
@@ -40,8 +40,8 @@ Experiment <- setRefClass("Experiment", fields = list(
   normalize="logical", no_choice="logical",
   DM_att_names="list", AT_att_names="list", AT_names="list", groups="numeric",
   N="numeric", p="numeric", J="numeric", q="numeric",
-  S="data.frame", S_clustered="data.frame", S_category="data.frame",
   X="data.frame", X_clustered="data.frame", X_category="data.frame",
+  Z="data.frame", Z_clustered="data.frame", Z_category="data.frame",
   beta="data.frame",
   Epsilon="data.frame", func="function", V="data.frame", U="data.frame", choice_order="data.frame", choice="data.frame",
   design_expe="data.frame", info="list")
@@ -61,13 +61,13 @@ Experiment$methods(initialize = function(AT_names, AT_att_names, groups, DM_att_
     .self$J <<- length(.self$AT_names)
     .self$q <<- length(.self$AT_att_names)
 
-    S <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$p)); colnames(S) <<- .self$DM_att_names
-    S_clustered <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$p)); colnames(S_clustered) <<- .self$DM_att_names
-    S_category <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$p)); colnames(S_category) <<- .self$DM_att_names
+    X <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$p)); colnames(X) <<- .self$DM_att_names
+    X_clustered <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$p)); colnames(X_clustered) <<- .self$DM_att_names
+    X_category <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$p)); colnames(X_category) <<- .self$DM_att_names
 
-    X <<- data.frame(matrix(NA, nrow=.self$J, ncol=.self$q)); colnames(X) <<- .self$AT_att_names; row.names(X) <<- .self$AT_names
-    X_clustered <<- data.frame(matrix(NA, nrow=.self$J, ncol=.self$q)); colnames(X_clustered) <<- .self$AT_att_names; row.names(X) <<- .self$AT_names
-    X_category <<- data.frame(matrix(NA, nrow=.self$J, ncol=.self$q)); colnames(X_category) <<- .self$AT_att_names; row.names(X) <<- .self$AT_names
+    Z <<- data.frame(matrix(NA, nrow=.self$J, ncol=.self$q)); colnames(Z) <<- .self$AT_att_names; row.names(Z) <<- .self$AT_names
+    Z_clustered <<- data.frame(matrix(NA, nrow=.self$J, ncol=.self$q)); colnames(Z_clustered) <<- .self$AT_att_names; row.names(Z) <<- .self$AT_names
+    Z_category <<- data.frame(matrix(NA, nrow=.self$J, ncol=.self$q)); colnames(Z_category) <<- .self$AT_att_names; row.names(Z) <<- .self$AT_names
 
     Epsilon <<- data.frame(matrix(NA, nrow=.self$N, ncol=.self$J)); colnames(Epsilon) <<- .self$AT_names
     V <<- data.frame(matrix(NA, nrow = .self$N, ncol = .self$J)); colnames(V) <<- .self$AT_names
@@ -93,15 +93,15 @@ Experiment$methods(initialize = function(AT_names, AT_att_names, groups, DM_att_
 #'
 #' @optional_parameter characteristics of the chosen distribution
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
-#' FD$gen_DM_attributes("discrete_uniform", a=0, b=1, which="S1")
-#' FD$gen_DM_attributes("normal", which=c("S2", "S3"), group=1)
-#' FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("S2","S3"), group=2)
-#' FD$S
+#' FD$gen_DM_attributes("discrete_uniform", a=0, b=1, which="X1")
+#' FD$gen_DM_attributes("normal", which=c("X2", "X3"), group=1)
+#' FD$gen_DM_attributes("normal", mu=1, sd=2, which=c("X2","X3"), group=2)
+#' FD$X
 #'
 
 Experiment$methods(gen_DM_attributes = function(law="normal", which=c(1:.self$p), group, observation,...){
@@ -112,15 +112,15 @@ Experiment$methods(gen_DM_attributes = function(law="normal", which=c(1:.self$p)
     else if(group>length(.self$groups)){stop("There is/are only ", length(.self$groups), " groups")}
     else{group <- c(.self$groups[group-1]+1:.self$groups[group])}
     ob_DM_att <- ob_decision_makers_att(N=.self$N, p=.self$p)
-    S[group, which] <<- ob_DM_att$gen(law=law, m=length(which), param=param)
+    X[group, which] <<- ob_DM_att$gen(law=law, m=length(which), param=param)
 
-    if(any(is.na(S))) {warning("There remain some NA values in the decision makers' attributes matrix", call. = FALSE)}
+    if(any(is.na(X))) {warning("There remain some NA values in the decision makers' attributes matrix", call. = FALSE)}
 
     }else{
-      S <<- model.frame(observation, data=S)
-      S_col_names <- colnames(S)
-      S <<- data.frame(matrix(unlist(S), ncol=ncol(S)))
-      colnames(S) <<- S_col_names
+      X <<- model.frame(observation, data=X)
+      X_col_names <- colnames(X)
+      X <<- data.frame(matrix(unlist(X), ncol=ncol(X)))
+      colnames(X) <<- X_col_names
     }
 
 })
@@ -140,30 +140,30 @@ Experiment$methods(gen_DM_attributes = function(law="normal", which=c(1:.self$p)
 #'
 #' @optional_parameter characteristics of the chosen distribution
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2", "good3", "good4")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names, groups=groups)
-#' FD$gen_AT_attributes("discrete_uniform", b=2, which=c("X1","X2"))
-#' FD$gen_AT_attributes("normal", which=c("X3"), nb_levels=3)
-#' FD$X; FD$X_clustered; FD$X_category
+#' FD$gen_AT_attributes("discrete_uniform", b=2, which=c("Z1","Z2"))
+#' FD$gen_AT_attributes("normal", which=c("Z3"), nb_levels=3)
+#' FD$Z; FD$Z_clustered; FD$Z_category
 #'
 
 Experiment$methods(gen_AT_attributes = function(law="normal", which=c(1:.self$q), observation,...){
     param <- list(...)
     if(missing(observation)){
       ob_AT_att <- ob_alternatives_att(J=.self$J, q=.self$q)
-      X[, which] <<- ob_AT_att$gen(law=law, m=length(which), param=param)
-      if(.self$no_choice){X[1, ] <<- 0}
+      Z[, which] <<- ob_AT_att$gen(law=law, m=length(which), param=param)
+      if(.self$no_choice){Z[1, ] <<- 0}
 
-    if(any(is.na(X))) {warning("There remain some NA values in the decision makers' attributes matrix", call. = FALSE)}
+    if(any(is.na(Z))) {warning("There remain some NA values in the decision makers' attributes matrix", call. = FALSE)}
   }else{
-    X <<- model.frame(observation, data=X)
-    X_col_names <- colnames(X)
-    X <<- data.frame(matrix(unlist(X), ncol=ncol(X)))
-    colnames(X) <<- X_col_names
-    rownames(X) <<- .self$AT_names
+    Z <<- model.frame(observation, data=Z)
+    Z_col_names <- colnames(Z)
+    Z <<- data.frame(matrix(unlist(Z), ncol=ncol(Z)))
+    colnames(Z) <<- Z_col_names
+    rownames(Z) <<- .self$AT_names
   }
 })
 
@@ -178,8 +178,8 @@ Experiment$methods(gen_AT_attributes = function(law="normal", which=c(1:.self$q)
 #'
 #' @optional_parameter distribution The distribution which generates the chosen columns.
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
@@ -190,16 +190,16 @@ Experiment$methods(gen_AT_attributes = function(law="normal", which=c(1:.self$q)
 #' FD$beta
 #'
 
-Experiment$methods(gen_preference_coefficients = function(law="normal", heterogeneity=FALSE, which=c(1:(ncol(S)+ncol(X))), group, ...){
+Experiment$methods(gen_preference_coefficients = function(law="normal", heterogeneity=FALSE, which=c(1:(ncol(X)+ncol(Z))), group, ...){
     if(nrow(beta)==0 | ncol(beta)==0){
-    beta <<- data.frame(matrix(NA, nrow=.self$N, ncol=(ncol(S)+ncol(X)))); colnames(beta) <<- c(colnames(S), colnames(X))
+    beta <<- data.frame(matrix(NA, nrow=.self$N, ncol=(ncol(X)+ncol(Z)))); colnames(beta) <<- c(colnames(X), colnames(Z))
     }
     param <- list(...)
     if(missing(group)){group <- c(1:.self$N)}
     else if(group==1){group <- c(1:.self$groups[1])}
     else if(group>length(.self$groups)){stop("There is/are only ", length(.self$groups), " groups")}
     else{group <- c(.self$groups[group-1]+1:.self$groups[group])}
-    pref_coef <- preference_coef(N=.self$N, p=ncol(S), q=ncol(X))
+    pref_coef <- preference_coef(N=.self$N, p=ncol(X), q=ncol(Z))
     beta[group, which] <<- pref_coef$gen(law=law, m=length(which), heterogeneity=heterogeneity, param=param)
 
     if(any(is.na(beta))) {warning("There remain some NA values in the decision makers' attributes matrix", call. = FALSE)}})
@@ -211,8 +211,8 @@ Experiment$methods(gen_preference_coefficients = function(law="normal", heteroge
 #'
 #' @description The method of the Experiment class which computes the representative utility
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
@@ -225,15 +225,15 @@ Experiment$methods(gen_preference_coefficients = function(law="normal", heteroge
 
 Experiment$methods(representative_utility = function(){
 
-  beta2 <- data.matrix(FD$beta)
-  A <- data.matrix(FD$S)
-  B <- data.matrix(FD$X)
+  beta_1 <- data.matrix(FD$beta)
+  X_1 <- data.matrix(FD$X)
+  Z_1 <- data.matrix(FD$Z)
 
-  func <<- function(s, x, i){return(c(s,x)%*% matrix(beta2[i,], ncol = 1))}
+  func <<- function(s, x, i){return(c(s,x)%*% matrix(beta_1[i,], ncol = 1))}
   # func_U <<- function(s, x){return(sum(s)+sum(x))} # will be useful for $map method
   for(j in 1:.self$J){
     for( i in 1:.self$N){
-      V[i,j] <<- func(A[i,], B[j,], i)
+      V[i,j] <<- func(X_1[i,], Z_1[j,], i)
     }
   }
 
@@ -253,8 +253,8 @@ Experiment$methods(representative_utility = function(){
 #'
 #' @optional_parameter distribution The distribution which generates the perturbations
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "SX2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
@@ -304,8 +304,8 @@ Experiment$methods(utility = function(law="gumbel", ...){
 #'
 #' @description The method of the Experiment class which computes the optimal decision makers' choice
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
@@ -350,10 +350,10 @@ Experiment$methods(best_choice = function(){
 #'
 #' @param format If "long" (default) the design is expressed in long format and wide format otherwise.
 #'
-#' @return an Experimental Design as well as a some pieces of information such as the D-score, defined as the determinant of the covariance matrix of the preference parameter (a good D-score should be small), and an estimation of the preference parameters.
+#' @return an Experimental Design as well as a some pieces of information such as the D-score, defined as the determinant of the covariance matri<- of the preference parameter (a good D-score should be small), and an estimation of the preference parameters.
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2", "good3", "good4")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names, groups=groups)
@@ -372,26 +372,26 @@ Experiment$methods(best_choice = function(){
 Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self$no_choice),
                                      clustered = 0, nb_levels_DM, nb_levels_AT, nb_questions=NULL, format="long"){
   if(choice_set_size > (.self$J-.self$no_choice) | choice_set_size<0){stop("Unconsistent choice set size")}
-  if(clustered==0){A <- S; B <- X}
+  if(clustered==0){X_1 <- X; Z_1 <- Z}
   else if(clustered==1){
-    clustering <- categorization(S, nb_levels = nb_levels_DM)
-    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(S)
-    S_clustered <<- DF
-    is.duplicate <- duplicated(S_clustered)
+    clustering <- categorization(X, nb_levels = nb_levels_DM)
+    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(X)
+    X_clustered <<- DF
+    is.duplicate <- duplicated(X_clustered)
     if(any(is.duplicate)){
-      duplicates <- list(Decision_makers_duplicates=rownames(S)[is.duplicate])
+      duplicates <- list(Decision_makers_duplicates=rownames(X)[is.duplicate])
       warning("Decision makers have ", sum(is.duplicate)," duplicates.")
       print(duplicates)
     }
 
-    DF <- data.frame(clustering$category); colnames(DF) <- colnames(S)
-    S_category <<- DF
+    DF <- data.frame(clustering$category); colnames(DF) <- colnames(X)
+    X_category <<- DF
 
-    clustering <- categorization(X, nb_levels = nb_levels_AT)
+    clustering <- categorization(Z, nb_levels = nb_levels_AT)
 
-    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(X)
-    X_clustered <<- DF
-    is.duplicate <- duplicated(X_clustered)
+    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(Z)
+    Z_clustered <<- DF
+    is.duplicate <- duplicated(Z_clustered)
     if(any(is.duplicate)){
       if(sum(is.duplicate)==1){
         warning("Alternative ", .self$AT_names[is.duplicate], " is a duplicate.")
@@ -399,47 +399,48 @@ Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self
         warning("Alternative ", list(.self$AT_names[is.duplicate]), " are duplicates.")}
     }
 
+    DF <- data.frame(clustering$category); colnames(DF) <- colnames(Z)
+    Z_category <<- DF
+
+    X_1 <- X_clustered; Z_1 <- Z_clustered}
+  else if(clustered==2){
+    clustering <- categorization(X, nb_levels = nb_levels_DM)
+    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(X)
+    X_clustered <<- DF
     DF <- data.frame(clustering$category); colnames(DF) <- colnames(X)
     X_category <<- DF
-
-    A <- S_clustered; B <- X_clustered}
-  else if(clustered==2){
-    clustering <- categorization(S, nb_levels = nb_levels_DM)
-    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(S)
-    S_clustered <<- DF
-    DF <- data.frame(clustering$category); colnames(DF) <- colnames(S)
-    S_category <<- DF
-    is.duplicate <- duplicated(S_category)
+    is.duplicate <- duplicated(X_category)
     if(any(is.duplicate)){
-      duplicates <- list(Decision_makers_duplicates=rownames(S)[is.duplicate])
+      duplicates <- list(Decision_makers_duplicates=rownames(X)[is.duplicate])
       warning("Decision makers have ", sum(is.duplicate)," duplicates.")
       print(duplicates)
     }
 
-    clustering <- categorization(X, nb_levels = nb_levels_AT)
-    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(X); rownames(DF) <- rownames(X)
-    X_clustered <<- DF
-    DF <- data.frame(clustering$category); colnames(DF) <- colnames(X); rownames(DF) <- rownames(X)
-    X_category <<- DF
+    clustering <- categorization(Z, nb_levels = nb_levels_AT)
+    DF <- data.frame(clustering$clustered); colnames(DF) <- colnames(Z); rownames(DF) <- rownames(Z)
+    Z_clustered <<- DF
+    DF <- data.frame(clustering$category); colnames(DF) <- colnames(Z); rownames(DF) <- rownames(Z)
+    Z_category <<- DF
 
-    is.duplicate <- duplicated(X_category)
+    is.duplicate <- duplicated(Z_category)
     if(any(is.duplicate)){
       if(sum(is.duplicate)==1){
         warning("Alternative ", .self$AT_names[is.duplicate], " is a duplicate.")
       }else{
         warning("Alternative ", .self$AT_names[is.duplicate], " are duplicates.")}
     }
-    A <- S_category; B <- X_category
+    X_1 <- X_category; Z_1 <- Z_category
   }else{cat("The variable 'clustered' may be equal to 0 for building a design with raw data,
            to 1 with clustered data and to 2 with categorical data")}
 
-  Design_long <- call_design(name=name, A=A, B=B, U=U, choice_set_size=choice_set_size,
+  Design_long <- call_design(name=name, X=X_1, Z=Z_1, U=U, choice_set_size=choice_set_size,
                      J=.self$J, no_choice=.self$no_choice, nb_questions=nb_questions, format="long")
-  Design_wide <- call_design(name=name, A=A, B=B, U=U, choice_set_size=choice_set_size,
+  Design_wide <- call_design(name=name, X=X_1, Z=Z_1, U=U, choice_set_size=choice_set_size,
                         J=.self$J, no_choice=.self$no_choice, nb_questions=nb_questions, format="wide")
+
   info <<- infoDesign(name=name, experimental_design_long=Design_long, experimental_design_wide=Design_wide,
                       AT_names=.self$AT_names, choice_set_size=choice_set_size, J=.self$J,
-             no_choice=.self$no_choice, DM_att_names=colnames(S), AT_att_names=colnames(X), beta)
+             no_choice=.self$no_choice, DM_att_names=colnames(X), AT_att_names=colnames(Z), beta)
   print(info)
   if(format=="long"){
     Design <- Design_long
@@ -459,28 +460,28 @@ Experiment$methods(design = function(name="FuFD", choice_set_size=(.self$J-.self
 #'
 #' @description The method of the Factorial Experiment class which draws a preference mapping
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2", "good3")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
 #' FD$experiment()
-#' FD$map("S1", "X2")
+#' FD$map("X1", "Z2")
 #'
 #' @import scatterplot3d
 #' @import RColorBrewer
 
 Experiment$methods(map = function(dim1, dim2){
-  dim1_id <- which(colnames(X)==dim1)
-  A <- X
-  dim1_in_x <- TRUE
-  if(length(dim1_id)==0){dim1_id <- which(colnames(S)==dim1); A <- S; dim1_in_x <- FALSE}
+  dim1_id <- which(colnames(Z)==dim1)
+  A <- Z
+  dim1_in_z <- TRUE
+  if(length(dim1_id)==0){dim1_id <- which(colnames(X)==dim1); A <- X; dim1_in_z <- FALSE}
   if(length(dim1_id)==0){stop("dim1 unknown attribute")}
 
-  dim2_id <- which(colnames(X)==dim2)
-  B <- X
-  dim2_in_x <- TRUE
-  if(length(dim2_id)==0){dim2_id <- which(colnames(S)==dim2); B <- S; dim2_in_x <- FALSE}
+  dim2_id <- which(colnames(Z)==dim2)
+  B <- Z
+  dim2_in_z <- TRUE
+  if(length(dim2_id)==0){dim2_id <- which(colnames(X)==dim2); B <- X; dim2_in_z <- FALSE}
   if(length(dim2_id)==0){stop("dim2 unknown attribute")}
 
   colors_list <- RColorBrewer::brewer.pal(n = .self$J, name = "Set1")
@@ -489,9 +490,9 @@ Experiment$methods(map = function(dim1, dim2){
   for(i in 1:.self$J){
     which_best <- choice_order[i]==1
     nb_best <- sum(which_best)
-    if(dim1_in_x){x1 <- rep(A[i, dim1_id], nb_best)}
+    if(dim1_in_z){x1 <- rep(A[i, dim1_id], nb_best)}
     else{x1 <- A[which_best, dim1_id]}
-    if(dim2_in_x){x2 <- rep(B[i, dim2_id], nb_best)}
+    if(dim2_in_z){x2 <- rep(B[i, dim2_id], nb_best)}
     else{x2 <- B[which_best, dim2_id]}
     mat <- rbind(mat, cbind(x1, x2, U[which_best, i]))
     colors <- c(colors, rep(colors_list[i], nb_best))
@@ -516,14 +517,14 @@ Experiment$methods(map = function(dim1, dim2){
 
   func_U2 <- function(a, b){
     beta_av <- as.vector(apply(beta, 2, mean))
-    s_av <- as.vector(apply(S, 2, mean))
-    x_av <- as.vector(apply(X, 2, mean))
+    s_av <- as.vector(apply(X, 2, mean))
+    x_av <- as.vector(apply(Z, 2, mean))
     listofpoints <- c()
     for(i in 1:length(a)){
-      if(dim1_in_x){x_av[dim1_id] <- a[i]}
+      if(dim1_in_z){x_av[dim1_id] <- a[i]}
       else{s_av[dim1_id] <- a[i]}
 
-      if(dim2_in_x){x_av[dim2_id] <- b[i]}
+      if(dim2_in_z){x_av[dim2_id] <- b[i]}
       else{s_av[dim2_id] <- b[i]}
 
       listofpoints <- c(listofpoints, c(s_av, x_av) %*% beta_av)#I have changed func_U to func
@@ -541,15 +542,15 @@ Experiment$methods(map = function(dim1, dim2){
 #'
 #' @description The method of the Experiment class which generates a Experiment with default distributions
 #'
-#' @examples DM_att_names <- list("S1", "S2", "S3")
-#' AT_att_names <- list("X1", "X2", "X3")
+#' @examples DM_att_names <- list("X1", "X2", "X3")
+#' AT_att_names <- list("Z1", "Z2", "Z3")
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names,groups=groups)
 #' FD$experiment()
 #' FD$U
 #' FD$choice_order
-#' FD$map("A", "D")
+#' FD$map("Z1", "X2")
 #'
 
 Experiment$methods(experiment = function(){

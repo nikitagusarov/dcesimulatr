@@ -6,8 +6,8 @@
 \usage{
 call_design(
   name,
-  A,
-  B,
+  X,
+  Z,
   U,
   choice_set_size,
   J,
@@ -19,9 +19,9 @@ call_design(
 \arguments{
 \item{name}{The name of the chosen experimental design}
 
-\item{A}{matrix of decision makers data}
+\item{X}{matrix of decision makers data}
 
-\item{B}{matrix of alternatives data}
+\item{Z}{matrix of alternatives data}
 
 \item{U}{Utility matrix}
 

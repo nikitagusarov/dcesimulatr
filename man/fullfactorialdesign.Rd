@@ -4,12 +4,12 @@
 \alias{fullfactorialdesign}
 \title{fullfactorialdesign}
 \usage{
-fullfactorialdesign(A, B, U, choice_set_size, J, no_choice, format = "long")
+fullfactorialdesign(X, Z, U, choice_set_size, J, no_choice, format = "long")
 }
 \arguments{
-\item{A}{matrix of decision makers data}
+\item{X}{matrix of decision makers data}
 
-\item{B}{matrix of alternatives data}
+\item{Z}{matrix of alternatives data}
 
 \item{U}{Utility matrix}
 

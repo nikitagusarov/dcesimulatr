@@ -14,13 +14,13 @@
 The method of the Experiment class which generates some alternatives' attributes
 }
 \examples{
-DM_att_names <- list("S1", "S2", "S3")
-AT_att_names <- list("X1", "X2", "X3")
+DM_att_names <- list("X1", "X2", "X3")
+AT_att_names <- list("Z1", "Z2", "Z3")
 AT_names <- list("good1", "good2", "good3", "good4")
 groups <- c(10, 20)
 FD <- Experiment(DM_att_names=DM_att_names, AT_att_names=AT_att_names, AT_names=AT_names, groups=groups)
-FD$gen_AT_attributes("discrete_uniform", b=2, which=c("X1","X2"))
-FD$gen_AT_attributes("normal", which=c("X3"), nb_levels=3)
-FD$X; FD$X_clustered; FD$X_category
+FD$gen_AT_attributes("discrete_uniform", b=2, which=c("Z1","Z2"))
+FD$gen_AT_attributes("normal", which=c("Z3"), nb_levels=3)
+FD$Z; FD$Z_clustered; FD$Z_category
 
 }

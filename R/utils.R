@@ -193,7 +193,7 @@ loss <- function(experimental_design, choice_set_size){
 fit <- function(experimental_design, choice_set_size){
   conditionnal_loss <- loss(experimental_design = experimental_design, choice_set_size = choice_set_size)
   nb_param <- length(setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice")))
-  solution <- optimx::optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead")
+  solution <- optimx::optimx(par = rep(1, nb_param), fn=conditionnal_loss, method = "Nelder-Mead", control=list(dowarn=FALSE))
   value <- solution[(nb_param+1)]
   solution <- solution[c(1:nb_param)]
   colnames(solution) <- setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice"))
