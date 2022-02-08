@@ -2,6 +2,7 @@
 ## This file enlists a class alternative's attributes
 ## The notations are taken from Train 2003.
 ## antoine.dubois.fr@gmail.com - March 2021
+## nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 #############################################################
 
 ##############################
@@ -26,9 +27,20 @@
 #' @export factorial design
 #'
 
-ob_alternatives_att <- setRefClass("Alternatives' attributes",
-  fields = list(J = "numeric", q = "numeric"),
-  methods = list(gen = function(law = "normal", n = J, m = q, param = list()) {
-    generation(law, n, m, param)
-  })
+ob_alternatives_att <- setRefClass(
+  "Alternatives' attributes",
+  fields = list(
+    J = "numeric", 
+    q = "numeric"
+  ),
+  methods = list(
+    gen = function(
+      law = "normal", 
+      n = J, 
+      m = q, 
+      param = list()
+    ) {
+      generation(law, n, m, param)
+    }
+  )
 )

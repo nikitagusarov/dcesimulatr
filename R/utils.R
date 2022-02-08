@@ -2,6 +2,7 @@
 ## This file provides some useful functions
 ## The notations are taken from Train 2003.
 ## antoine.dubois.fr@gmail.com - March 2021
+## nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 #############################################################
 
 ##############################
@@ -67,7 +68,10 @@ categorization <- function(X, nb_levels) {
     X_cat <- matrix(0, nrow(X), ncol(X))
     for (i in 1:ncol(X)) {
       if (length(unique(X[, i])) < nb_levels[i]) {
-        warning("The number of levels of attributes ", i, " is inferior to the number of different attributes")
+        warning(
+          "The number of levels of attributes ", i, 
+          " is inferior to the number of different attributes"
+        )
         nb_levels[i] <- length(unique(X[, i]))
       }
       model <- stats::kmeans(X[, i], nb_levels[i])
@@ -100,7 +104,10 @@ InfoMatrix <- function(experimental_design, DM_att_names, AT_att_names, choice_s
   B <- experimental_design[c(DM_att_names, att_names)]
   info_matrix <- matrix(0, nrow = ncol(B), ncol = ncol(B))
   for (i in 1:nrow(B)) {
-    info_matrix <- info_matrix + matrix(as.numeric(B[i, ]), ncol = 1) %*% matrix(as.numeric(B[i, ]), nrow = 1) / nrow(experimental_design)
+    info_matrix <- info_matrix + 
+      matrix(as.numeric(B[i, ]), ncol = 1) %*% 
+      matrix(as.numeric(B[i, ]), nrow = 1) / 
+      nrow(experimental_design)
   }
   return(info_matrix)
 }
@@ -122,7 +129,11 @@ InfoMatrix <- function(experimental_design, DM_att_names, AT_att_names, choice_s
 #'
 
 Dcriterion <- function(experimental_design, DM_att_names, AT_att_names, choice_set_size) {
-  M <- InfoMatrix(experimental_design, DM_att_names, AT_att_names, choice_set_size)
+  M <- InfoMatrix(
+    experimental_design, 
+    DM_att_names, AT_att_names, 
+    choice_set_size
+  )
   return(round(det(MASS::ginv(M)), digit = 5))
 }
 
@@ -139,8 +150,13 @@ Dcriterion <- function(experimental_design, DM_att_names, AT_att_names, choice_s
 #'
 
 summary.Exepriment <- function(FD) {
-  cat("Alternatives' names:", unlist(FD$AT_names), "\n")
-  cat("Attributes' alternatives' names:", unlist(FD$info$Alternatives_attributes_names), "\n")
+  cat(
+    "Alternatives' names:", 
+    unlist(FD$AT_names), 
+    "\nAttributes' alternatives' names:", 
+    unlist(FD$info$Alternatives_attributes_names), 
+    "\n"
+  )
   if (length(FD$groups) == 1) {
     cat("Number of Decision Makers:", FD$groups, "\n")
   } else {
@@ -173,7 +189,12 @@ summary.Exepriment <- function(FD) {
 
 loss <- function(experimental_design, choice_set_size) {
   conditional_loss <- function(beta) {
-    X <- experimental_design[setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice"))]
+    X <- experimental_design[
+      setdiff(
+        colnames(experimental_design), 
+        c("utility", "DM_id", "choice_set", "alternative", "choice")
+      )
+    ]
     X <- data.matrix(X)
     Y <- X %*% beta
 
@@ -193,11 +214,27 @@ loss <- function(experimental_design, choice_set_size) {
 
 
 fit <- function(experimental_design, choice_set_size) {
-  conditionnal_loss <- loss(experimental_design = experimental_design, choice_set_size = choice_set_size)
-  nb_param <- length(setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice")))
-  solution <- optimx::optimx(par = rep(1, nb_param), fn = conditionnal_loss, method = "Nelder-Mead", control = list(dowarn = FALSE))
+  conditionnal_loss <- loss(
+    experimental_design = experimental_design, 
+    choice_set_size = choice_set_size
+  )
+  nb_param <- length(
+    setdiff(
+      colnames(experimental_design), 
+      c("utility", "DM_id", "choice_set", "alternative", "choice")
+    )
+  )
+  solution <- optimx::optimx(
+    par = rep(1, nb_param), 
+    fn = conditionnal_loss, 
+    method = "Nelder-Mead", 
+    control = list(dowarn = FALSE)
+  )
   value <- solution[(nb_param + 1)]
   solution <- solution[c(1:nb_param)]
-  colnames(solution) <- setdiff(colnames(experimental_design), c("utility", "DM_id", "choice_set", "alternative", "choice"))
+  colnames(solution) <- setdiff(
+    colnames(experimental_design), 
+    c("utility", "DM_id", "choice_set", "alternative", "choice")
+  )
   return(list(solution = solution, value = value))
 }

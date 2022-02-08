@@ -2,6 +2,7 @@
 ## This file enlists functions which generate random matrices.
 ## The notations are taken from Train 2003.
 ## antoine.dubois.fr@gmail.com - March 2021
+## nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 #############################################################
 
 ##############################

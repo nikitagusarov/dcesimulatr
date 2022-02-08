@@ -3,6 +3,7 @@
 ## characteristics.
 ## The notations are taken from Train 2003.
 ## antoine.dubois.fr@gmail.com - March 2021
+## nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 #############################################################
 
 ##############################
@@ -47,9 +48,16 @@
 #' @export factorial design
 #'
 
-noise <- setRefClass("noise",
+noise <- setRefClass(
+  "noise",
   fields = list(N = "numeric", J = "numeric"),
-  methods = list(gen = function(law = "gumbel", n = N, m = J, param = list()) {
-    generation(law, n, m, param)
-  })
+  methods = list(
+    gen = function(
+      law = "gumbel", 
+      n = N, m = J, 
+      param = list()
+    ) {
+      generation(law, n, m, param)
+    }
+  )
 )

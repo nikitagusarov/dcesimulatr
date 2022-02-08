@@ -2,6 +2,7 @@
 ## This file enlists functions which generate experimental designs.
 ## The notations are taken from Train 2003.
 ## antoine.dubois.fr@gmail.com - March 2021
+## nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 #############################################################
 
 ##############################
@@ -29,7 +30,11 @@
 #' @param no_choice TRUE FALSE indicator
 #'
 
-call_design <- function(name, X, Z, U, choice_set_size, J, no_choice, nb_questions, format = "long") {
+call_design <- function(
+  name, X, Z, U, choice_set_size, 
+  J, no_choice, nb_questions, 
+  format = "long"
+) {
   if (name == "FuFD") {
     fullfactorialdesign(X = X, Z = Z, U = U, choice_set_size = choice_set_size, J = J, no_choice = no_choice, format = format)
   } else if (name == "FrFD") {
