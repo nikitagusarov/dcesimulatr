@@ -18,12 +18,12 @@
 #'
 #' @method gen generates the attributes by the chosen distribution
 #'
-#' @examples N <- 10; p <- 3
-#' a <- ob_decision_makers_att$new(N=N, p=p);
-#' a$gen("student", param=list(location=rep(100, 3), df=3))
+#' @examples N <- 10
+#' p <- 3
+#' a <- ob_decision_makers_att$new(N = N, p = p)
+#' a$gen("student", param = list(location = rep(100, 3), df = 3))
 #' a$gen()
 #' a$gen("help")
-#'
 #' @export factorial design
 #'
 #' @title noise
@@ -37,14 +37,19 @@
 #' @method gen generates the noise
 #'
 #'
-#' @examples N <- 10; J <- 5; a <- noise$new(N=N, J=J);
-#'           a$gen()
-#'           a$gen("normal", param=list(mu=rep(-1000, J)))
-#'           a$gen("student", param=list(scale=diag(2, J),df=10))
-#'           a$gen("discrete_uniform")
-#'
+#' @examples N <- 10
+#' J <- 5
+#' a <- noise$new(N = N, J = J)
+#' a$gen()
+#' a$gen("normal", param = list(mu = rep(-1000, J)))
+#' a$gen("student", param = list(scale = diag(2, J), df = 10))
+#' a$gen("discrete_uniform")
 #' @export factorial design
 #'
 
-noise <- setRefClass("noise", fields = list(N="numeric", J="numeric"),
-                                      methods = list(gen=function(law="gumbel", n=N, m=J, param=list()){generation(law, n, m, param)}))
+noise <- setRefClass("noise",
+  fields = list(N = "numeric", J = "numeric"),
+  methods = list(gen = function(law = "gumbel", n = N, m = J, param = list()) {
+    generation(law, n, m, param)
+  })
+)

@@ -19,12 +19,19 @@
 #'
 #' @method gen generates the attributes by the chosen distribution
 #'
-#' @examples N <- 10; p <- 3; a <- ob_decision_makers_att$new(N=N, p=p);
-#'           a$gen("student", param=list(location=rep(100, 3), df=3)); a$gen(); a$gen("help")
-#'
+#' @examples N <- 10
+#' p <- 3
+#' a <- ob_decision_makers_att$new(N = N, p = p)
+#' a$gen("student", param = list(location = rep(100, 3), df = 3))
+#' a$gen()
+#' a$gen("help")
 #' @export factorial design
 #'
 
 
-ob_decision_makers_att <- setRefClass("Decision makers' attributes", fields = list(N="numeric", p="numeric"),
-                                      methods = list(gen=function(law="normal", n=.self$N, m=.self$p, param=list()){generation(law, n, m, param)}))
+ob_decision_makers_att <- setRefClass("Decision makers' attributes",
+  fields = list(N = "numeric", p = "numeric"),
+  methods = list(gen = function(law = "normal", n = .self$N, m = .self$p, param = list()) {
+    generation(law, n, m, param)
+  })
+)

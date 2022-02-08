@@ -18,11 +18,17 @@
 #'
 #' @method gen generates the attributes by the chosen distribution
 #'
-#' @examples J <- 10; q <- 3; a <- ob_alternatives_att$new(J=J, q=q);
-#'           a$gen("student", param=list(location=rep(100, 3), df=3)); a$gen("help")
-#'
+#' @examples J <- 10
+#' q <- 3
+#' a <- ob_alternatives_att$new(J = J, q = q)
+#' a$gen("student", param = list(location = rep(100, 3), df = 3))
+#' a$gen("help")
 #' @export factorial design
 #'
 
-ob_alternatives_att <- setRefClass("Alternatives' attributes", fields = list(J="numeric", q="numeric"),
-                                      methods = list(gen=function(law="normal", n=J, m=q, param=list()){generation(law, n, m, param)}))
+ob_alternatives_att <- setRefClass("Alternatives' attributes",
+  fields = list(J = "numeric", q = "numeric"),
+  methods = list(gen = function(law = "normal", n = J, m = q, param = list()) {
+    generation(law, n, m, param)
+  })
+)
