@@ -35,16 +35,21 @@
 #' AT_names <- list("good1", "good2")
 #' groups <- c(10, 20)
 #' FD <- Experiment(DM_att_names = DM_att_names, AT_att_names = AT_att_names, AT_names = AT_names, groups = groups)
-Experiment <- setRefClass("Experiment", fields = list(
-  normalize = "logical", no_choice = "logical",
-  DM_att_names = "list", AT_att_names = "list", AT_names = "list", groups = "numeric",
-  N = "numeric", p = "numeric", J = "numeric", q = "numeric",
-  X = "data.frame", X_clustered = "data.frame", X_category = "data.frame",
-  Z = "data.frame", Z_clustered = "data.frame", Z_category = "data.frame",
-  beta = "data.frame",
-  Epsilon = "data.frame", func = "function", V = "data.frame", U = "data.frame", choice_order = "data.frame", choice = "data.frame",
-  design_expe = "data.frame", info = "list"
-))
+Experiment <- setRefClass(
+  "Experiment", 
+  fields = list(
+    normalize = "logical", no_choice = "logical",
+    DM_att_names = "list", AT_att_names = "list", AT_names = "list", groups = "numeric",
+    N = "numeric", p = "numeric", J = "numeric", q = "numeric",
+    X = "data.frame", X_clustered = "data.frame", X_category = "data.frame",
+    Z = "data.frame", Z_clustered = "data.frame", Z_category = "data.frame",
+    beta = "data.frame",
+    Epsilon = "data.frame", func = "function", 
+    V = "data.frame", U = "data.frame", 
+    choice_order = "data.frame", choice = "data.frame",
+    design_expe = "data.frame", info = "list"
+  )
+)
 
 
 Experiment$methods(initialize = function(AT_names, AT_att_names, groups, DM_att_names, normalize = TRUE, no_choice = FALSE) {

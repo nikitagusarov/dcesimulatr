@@ -1,21 +1,31 @@
-# SDCv2
+# `dcesimaltr`
 
-The package RUMdesignSimulator proposes convenient tools for generating synthetic data for decision theory.
+The package `dcesimaltr` provide a flexible controlled environment for discrete choice experiment simulation. 
 
-Firstly, Alternatives, Decision Makers and Preference Coefficients are easily generated. 
-Then, experimental designs are generated in format long or wide. 
-In addition, the effect of each variable can be visualized in a 3D graph.
-
+At this moment, the package supports only minimal number of behavioural theories and preset experiment configuration. 
+We hope that in near future, the number of available functionnalities will increase. 
 
 
-# Installation:
 
-devtools::install_github("AntoineDubois/sdcv2")
+# Installation
+
+For now, the package resides in an old repository, keeping the previous naming convention, which may rise confusion:
+
+```
 devtools::install_github("nikitagusarov/sdcv2")
+```
+
+Alternatively, you may use the old repository:
+
+```
+devtools::install_github("AntoineDubois/sdcv2")
+```
 
 
  
 # Developpement
+
+<!--
 
 ## Files
 
@@ -40,4 +50,6 @@ To add new designs:
 * implement a new design
 * reference the new design into the function *call_design*, give it a relevant name for calling
 
-For more information, do not hesitate to contact me at <antoine.dubois.fr@gmail.com> or <nikita.gusarov@univ-grenoble-alpes.fr> (the new maintainer after the 01/10/2021)
+-->
+
+For more information, do not hesitate to contact me at <nikita.gusarov@univ-grenoble-alpes.fr> or <antoine.dubois.fr@gmail.com> (the previous maintainer and main developper before the 01/10/2021). 

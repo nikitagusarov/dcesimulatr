@@ -181,7 +181,15 @@ gen_discrete_uniform <- function(n, m, param) {
 
   if (param$a <= param$b) {
     # the matrix whose lines characterizes every decision makers
-    return(matrix(round(stats::runif(n * m, min = param$a, max = param$b)), ncol = m, nrow = n))
+    return(
+      matrix(
+        round(
+          stats::runif(n * m, min = param$a, max = param$b)
+        ), 
+        ncol = m, 
+        nrow = n
+      )
+    )
   } else {
     print("The support's lower bound should be smaller then the support's upper bound")
   }
