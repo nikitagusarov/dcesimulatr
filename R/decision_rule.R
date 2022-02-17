@@ -57,6 +57,8 @@ decision_rule = R6::R6Class(
 # 2. Defining functions to operate in "decision_ruel" class #
 #############################################################
 
+# Decision rule class testing
+
 #' @title
 #' @description
 #' @param

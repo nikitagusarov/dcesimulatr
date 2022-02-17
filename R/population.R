@@ -95,6 +95,8 @@ population = R6::R6Class(
 # 2. Defining functions to operate in "population" class #
 ##########################################################
 
+# Population testing
+
 #' @title
 #' @description
 #' @param
@@ -107,13 +109,15 @@ is.population = function(population) {
     any(class(population) == "population")
 }
 
+# Generation function (indivduals matrix)
+
 #' @title
 #' @description
 #' @param
 #' @param 
 #' @method
 #' @examples
-#' @export 
+#' @export
 
 population_gen = function(
     population, seed = NULL, class = NULL
@@ -123,7 +127,7 @@ population_gen = function(
         stop("No valid population object provided")
     }
     if (!all(unlist(
-        lapply(pop$profiles, is.individual)
+        lapply(population$profiles, is.individual)
     ))) {
         stop("No valid individuals' profiles provided")
     }
@@ -161,9 +165,8 @@ population_gen = function(
 
         # Check compeltenes
         if (
-            !identical(
-                adchars <- setdiff(chars, colnames(X)), 
-                character(0)
+            !rlang::is_empty(
+                adchars <- setdiff(chars, colnames(X))
             )
         ) {
             X[[adchars]] = rep(NA, n)
