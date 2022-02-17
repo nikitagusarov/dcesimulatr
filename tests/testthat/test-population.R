@@ -134,8 +134,94 @@ test_that(
   }
 )
 
+# Test querries
+test_that(
+  "querries test",
+  {
+    # Init filled
+    # Generate dummy ind
+    ind1 = individual$new()
+    ind1$add_characteristics(
+      Age = rnorm(sd = 10)
+    )
+    ind1$add_characteristics(
+      Income = rnorm(mean = 1, sd = 5)
+    )
+    ind2 = individual$new()
+    ind2$add_characteristics(
+      Income = rexp(rate = 10)
+    )
+
+    # Init non-empty
+    pop = population$new(
+      list(ind1, ind2), 
+      n = list(10, 15)
+    )
+
+    # Get characteritics
+    chars = pop$get_chars()
+
+    # Test
+    expect_true(
+      all(
+        class(chars) == "character",
+        chars == c("Age", "Income")
+      )
+    )
+
+    # Get n
+    n = pop$get_n()
+
+    # Test
+    expect_true(
+      all(
+        class(n) == "numeric",
+        n == c(10, 15)
+      )
+    )
+  }
+)
+
 
 
 #####################################################
 # 2. Test functions operating in "population" class #
 #####################################################
+
+test_that(
+  "population generation function test",
+  {
+    # Init filled
+    # Generate dummy ind
+    ind1 = individual$new()
+    ind1$add_characteristics(
+      Age = rnorm(sd = 10)
+    )
+    ind1$add_characteristics(
+      Income = rnorm(mean = 1, sd = 5)
+    )
+    ind2 = individual$new()
+    ind2$add_characteristics(
+      Income = rexp(rate = 10)
+    )
+
+    # Init non-empty
+    pop = population$new(
+      list(ind1, ind2), 
+      n = list(10, 15)
+    )
+    # Generate X
+    X = population_gen(pop)
+
+    # Test
+    expect_true(
+      class(X) == "data.frame"
+    )
+    expect_true(
+      all(colnames(X) == c("Age", "Income", "class"))
+    )
+    expect_true(
+      all(dim(X) == c(25, 3))
+    )
+  }
+)

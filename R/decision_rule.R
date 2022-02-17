@@ -44,8 +44,27 @@ decision_rule = R6::R6Class(
         modify_formula = function(
             new_formula = NULL
         ) {
+            # A formula wit random parameters should be provided
             self$formula = rlang::enquo(new_formula)
             invisible(self)
         }
     )
 )
+
+
+
+#############################################################
+# 2. Defining functions to operate in "decision_ruel" class #
+#############################################################
+
+#' @title
+#' @description
+#' @param
+#' @param 
+#' @method
+#' @examples
+#' @export 
+
+is.decision_rule = function(decision_rule) {
+    any(class(decision_rule) == "decision_rule")
+}

@@ -25,9 +25,11 @@ individual = R6::R6Class(
         characteristics = NULL,
         decision_rule = NULL,
 
-        # Methods
+        # Modifying methods
         add_characteristics = function(...) {
             # Convert to quosure to avoid interpretation
+            # The accepted calls for now should require n parameter
+            # ex: to generate constant value use rep(const)
             self$characteristics = c(
                 self$characteristics,
                 as.list(match.call())[-1]
@@ -42,7 +44,44 @@ individual = R6::R6Class(
                 formula = {{ formula }},
                 noise = {{ noise }}
             )
+            # Verification
+            if (!is.decision_rule(self$decision_rule)) {
+                "An error occured, no valid decision rule generated"
+            }
             invisible(self)
+        },
+
+        # Querrying methods
+        get_chars = function() {
+            chars = names(self$characteristics)
+            return(chars)
+        },
+        get_laws = function() {
+            laws = self$characteristics
+            return(laws)
+        },
+        get_rule = function() {
+            return(self$decision_rule)
         }
     )
 )
+
+
+
+##########################################################
+# 2. Defining functions to operate in "individual" class #
+##########################################################
+
+#' @title
+#' @description
+#' @param
+#' @param 
+#' @method
+#' @examples
+#' @export 
+
+is.individual = function(individual) {
+    any(
+        class(individual) == "individual"
+    )
+}

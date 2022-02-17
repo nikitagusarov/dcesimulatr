@@ -66,6 +66,25 @@ population = R6::R6Class(
                 self$n[[length(self$n) + 1]] = n
             }
             invisible(self)
+        },
+
+        # Methods to querry the object
+        get_chars = function() {
+            # Get list of chars from all profiles
+            chars = lapply(
+                self$profiles, 
+                function(x) { names(x$characteristics) }
+            )
+            # Keep unique
+            chars = unique(
+                unlist(chars)
+            )
+            return(chars)
+        },
+        get_n = function() {
+            # Get n as vector
+            n = unlist(self$n)
+            return(n)
         }
     )
 )
@@ -76,14 +95,86 @@ population = R6::R6Class(
 # 2. Defining functions to operate in "population" class #
 ##########################################################
 
+#' @title
+#' @description
+#' @param
+#' @param 
+#' @method
+#' @examples
+#' @export 
+
+is.population = function(population) {
+    any(class(population) == "population")
+}
+
+#' @title
+#' @description
+#' @param
+#' @param 
+#' @method
+#' @examples
+#' @export 
+
 population_gen = function(
-    population
+    population, seed = NULL, class = NULL
 ) {
     # Verification
-    if (!any(class(individual) == "individual")) {
-        stop("No valid individual object provided")
+    if (!is.population(population)) {
+        stop("No valid population object provided")
+    }
+    if (!all(unlist(
+        lapply(pop$profiles, is.individual)
+    ))) {
+        stop("No valid individuals' profiles provided")
     }
 
-    # Run simulation
+    # Reset seed if required
+    if (!is.null(seed)) {
+        set.seed(seed)
+    }
 
+    # Get unique characteristics' names
+    chars = population$get_chars()
+
+    # Set info variable for class
+    if (length(population$profiles) > 1 & is.null(class)) {
+        class = TRUE
+    } else { class = FALSE }
+
+    # Run simulation
+    foreach (
+        i = seq_along(population$profiles),
+        .combine = "rbind"
+    ) %do% {
+        # Get profile chars, laws and obs numbers
+        laws = population$profiles[[i]]$get_laws()
+        n = population$get_n()[i]
+        # Update laws with required n
+        for (j in seq_along(laws)) {
+            laws[[j]]$n = n
+        }
+
+        # Create DF per ind profile
+        X = data.frame(
+            lapply(laws, eval)
+        )
+
+        # Check compeltenes
+        if (
+            !identical(
+                adchars <- setdiff(chars, colnames(X)), 
+                character(0)
+            )
+        ) {
+            X[[adchars]] = rep(NA, n)
+        }
+
+        # Add profile information
+        if (class == TRUE) {
+            X[["class"]] = rep(i, n)
+        }
+
+        # Exit foreach loop
+        return(X)
+    }
 }
