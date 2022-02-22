@@ -72,7 +72,7 @@ individual = R6::R6Class(
 # 2. Defining functions to operate in "individual" class #
 ##########################################################
 
-# individuals class testing
+# individual class testing
 
 #' @title
 #' @description

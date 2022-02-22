@@ -4,6 +4,6 @@ library(rlang)
 library(evd)
 library(foreach)
 
-# library(dcesimaltr)
+library(dcesimaltr)
 
-# test_check("dcesimaltr")
+test_check("dcesimaltr")

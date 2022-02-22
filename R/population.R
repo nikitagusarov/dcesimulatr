@@ -169,12 +169,12 @@ population_gen = function(
                 adchars <- setdiff(chars, colnames(X))
             )
         ) {
-            X[[adchars]] = rep(NA, n)
+            X[adchars] = rep(NA, n)
         }
 
         # Add profile information
         if (class == TRUE) {
-            X[["class"]] = rep(i, n)
+            X["class"] = rep(i, n)
         }
 
         # Exit foreach loop
