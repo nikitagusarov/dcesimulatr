@@ -23,15 +23,21 @@ experimental_design = R6::R6Class(
     list(
         design = NULL,
         alternatives = NULL,
+        n = NULL,
+        identical = FALSE,
 
         # Initialize
         initialize = function(
             alternatives = list(NULL), 
-            design = "FFD"
+            design = "FFD",
+            n = NULL,
+            identical = FALSE
         ) {
             # Write values
             self$alternatives = alternatives
             self$design = design
+            self$n = n
+            self$identical = identical
         },
         
         # Methods to modify object
@@ -107,7 +113,8 @@ is.experimental_design = function(experimental_design) {
 alternatives_gen = function(
     experimental_design, 
     n = NULL,
-    seed = NULL
+    seed = NULL,
+    format = "long"
 ) {
     # Verification
     if (!is.experimental_design(experimental_design)) {
@@ -131,7 +138,7 @@ alternatives_gen = function(
     attr = experimental_design$get_attributes()
 
     # Generate Z - Run simulation
-    foreach (
+    Z = foreach (
         i = seq_along(experimental_design$alternatives),
         .combine = "rbind"
     ) %do% {
@@ -157,10 +164,18 @@ alternatives_gen = function(
         }
 
         # Add profile information
+        ## Alternative 
         Z["alternative"] = rep(i, n)
+        ## Choice ID
+        Z["CID"] = 1:n
 
         # Exit foreach loop
         return(Z)
     }
+
+    # Arrange results
+    return(
+        dplyr::arrange(Z, CID)
+    )
 }
 

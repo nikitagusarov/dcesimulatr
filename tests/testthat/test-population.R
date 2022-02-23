@@ -142,14 +142,18 @@ test_that(
     # Generate dummy ind
     ind1 = individual$new()
     ind1$add_characteristics(
-      Age = rnorm(sd = 10)
-    )
-    ind1$add_characteristics(
+      Age = rnorm(sd = 10),
       Income = rnorm(mean = 1, sd = 5)
+    )
+    ind1$add_decision_rule(
+      formula = 1.5*Age + 0.7*Quality
     )
     ind2 = individual$new()
     ind2$add_characteristics(
       Income = rexp(rate = 10)
+    )
+    ind2$add_decision_rule(
+      formula = Age + 2*Income - 0.5*Quality
     )
 
     # Init non-empty
@@ -178,6 +182,17 @@ test_that(
         class(n) == "numeric",
         n == c(10, 15)
       )
+    )
+
+    # Get n
+    rules = pop$get_rules()
+
+    # Test
+    expect_true(
+      class(rules) == "list"
+    )
+    expect_true(
+      any(class(rules[[1]]) == "decision_rule")
     )
   }
 )

@@ -85,6 +85,14 @@ population = R6::R6Class(
             # Get n as vector
             n = unlist(self$n)
             return(n)
+        },
+        get_rules = function() {
+            # Querry individuals for their rules
+            rules = lapply(
+                self$profiles,
+                function(x) { x$get_rule() }
+            )
+            return(rules)
         }
     )
 )
