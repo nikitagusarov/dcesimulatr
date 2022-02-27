@@ -1,6 +1,6 @@
-#################################
-# 1. Test "generation" function #
-#################################
+#########################################
+# 1. Test "experiment_compose" function #
+#########################################
 
 
 
@@ -49,13 +49,7 @@ test_that(
             class(exp_res) == "data.frame"
         )
         expect_true(
-            all(dim(exp_res) == c(50, 8))
-        )
-        expect_true(
-            all(colnames(exp_res) == c(
-                "Age", "Income", "class", 
-                "Price", "Opinion", "Quality", "alternative", "CID"
-            ))
+            all(dim(exp_res) == c(50, 9))
         )
     }
 )
@@ -101,20 +95,15 @@ test_that(
             experimental_design = e_design
         )
 
+        attr = e_design$get_attributes()
         expect_true(
             class(exp_res) == "data.frame"
         )
         expect_true(
-            all(dim(exp_res) == c(150, 8))
+            all(dim(exp_res) == c(150, 9))
         )
         expect_true(
-            all(colnames(exp_res) == c(
-                "Age", "Income", "class", 
-                "Price", "Opinion", "Quality", "alternative", "CID"
-            ))
-        )
-        expect_true(
-            sum(exp_res[1:6, 4:6] == exp_res[7:12, 4:6], na.rm = TRUE) == 0
+            sum(exp_res[1:6, attr] == exp_res[7:12, attr], na.rm = TRUE) == 0
         )
 
         # Identical = FALSE
@@ -132,22 +121,10 @@ test_that(
             class(exp_res) == "data.frame"
         )
         expect_true(
-            all(dim(exp_res) == c(150, 8))
+            all(dim(exp_res) == c(150, 9))
         )
         expect_true(
-            all(colnames(exp_res) == c(
-                "Age", "Income", "class", 
-                "Price", "Opinion", "Quality", "alternative", "CID"
-            ))
-        )
-        expect_true(
-            all(colnames(exp_res) == c(
-                "Age", "Income", "class", 
-                "Price", "Opinion", "Quality", "alternative", "CID"
-            ))
-        )
-        expect_true(
-            sum(exp_res[1:6, 4:7] == exp_res[7:12, 4:7], na.rm = TRUE) == 15
+            sum(exp_res[1:6, attr] == exp_res[7:12, attr], na.rm = TRUE) == 9
         )
     }
 )
@@ -155,7 +132,7 @@ test_that(
 
 
 #####################################
-# 2. Test "experiment_compose" function #
+# 2. Test "experiment_run" function #
 #####################################
 
 
@@ -214,14 +191,7 @@ test_that(
             class(res) == "data.frame"
         )
         expect_true(
-            all(dim(res) == c(150, 10))
-        )
-        expect_true(
-            all(colnames(res) == c(
-                "Age", "Income", "class", 
-                "Price", "Quality", "Opinion", "alternative", "CID",
-                "DU", "TU"
-            ))
+            all(dim(res) == c(150, 11))
         )
     }
 )

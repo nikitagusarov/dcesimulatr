@@ -154,7 +154,7 @@ population_gen = function(
     } else { class = FALSE }
 
     # Run simulation
-    foreach (
+    X = foreach (
         i = seq_along(population$profiles),
         .combine = "rbind"
     ) %do% {
@@ -188,4 +188,10 @@ population_gen = function(
         # Exit foreach loop
         return(X)
     }
+
+    # Add Individual ID
+    X["IID"] = 1:nrow(X)
+
+    # Return
+    return(X)
 }

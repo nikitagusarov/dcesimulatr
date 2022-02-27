@@ -164,8 +164,8 @@ alternatives_gen = function(
         }
 
         # Add profile information
-        ## Alternative 
-        Z["alternative"] = rep(i, n)
+        ## Alternative  ID
+        Z["AID"] = rep(i, n)
         ## Choice ID
         Z["CID"] = 1:n
 

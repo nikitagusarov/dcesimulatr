@@ -41,10 +41,14 @@ experiment_compose = function(
 
     # Generate alternatives
     if (identical == TRUE) {
+        # Generate one Z
         Z = alternatives_gen(
             experimental_design, seed = NULL, n = n
         )
-        Z = dplyr::slice(Z, rep(1:dplyr::n(), nrow(X)))
+        # Repeat it
+        Z = dplyr::slice(
+            Z, rep(1:dplyr::n(), nrow(X))
+        )
     } else {
         Z = alternatives_gen(
             experimental_design, seed = NULL, n = n*nrow(X)
@@ -52,13 +56,13 @@ experiment_compose = function(
     }
 
     # Bind frames
-    res = cbind(
+    XZ = cbind(
         dplyr::slice(X, rep(1:dplyr::n(), each = n*j)),
         Z
     )
 
     # Output
-    return(res)
+    return(XZ)
 }
 
 
@@ -111,3 +115,22 @@ experiment_run = function(
     # Output
     return(XZ)
 }
+
+
+# some tests
+
+# library(devtools); library(rlang)
+
+# x = data.frame(
+#     a = 1:10,
+#     b = 11:20,
+#     c = 5:14
+# )
+
+# ex = expr(
+#     a + rnorm(mean = 3)*b
+# )
+
+# y = with(x, eval(ex)); y
+
+# (y - x$a)/x$b 

@@ -100,7 +100,7 @@ test_that(
       class(Z) == "data.frame"
     )
     expect_true(
-      all(colnames(Z) == c("Price", "Opinion", "Quality", "alternative", "CID"))
+      all(colnames(Z) == c("Price", "Opinion", "Quality", "AID", "CID"))
     )
     expect_true(
       all(dim(Z) == c(20, 5))

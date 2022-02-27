@@ -233,10 +233,7 @@ test_that(
       class(X) == "data.frame"
     )
     expect_true(
-      all(colnames(X) == c("Age", "Income", "class"))
-    )
-    expect_true(
-      all(dim(X) == c(25, 3))
+      all(dim(X) == c(25, 4))
     )
   }
 )
