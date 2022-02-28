@@ -51,9 +51,11 @@ experimental_design = R6::R6Class(
 
             # Add to our list of alternatives
             if (!is.null(alternative_name)) {
-                self$alternatives[[ {{ alternative_name }} ]] = alternative
+                self$alternatives[[ {{ alternative_name }} ]] = 
+                    alternative
             } else {
-                self$alternatives[[length(self$alternatives) + 1]] = alternative
+                self$alternatives[[length(self$alternatives) + 1]] = 
+                    alternative
             }
             invisible(self)
         },
@@ -134,48 +136,22 @@ alternatives_gen = function(
         set.seed(seed)
     }
 
-    # Get unique characteristics' names
-    attr = experimental_design$get_attributes()
+    # Random
+    Z = random_design(
+        experimental_design, n
+    )
 
-    # Generate Z - Run simulation
-    Z = foreach (
-        i = seq_along(experimental_design$alternatives),
-        .combine = "rbind"
-    ) %do% {
-        # Get profile chars, laws and obs numbers
-        laws = experimental_design$alternatives[[i]]$get_laws()
-        # Update laws with required n
-        for (j in seq_along(laws)) {
-            laws[[j]]$n = n
-        }
-
-        # Create DF per alternative profile
-        Z = data.frame(
-            lapply(laws, eval)
-        )
-
-        # Check compeltenes
-        if (
-            !rlang::is_empty(
-                adattr <- setdiff(attr, colnames(Z))
-            )
-        ) {
-            Z[adattr] = rep(NA, n)
-        }
-
-        # Add profile information
-        ## Alternative  ID
-        Z["AID"] = rep(i, n)
-        ## Choice ID
-        Z["CID"] = 1:n
-
-        # Exit foreach loop
-        return(Z)
+    # Long format dataset
+    if (format == "long") {
+        Z = dplyr::arrange(Z, CID)
     }
 
     # Arrange results
-    return(
-        dplyr::arrange(Z, CID)
-    )
+    return(Z)
 }
 
+# x = data.frame(a = 1:5, b = 6:10)
+# y = data.frame(c = 2:6, d = 9:5)
+
+# expand.grid(x , y)
+# tidyr::expand_grid(x, y)
