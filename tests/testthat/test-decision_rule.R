@@ -17,12 +17,12 @@ test_that(
     )
     expect_true(
       any(
-        class(dr$noise) == "quosure"
+        class(dr$noise) == "list"
       )
     )
     expect_true(
       any(
-        class(dr$formula) == "quosure"
+        class(dr$formula) == "list"
       )
     )
   }
@@ -33,8 +33,8 @@ test_that(
   "formula is modified", 
   {
     dr = decision_rule$new()
-    dr = dr$modify_noise(
-      new_noise = rnorm(mean = 1, sd = 10)
+    dr = dr$add_noise(
+      evd::rgumbel(loc = 0, scale = 1)
     )
 
     # Test
@@ -44,8 +44,11 @@ test_that(
       )
     )
     expect_true(
+      class(dr$noise) == "list"
+    )
+    expect_true(
       any(
-        class(dr$noise) == "quosure"
+        class(dr$noise[[1]]) == "call"
       )
     )
   }
@@ -56,8 +59,8 @@ test_that(
   "formula is modified", 
   {
     dr = decision_rule$new()
-    dr = dr$modify_formula(
-      new_formula = x ~ y
+    dr = dr$add_formulas(
+      x + y, x + 2*z
     )
 
     # Test
@@ -68,12 +71,21 @@ test_that(
     )
     expect_true(
       any(
-        class(dr$formula) == "quosure"
+        class(dr$formula) == "list"
+      )
+    )
+    expect_true(
+      any(
+        class(dr$formula[[1]]) == "call"
       )
     )
     expect_identical(
-      get_expr(dr$formula),
-      get_expr(quo(x ~ y))
+      get_expr(dr$formula[[1]]),
+      get_expr(quo(x + y))
+    )
+    expect_identical(
+      get_expr(dr$formula[[2]]),
+      get_expr(quo(x + 2*z))
     )
   }
 )

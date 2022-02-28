@@ -68,7 +68,8 @@ test_that(
   {
     # Init
     ind = individual$new()
-    ind$add_decision_rule()
+    dr = decision_rule$new()
+    ind$add_decision_rule(dr)
 
     # Test
     expect_true(
@@ -81,16 +82,6 @@ test_that(
         class(ind$decision_rule) == c("decision_rule", "R6")
       )
     )
-    expect_true(
-      any(
-        class(ind$decision_rule$noise) == "quosure"
-      )
-    )
-    expect_true(
-      any(
-        class(ind$decision_rule$formula) == "quosure"
-      )
-    )
   }
 )
 
@@ -100,10 +91,15 @@ test_that(
   {
     # Init
     ind = individual$new()
-    ind$add_decision_rule(
-      formula = x ~ y,
-      noise = rnorm()
+    dr = decision_rule$new()
+    dr = dr$add_noise(
+      rnorm()
     )
+    dr = dr$add_formulas(
+      x + y, x + 2*z
+    )
+
+    ind$add_decision_rule(dr)
 
     # Test
     expect_true(
@@ -113,21 +109,21 @@ test_that(
     )
     expect_true(
       any(
-        class(ind$decision_rule$noise) == "quosure"
+        class(ind$decision_rule$noise) == "list"
       )
     )
     expect_identical(
-      get_expr(ind$decision_rule$noise),
+      get_expr(ind$decision_rule$noise[[1]]),
       get_expr(quo(rnorm()))
     )
     expect_true(
       any(
-        class(ind$decision_rule$formula) == "quosure"
+        class(ind$decision_rule$formula) == "list"
       )
     )
     expect_identical(
-      get_expr(ind$decision_rule$formula),
-      get_expr(quo(x ~ y))
+      get_expr(ind$decision_rule$formula[[1]]),
+      get_expr(quo(x + y))
     )
   }
 )

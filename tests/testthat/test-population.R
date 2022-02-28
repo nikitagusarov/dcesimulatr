@@ -145,16 +145,31 @@ test_that(
       Age = rnorm(sd = 10),
       Income = rnorm(mean = 1, sd = 5)
     )
-    ind1$add_decision_rule(
-      formula = 1.5*Age + 0.7*Quality
+
+    dr1 = decision_rule$new()
+    dr1 = dr1$add_noise(
+      rnorm(sd = 2)
     )
+    dr1 = dr1$add_formulas(
+      1.5*Age + Quality, Age + Quality^2
+    )
+
+    ind1$add_decision_rule(dr1)
+    
     ind2 = individual$new()
     ind2$add_characteristics(
       Income = rexp(rate = 10)
     )
-    ind2$add_decision_rule(
-      formula = Age + 2*Income - 0.5*Quality
+
+    dr2 = decision_rule$new()
+    dr2 = dr2$add_noise(
+      rexp(rate = 1)
     )
+    dr2 = dr2$add_formulas(
+      Age + 2*Income, Income - 0.5*Quality
+    )
+    
+    ind2$add_decision_rule(dr2)
 
     # Init non-empty
     pop = population$new(

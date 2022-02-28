@@ -36,18 +36,13 @@ individual = R6::R6Class(
             )
             invisible(self)
         },
-        add_decision_rule = function(
-            formula, 
-            noise
-        ) {
-            self$decision_rule = decision_rule$new(
-                formula = {{ formula }},
-                noise = {{ noise }}
-            )
+        add_decision_rule = function(decision_rule) {
             # Verification
-            if (!is.decision_rule(self$decision_rule)) {
+            if (!is.decision_rule(decision_rule)) {
                 "An error occured, no valid decision rule generated"
             }
+            # Assignement
+            self$decision_rule = decision_rule
             invisible(self)
         },
 

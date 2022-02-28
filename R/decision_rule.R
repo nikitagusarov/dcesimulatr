@@ -22,30 +22,25 @@ decision_rule = R6::R6Class(
     # Architecture
     list(
         # Values
-        formula = "quosure",
-        noise = "quosure",
-
-        # Initialize
-        initialize = function(
-            noise = evd::rgumbel(loc = 0, scale = 1),
-            formula = NULL
-        ) {
-            self$noise = rlang::enquo(noise)
-            self$formula = rlang::enquo(formula)
-        },
+        formula = list(),
+        noise = list(),
 
         # Methods
-        modify_noise = function(
-            new_noise = rnorm(mean = 1, sd = 10) # evd::rgumbel(loc = 0, scale = 1)
+        add_noise = function(
+            ... # evd::rgumbel(loc = 0, scale = 1)
         ) {
-            self$noise = rlang::enquo(new_noise)
+            self$noise = c(
+                self$noise,
+                as.list(match.call())[-1]
+            )
             invisible(self)
         },
-        modify_formula = function(
-            new_formula = NULL
-        ) {
-            # A formula wit random parameters should be provided
-            self$formula = rlang::enquo(new_formula)
+        add_formulas = function(...) {
+            # A formula with parameters should be provided
+            self$formula = c(
+                self$formula,
+                as.list(match.call())[-1]
+            )
             invisible(self)
         }
     )
