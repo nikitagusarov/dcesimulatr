@@ -24,11 +24,11 @@ decision_rule = R6::R6Class(
         # Values
         formula = list(),
         noise = list(),
+        transformation = expr(exp(TU) / sum(exp(TU))),
+        choice = expr(max()),
 
         # Methods
-        add_noise = function(
-            ... # evd::rgumbel(loc = 0, scale = 1)
-        ) {
+        add_noise = function(...) {
             self$noise = c(
                 self$noise,
                 as.list(match.call())[-1]
@@ -41,6 +41,18 @@ decision_rule = R6::R6Class(
                 self$formula,
                 as.list(match.call())[-1]
             )
+            invisible(self)
+        },
+        modify_transformation = function(
+            transformation
+        ) {
+            self$transformation = transformation
+            invisible(self)
+        },
+        modify_choice = function(
+            choice
+        ) {
+            self$choice = choice
             invisible(self)
         }
     )

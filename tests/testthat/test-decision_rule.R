@@ -25,6 +25,12 @@ test_that(
         class(dr$formula) == "list"
       )
     )
+    expect_true(
+      class(dr$transformation) == "call"
+    )
+    expect_true(
+      class(dr$choice) == "call"
+    )
   }
 )
 

@@ -4,9 +4,9 @@
 
 # nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 
-#######################################
-# 1. Application of decision rule and #
-#######################################
+######################################
+# 1. Application of decision formula #
+######################################
 
 #' @title
 #' @description
