@@ -19,8 +19,13 @@
 random_design = function(
     experimental_design, n
 ) {
+    # Idex attributes defined with c
+    index = laws_index(
+        experimental_design, type = "rand"
+    ) 
+
     # Get unique characteristics' names
-    attr = experimental_design$get_attributes()
+    attr = experimental_design$get_attributes(index)
 
     # Generate Z - Run simulation
     Z = foreach (
@@ -29,6 +34,7 @@ random_design = function(
     ) %do% {
         # Get profile chars, laws and obs numbers
         laws = experimental_design$alternatives[[i]]$get_laws()
+        laws = laws[index[[i]]]
 
         # Update adjust dimensions for laws
         for (j in seq(laws)) {
@@ -41,18 +47,22 @@ random_design = function(
             lapply(laws, eval)
         )
 
-        # Check
-        Z = check_attributes(Z, attr)
+        # Check and output
+        if (all(dim(Z) == c(0, 0))) { 
+        } else {
+            # Check
+            Z = check_attributes(Z, attr)
 
-        # Index data
-        Z = index_z(Z, alt_id = i)
+            # Index data
+            Z = index_z(Z, alt_id = i)
 
-        # Exit foreach loop
-        return(Z)
+            # Exit foreach loop
+            return(Z)
+        }
     }
 
     # Function output
-    return(Z)
+    return(as.data.frame(Z))
 }
 
 
@@ -95,20 +105,24 @@ factorial_design = function(
             expand.grid, laws
         )
 
-        # Check
-        Z = check_attributes(Z, attr)
+        # Check and output
+        if (all(dim(Z) == c(0, 0))) { 
+        } else {
+            # Check
+            Z = check_attributes(Z, attr)
 
-        # Add index to colnames
-        colnames(Z) = paste0(
-            colnames(Z), "_", i
-        )
+            # Add index to colnames
+            colnames(Z) = paste0(
+                colnames(Z), "_", i
+            )
 
-        # Exit foreach loop
-        return(Z)
+            # Exit foreach loop
+            return(Z)
+        }
     }
 
     # Index data
-    Z = index_z(Z, alt_id = i, type = "CID")
+    Z = index_z(Z, type = "CID")
 
     # Expand to long format
     Z = pivot_longer(
@@ -117,12 +131,50 @@ factorial_design = function(
         names_pattern = "(.*)_(.*)"
     )
 
+    # AID class correction
+    Z$AID = as.integer(Z$AID)
+
     # Function output
     return(as.data.frame(Z))
 }
-# # For fixed vectors use FFD by default
-# # this produces a proto matrix pZ with FFD
-# pZ = do.call(
-    # expand.grid,
-    # laws[[laws_c == "c"]]
-# )
+
+
+
+
+
+##############################
+# 3. Defining "mixed" design #
+##############################
+
+#' @title
+#' @description
+#' @param
+#' @param 
+#' @method
+#' @examples
+#' @export
+#' @importFrom dplyr full_join
+
+mixed_design = function(
+    experimental_design, n
+) {
+    # Part 1: Factorial design step
+    Zf = factorial_design(
+        experimental_design, n = n
+    )
+
+    # Part 2: random design step
+    Zr = random_design(
+        experimental_design, 
+        n = nrow(Zf) / length(experimental_design$alternatives)
+    )
+
+    # Merge dataframes
+    Z = dplyr::full_join(
+        Zf, Zr,
+        by = c("CID", "AID")
+    )
+
+    # Function output
+    return(as.data.frame(Z))
+}

@@ -115,7 +115,7 @@ laws_index = function(
 #' @export
 
 index_z = function(
-    Z,alt_id, type = c("AID", "CID")
+    Z,alt_id = NULL, type = c("AID", "CID")
 ) {
     # Get data size
     m = nrow(Z)

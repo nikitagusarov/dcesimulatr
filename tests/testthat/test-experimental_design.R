@@ -113,7 +113,7 @@ test_that(
 # Fully factorial specification
 
 test_that(
-  "experimental_design generation function test (random)",
+  "experimental_design generation function test (factorial)",
   {
     # Init filled
     # Generate dummy alternative
@@ -144,6 +144,44 @@ test_that(
     )
     expect_true(
       all(dim(Z) == c(32, 5))
+    )
+  }
+)
+
+# Mixed specification
+
+test_that(
+  "experimental_design generation function test (mixed)",
+  {
+    # Init filled
+    # Generate dummy alternative
+    alt1 = alternative$new()
+    alt1$add_attributes(
+      Price = c(1:4)
+    )
+    alt2 = alternative$new()
+    alt2$add_attributes(
+      Opinion = c(0:1), 
+      Quality = rnorm(mean = 1, sd = 3)
+    )
+    # Fill with corresponding alternative
+    e_design = experimental_design$new(
+      list(alt1, alt2),
+      design = "mixed"
+    )
+
+    # Generate Z
+    Z = alternatives_gen(e_design, n = 10)
+
+    # Test
+    expect_true(
+      class(Z) == "data.frame"
+    )
+    expect_true(
+      all(colnames(Z) == c("CID", "AID", "Price", "Opinion", "Quality"))
+    )
+    expect_true(
+      all(dim(Z) == c(16, 5))
     )
   }
 )

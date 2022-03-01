@@ -167,6 +167,13 @@ alternatives_gen = function(
         )
     }
 
+    # Mixed
+    if (experimental_design$design == "mixed") {
+        Z = mixed_design(
+            experimental_design
+        )
+    }
+
     # Long format dataset
     if (format == "long") {
         Z = dplyr::arrange(Z, CID)
