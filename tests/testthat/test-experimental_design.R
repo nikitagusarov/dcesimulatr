@@ -16,7 +16,7 @@ test_that(
       )
     )
     expect_true(
-        e_design$design == "FFD"
+        e_design$design == "random"
     )
 
     # Init filled
@@ -69,12 +69,14 @@ test_that(
 
 
 
-#####################################################
-# 2. Test functions operating in "population" class #
-#####################################################
+##############################################################
+# 2. Test functions operating in "experimental_design" class #
+##############################################################
+
+# Fully random specification
 
 test_that(
-  "experimental_design generation function test",
+  "experimental_design generation function test (random)",
   {
     # Init filled
     # Generate dummy alternative
@@ -104,6 +106,44 @@ test_that(
     )
     expect_true(
       all(dim(Z) == c(20, 5))
+    )
+  }
+)
+
+# Fully factorial specification
+
+test_that(
+  "experimental_design generation function test (random)",
+  {
+    # Init filled
+    # Generate dummy alternative
+    alt1 = alternative$new()
+    alt1$add_attributes(
+      Price = c(1:4)
+    )
+    alt2 = alternative$new()
+    alt2$add_attributes(
+      Opinion = c(0:1), 
+      Quality = c(0:1)
+    )
+    # Fill with corresponding alternative
+    e_design = experimental_design$new(
+      list(alt1, alt2),
+      design = "factorial"
+    )
+
+    # Generate Z
+    Z = alternatives_gen(e_design, n = 10)
+
+    # Test
+    expect_true(
+      class(Z) == "data.frame"
+    )
+    expect_true(
+      all(colnames(Z) == c("CID", "AID", "Price", "Opinion", "Quality"))
+    )
+    expect_true(
+      all(dim(Z) == c(32, 5))
     )
   }
 )

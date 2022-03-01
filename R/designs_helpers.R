@@ -70,34 +70,39 @@ check_attributes = function(
     return(Z)
 }
 
-# # Wrapper for laws
+# Wrapper for laws
 
-# #' @title
-# #' @description
-# #' @param
-# #' @param 
-# #' @method
-# #' @examples
-# #' @export
+#' @title
+#' @description
+#' @param
+#' @param 
+#' @method
+#' @examples
+#' @export
 
-# laws_treatment = function(
-#     laws
-# ) {
-#     # Iterate ower laws list
-#     for (j in seq_along(laws)) {
-#         if (laws[[j]][[1]] == "c") {
-#             # Case for vectors (factors)
-#             Z = expand.grid()
-#         } else {
-#             # General case for random laws
-#             # accepting 'n' parameter
-#             laws[[j]]$n = n
-#         }
-#     }
+laws_index = function(
+    experimental_design, type = "rand"
+) {
+    # Index dummy
+    index = list()
 
-#     # Output
-#     return(laws)
-# }
+    # Assign classes to laws
+    for (i in seq_along(experimental_design$alternatives)) {
+        # Get laws
+        laws = experimental_design$alternatives[[i]]$get_laws()
+        # Write class index
+        index[[i]] = class_laws(laws)
+    }
+
+    # Check condition
+    index = lapply(
+        index, 
+        function(x) which(x %in% type)
+    )
+
+    # Return index
+    return(index)
+}
 
 # Index Z data.frame
 
@@ -110,13 +115,13 @@ check_attributes = function(
 #' @export
 
 index_z = function(
-    Z, type = c("AID", "CID")
+    Z,alt_id, type = c("AID", "CID")
 ) {
     # Get data size
     m = nrow(Z)
 
     # Alternative  ID
-    if ("AID" %in% type) Z["AID"] = rep(i, m)
+    if ("AID" %in% type) Z["AID"] = rep(alt_id, m)
 
     # Choice ID
     if ("CID" %in% type) Z["CID"] = 1:m

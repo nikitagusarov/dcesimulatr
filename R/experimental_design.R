@@ -29,7 +29,7 @@ experimental_design = R6::R6Class(
         # Initialize
         initialize = function(
             alternatives = list(NULL), 
-            design = "FFD",
+            design = "random",
             n = NULL,
             identical = FALSE
         ) {
@@ -48,7 +48,6 @@ experimental_design = R6::R6Class(
             if (!any(class(alternative) == "alternative")) {
                 stop("No valid alternative object provided")
             }
-
             # Add to our list of alternatives
             if (!is.null(alternative_name)) {
                 self$alternatives[[ {{ alternative_name }} ]] = 
@@ -59,19 +58,37 @@ experimental_design = R6::R6Class(
             }
             invisible(self)
         },
+        set_design = function(
+            design = "random"
+        ) {
+            # Reset design
+            self$design = design
+            invisible(self)
+        },
 
         # Methods to querry the object
-        get_attributes = function() {
+        get_attributes = function(index = NULL) {
+            # Check index
+            if (is.null(index)) {
+                index = lapply(
+                    self$alternatives,
+                    seq_along
+                )
+            }
             # Get list of attr from all alternatives
             attr = lapply(
                 self$alternatives, 
                 function(x) { names(x$attributes) }
             )
+            # Index elements
+            for (i in seq_along(attr)) {
+                attr[[i]] = attr[[i]][index[[i]]]
+            }
             # Keep unique
             attr = unique(
                 unlist(attr)
             )
-            return(attr)
+            return(attr[!is.na(attr)])
         },
         get_design = function() {
             # Get design as vector
@@ -137,9 +154,18 @@ alternatives_gen = function(
     }
 
     # Random
-    Z = random_design(
-        experimental_design, n
-    )
+    if (experimental_design$design == "random") {
+        Z = random_design(
+            experimental_design, n = n
+        )
+    }
+
+    # Factorial
+    if (experimental_design$design == "factorial") {
+        Z = factorial_design(
+            experimental_design
+        )
+    }
 
     # Long format dataset
     if (format == "long") {
@@ -149,9 +175,3 @@ alternatives_gen = function(
     # Arrange results
     return(Z)
 }
-
-# x = data.frame(a = 1:5, b = 6:10)
-# y = data.frame(c = 2:6, d = 9:5)
-
-# expand.grid(x , y)
-# tidyr::expand_grid(x, y)
