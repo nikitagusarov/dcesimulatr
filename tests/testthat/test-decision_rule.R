@@ -4,10 +4,10 @@
 
 # General object test
 test_that(
-  "object is generated", 
+  "object is generated",
   {
     # Init
-    dr = decision_rule$new()
+    dr <- decision_rule$new()
 
     # Test
     expect_true(
@@ -36,10 +36,10 @@ test_that(
 
 # Noise modification in place check
 test_that(
-  "formula is modified", 
+  "formula is modified",
   {
-    dr = decision_rule$new()
-    dr = dr$add_noise(
+    dr <- decision_rule$new()
+    dr <- dr$add_noise(
       evd::rgumbel(loc = 0, scale = 1)
     )
 
@@ -62,11 +62,11 @@ test_that(
 
 # Formula modification in place check
 test_that(
-  "formula is modified", 
+  "formula is modified",
   {
-    dr = decision_rule$new()
-    dr = dr$add_formulas(
-      x + y, x + 2*z
+    dr <- decision_rule$new()
+    dr <- dr$add_formulas(
+      x + y, x + 2 * z
     )
 
     # Test
@@ -91,7 +91,7 @@ test_that(
     )
     expect_identical(
       get_expr(dr$formula[[2]]),
-      get_expr(quo(x + 2*z))
+      get_expr(quo(x + 2 * z))
     )
   }
 )

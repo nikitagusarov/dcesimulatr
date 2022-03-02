@@ -4,10 +4,10 @@
 
 # Test generation
 test_that(
-  "object creation", 
+  "object creation",
   {
     # Init
-    ind = individual$new()
+    ind <- individual$new()
 
     # Test
     expect_true(
@@ -20,10 +20,10 @@ test_that(
 
 # Test
 test_that(
-  "adding characteristics", 
+  "adding characteristics",
   {
     # Init
-    ind = individual$new()
+    ind <- individual$new()
     ind$add_characteristics(
       Age = rnorm()
     )
@@ -35,7 +35,7 @@ test_that(
       )
     )
     expect_identical(
-      names(ind$characteristics), 
+      names(ind$characteristics),
       "Age"
     )
     expect_true(
@@ -51,7 +51,7 @@ test_that(
 
     # Test
     expect_identical(
-      names(ind$characteristics), 
+      names(ind$characteristics),
       c("Age", "Size", "Sex")
     )
     expect_true(
@@ -64,11 +64,11 @@ test_that(
 
 # Test add decision rule simple
 test_that(
-  "adding decision rules", 
+  "adding decision rules",
   {
     # Init
-    ind = individual$new()
-    dr = decision_rule$new()
+    ind <- individual$new()
+    dr <- decision_rule$new()
     ind$add_decision_rule(dr)
 
     # Test
@@ -87,16 +87,16 @@ test_that(
 
 # Test add decision rules with assignment
 test_that(
-  "adding decision rules", 
+  "adding decision rules",
   {
     # Init
-    ind = individual$new()
-    dr = decision_rule$new()
-    dr = dr$add_noise(
+    ind <- individual$new()
+    dr <- decision_rule$new()
+    dr <- dr$add_noise(
       rnorm()
     )
-    dr = dr$add_formulas(
-      x + y, x + 2*z
+    dr <- dr$add_formulas(
+      x + y, x + 2 * z
     )
 
     ind$add_decision_rule(dr)

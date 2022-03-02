@@ -11,51 +11,47 @@
 #' @title
 #' @description
 #' @param
-#' @param 
+#' @param
 #' @method
 #' @examples
-#' @export 
+#' @export
 
-decision_rule = R6::R6Class(
-    # Class name
-    "decision_rule",
-    # Architecture
-    list(
-        # Values
-        formula = list(),
-        noise = list(),
-        transformation = expr(exp(TU) / sum(exp(TU))),
-        choice = expr(max()),
+decision_rule <- R6::R6Class(
+  # Class name
+  "decision_rule",
+  # Architecture
+  list(
+    # Values
+    formula = list(),
+    noise = list(),
+    transformation = expr(exp(TU) / sum(exp(TU))),
+    choice = expr(max()),
 
-        # Methods
-        add_noise = function(...) {
-            self$noise = c(
-                self$noise,
-                as.list(match.call())[-1]
-            )
-            invisible(self)
-        },
-        add_formulas = function(...) {
-            # A formula with parameters should be provided
-            self$formula = c(
-                self$formula,
-                as.list(match.call())[-1]
-            )
-            invisible(self)
-        },
-        modify_transformation = function(
-            transformation
-        ) {
-            self$transformation = transformation
-            invisible(self)
-        },
-        modify_choice = function(
-            choice
-        ) {
-            self$choice = choice
-            invisible(self)
-        }
-    )
+    # Methods
+    add_noise = function(...) {
+      self$noise <- c(
+        self$noise,
+        as.list(match.call())[-1]
+      )
+      invisible(self)
+    },
+    add_formulas = function(...) {
+      # A formula with parameters should be provided
+      self$formula <- c(
+        self$formula,
+        as.list(match.call())[-1]
+      )
+      invisible(self)
+    },
+    modify_transformation = function(transformation) {
+      self$transformation <- transformation
+      invisible(self)
+    },
+    modify_choice = function(choice) {
+      self$choice <- choice
+      invisible(self)
+    }
+  )
 )
 
 
@@ -69,11 +65,11 @@ decision_rule = R6::R6Class(
 #' @title
 #' @description
 #' @param
-#' @param 
+#' @param
 #' @method
 #' @examples
-#' @export 
+#' @export
 
-is.decision_rule = function(decision_rule) {
-    any(class(decision_rule) == "decision_rule")
+is.decision_rule <- function(decision_rule) {
+  any(class(decision_rule) == "decision_rule")
 }

@@ -11,56 +11,54 @@
 #' @title
 #' @description
 #' @param
-#' @param 
+#' @param
 #' @method
 #' @examples
 #' @export
+#' @importFrom dplyr slice
 
-experiment_compose = function(
+experiment_compose <- function(population,
+                               experimental_design,
+                               seed = NULL) {
+  # Set configuration variable
+  # Number of observation per ind
+  if (is.null(experimental_design$n)) {
+    n <- 1
+  } else {
+    n <- experimental_design$n
+  }
+  # Number of alternatives
+  j <- length(
+    experimental_design$alternatives
+  )
+  # Whether we desire identical choice sets across ind
+  identical <- experimental_design$identical
+
+  # Generate population
+  X <- population_gen(
     population,
-    experimental_design
-) {
-    # Set configuration variable
-    # Number of observation per ind
-    if (is.null(experimental_design$n)) {
-        n = 1
-    } else {
-        n = experimental_design$n
-    }
-    # Number of alternatives
-    j = length(
-        experimental_design$alternatives
+    seed = NULL, class = NULL
+  )
+
+  # Generate alternatives
+  if (identical == TRUE) {
+    Z <- compose_identical(
+      experimental_design,
+      n = n, size = nrow(X)
     )
-    # Whether we desire identical choice sets across ind
-    identical = experimental_design$identical
-
-    # Generate population
-    X = population_gen(
-        population, seed = NULL, class = NULL
+  } else {
+    Z <- compose_random(
+      experimental_design,
+      n = n, size = nrow(X)
     )
+  }
 
-    # Generate alternatives
-    if (identical == TRUE) {
-        # Generate one Z
-        Z = alternatives_gen(
-            experimental_design, seed = NULL, n = n
-        )
-        # Repeat it
-        Z = dplyr::slice(
-            Z, rep(1:dplyr::n(), nrow(X))
-        )
-    } else {
-        Z = alternatives_gen(
-            experimental_design, seed = NULL, n = n*nrow(X)
-        )
-    }
+  # Bind frames
+  XZ <- cbind(
+    dplyr::slice(X, rep(1:dplyr::n(), each = n * j)),
+    Z
+  )
 
-    # Bind frames
-    XZ = cbind(
-        dplyr::slice(X, rep(1:dplyr::n(), each = n*j)),
-        Z
-    )
-
-    # Output
-    return(XZ)
+  # Output
+  return(XZ)
 }

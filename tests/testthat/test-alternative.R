@@ -4,10 +4,10 @@
 
 # General object test
 test_that(
-  "object is generated", 
+  "object is generated",
   {
     # Init
-    alt = alternative$new()
+    alt <- alternative$new()
 
     # Test
     expect_true(
@@ -20,10 +20,10 @@ test_that(
 
 # Test
 test_that(
-  "adding attributes", 
+  "adding attributes",
   {
     # Init
-    alt = alternative$new()
+    alt <- alternative$new()
     alt$add_attributes(
       Price = rnorm(mean = 5)
     )
@@ -35,7 +35,7 @@ test_that(
       )
     )
     expect_identical(
-      names(alt$attributes), 
+      names(alt$attributes),
       "Price"
     )
     expect_true(
@@ -46,13 +46,13 @@ test_that(
 
     # Overwrite chars
     alt$add_attributes(
-      Opinion = rnorm(mean = 10), 
+      Opinion = rnorm(mean = 10),
       Quality = rexp(scale = 5)
     )
 
     # Test
     expect_identical(
-      names(alt$attributes), 
+      names(alt$attributes),
       c("Price", "Opinion", "Quality")
     )
     expect_true(

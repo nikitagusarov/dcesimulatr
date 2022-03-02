@@ -4,10 +4,10 @@
 
 # Test generation
 test_that(
-  "object creation", 
+  "object creation",
   {
     # Init empty
-    pop = population$new()
+    pop <- population$new()
 
     # Test
     expect_true(
@@ -18,17 +18,18 @@ test_that(
 
     # Init filled
     # Generate dummy ind
-    ind1 = individual$new()
+    ind1 <- individual$new()
     ind1$add_characteristics(
       Age = rnorm(sd = 10)
     )
-    ind2 = individual$new()
+    ind2 <- individual$new()
     ind2$add_characteristics(
       Income = rexp(sd = 10)
     )
     # Fill with corresponding ind
-    pop = population$new(
-      list(ind1), n = 10
+    pop <- population$new(
+      list(ind1),
+      n = 10
     )
 
     # Test
@@ -47,7 +48,7 @@ test_that(
     )
 
     # Fill with corresponding ind
-    pop = population$new(
+    pop <- population$new(
       profiles = list(ind1, ind2), n = list(10, 15)
     )
 
@@ -74,22 +75,22 @@ test_that(
 
 # Test adding profiles
 test_that(
-  "adding profiles", 
+  "adding profiles",
   {
     # Init filled
     # Generate dummy ind
-    ind1 = individual$new()
+    ind1 <- individual$new()
     ind1$add_characteristics(
       Age = rnorm(sd = 10)
     )
-    ind2 = individual$new()
+    ind2 <- individual$new()
     ind2$add_characteristics(
       Income = rexp(sd = 10)
     )
 
     # Init non-empty
-    pop = population$new(
-      list(ind1), 
+    pop <- population$new(
+      list(ind1),
       n = list(10)
     )
 
@@ -110,7 +111,8 @@ test_that(
 
     # Fill with corresponding ind
     pop$add_profile(
-      ind2, 15, profile_name = "np"
+      ind2, 15,
+      profile_name = "np"
     )
 
     # Test
@@ -140,45 +142,45 @@ test_that(
   {
     # Init filled
     # Generate dummy ind
-    ind1 = individual$new()
+    ind1 <- individual$new()
     ind1$add_characteristics(
       Age = rnorm(sd = 10),
       Income = rnorm(mean = 1, sd = 5)
     )
 
-    dr1 = decision_rule$new()
-    dr1 = dr1$add_noise(
+    dr1 <- decision_rule$new()
+    dr1 <- dr1$add_noise(
       rnorm(sd = 2)
     )
-    dr1 = dr1$add_formulas(
-      1.5*Age + Quality, Age + Quality^2
+    dr1 <- dr1$add_formulas(
+      1.5 * Age + Quality, Age + Quality^2
     )
 
     ind1$add_decision_rule(dr1)
-    
-    ind2 = individual$new()
+
+    ind2 <- individual$new()
     ind2$add_characteristics(
       Income = rexp(rate = 10)
     )
 
-    dr2 = decision_rule$new()
-    dr2 = dr2$add_noise(
+    dr2 <- decision_rule$new()
+    dr2 <- dr2$add_noise(
       rexp(rate = 1)
     )
-    dr2 = dr2$add_formulas(
-      Age + 2*Income, Income - 0.5*Quality
+    dr2 <- dr2$add_formulas(
+      Age + 2 * Income, Income - 0.5 * Quality
     )
-    
+
     ind2$add_decision_rule(dr2)
 
     # Init non-empty
-    pop = population$new(
-      list(ind1, ind2), 
+    pop <- population$new(
+      list(ind1, ind2),
       n = list(10, 15)
     )
 
     # Get characteritics
-    chars = pop$get_chars()
+    chars <- pop$get_chars()
 
     # Test
     expect_true(
@@ -189,7 +191,7 @@ test_that(
     )
 
     # Get n
-    n = pop$get_n()
+    n <- pop$get_n()
 
     # Test
     expect_true(
@@ -200,7 +202,7 @@ test_that(
     )
 
     # Get n
-    rules = pop$get_rules()
+    rules <- pop$get_rules()
 
     # Test
     expect_true(
@@ -223,25 +225,25 @@ test_that(
   {
     # Init filled
     # Generate dummy ind
-    ind1 = individual$new()
+    ind1 <- individual$new()
     ind1$add_characteristics(
       Age = rnorm(sd = 10)
     )
     ind1$add_characteristics(
       Income = rnorm(mean = 1, sd = 5)
     )
-    ind2 = individual$new()
+    ind2 <- individual$new()
     ind2$add_characteristics(
       Income = rexp(rate = 10)
     )
 
     # Init non-empty
-    pop = population$new(
-      list(ind1, ind2), 
+    pop <- population$new(
+      list(ind1, ind2),
       n = list(10, 15)
     )
     # Generate X
-    X = population_gen(pop)
+    X <- population_gen(pop)
 
     # Test
     expect_true(

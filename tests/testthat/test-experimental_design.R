@@ -4,10 +4,10 @@
 
 # Test generation
 test_that(
-  "object creation", 
+  "object creation",
   {
     # Init empty
-    e_design = experimental_design$new()
+    e_design <- experimental_design$new()
 
     # Test
     expect_true(
@@ -16,22 +16,22 @@ test_that(
       )
     )
     expect_true(
-        e_design$design == "random"
+      e_design$design == "random"
     )
 
     # Init filled
     # Generate dummy alternative
-    alt1 = alternative$new()
+    alt1 <- alternative$new()
     alt1$add_attributes(
       Price = rnorm(sd = 10)
     )
-    alt2 = alternative$new()
+    alt2 <- alternative$new()
     alt2$add_attributes(
-      Opinion = rnorm(mean = 10), 
+      Opinion = rnorm(mean = 10),
       Quality = rexp(rate = 5)
     )
     # Fill with corresponding alternative
-    e_design = experimental_design$new(
+    e_design <- experimental_design$new(
       list(alt1)
     )
 
@@ -48,7 +48,7 @@ test_that(
     )
 
     # Fill with corresponding ind
-    e_design = experimental_design$new(
+    e_design <- experimental_design$new(
       alternatives = list(alt1, alt2)
     )
 
@@ -80,22 +80,23 @@ test_that(
   {
     # Init filled
     # Generate dummy alternative
-    alt1 = alternative$new()
+    alt1 <- alternative$new()
     alt1$add_attributes(
       Price = rnorm(sd = 10)
     )
-    alt2 = alternative$new()
+    alt2 <- alternative$new()
     alt2$add_attributes(
-      Opinion = rnorm(mean = 10), 
+      Opinion = rnorm(mean = 10),
       Quality = rexp(rate = 5)
     )
     # Fill with corresponding alternative
-    e_design = experimental_design$new(
-      list(alt1, alt2)
+    e_design <- experimental_design$new(
+      list(alt1, alt2),
+      n = 10
     )
 
     # Generate Z
-    Z = alternatives_gen(e_design, n = 10)
+    Z <- alternatives_gen(e_design)
 
     # Test
     expect_true(
@@ -117,23 +118,24 @@ test_that(
   {
     # Init filled
     # Generate dummy alternative
-    alt1 = alternative$new()
+    alt1 <- alternative$new()
     alt1$add_attributes(
       Price = c(1:4)
     )
-    alt2 = alternative$new()
+    alt2 <- alternative$new()
     alt2$add_attributes(
-      Opinion = c(0:1), 
+      Opinion = c(0:1),
       Quality = c(0:1)
     )
     # Fill with corresponding alternative
-    e_design = experimental_design$new(
+    e_design <- experimental_design$new(
       list(alt1, alt2),
-      design = "factorial"
+      design = "factorial",
+      n = 10
     )
 
     # Generate Z
-    Z = alternatives_gen(e_design, n = 10)
+    Z <- alternatives_gen(e_design)
 
     # Test
     expect_true(
@@ -155,23 +157,24 @@ test_that(
   {
     # Init filled
     # Generate dummy alternative
-    alt1 = alternative$new()
+    alt1 <- alternative$new()
     alt1$add_attributes(
       Price = c(1:4)
     )
-    alt2 = alternative$new()
+    alt2 <- alternative$new()
     alt2$add_attributes(
-      Opinion = c(0:1), 
+      Opinion = c(0:1),
       Quality = rnorm(mean = 1, sd = 3)
     )
     # Fill with corresponding alternative
-    e_design = experimental_design$new(
+    e_design <- experimental_design$new(
       list(alt1, alt2),
-      design = "mixed"
+      design = "mixed",
+      n = 10
     )
 
     # Generate Z
-    Z = alternatives_gen(e_design, n = 10)
+    Z <- alternatives_gen(e_design)
 
     # Test
     expect_true(
