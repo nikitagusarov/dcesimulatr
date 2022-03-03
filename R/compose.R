@@ -10,14 +10,20 @@
 
 # Compose identical
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Compose identical choice sets
+#' @description This is an internal function which creates identical choice sets configurations for give experimental design.
+#' The function simplifies the size adjustment of Z depending on the population size of X.
+#'
+#' @param experimental_design An `experimental_design` object.
+#' @param n Number of different choice situations per individual.
+#' Is NULL by default, ensuring that the function will retreive the n value from the `experimental_design`.
+#' @param size Population size for Z to be adjusted to.
+#' @return data.frame Z dataset
+#'
 #' @examples
+#' Z <- compose_identical(experimental_design)
 #' @export
-#' @importFrom dplyr slice
+#' @import foreach
 
 compose_identical <- function(experimental_design, n = NULL, size) {
   if (is.null(n)) {
@@ -39,12 +45,19 @@ compose_identical <- function(experimental_design, n = NULL, size) {
 
 # Compose random
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Compose random choice sets
+#' @description This is an internal function which creates distinct choice sets configurations for give experimental design.
+#' The function simplifies the size adjustment of Z depending on the population size of X.
+#' Each individuals faces a personalised Z version.
+#'
+#' @param experimental_design An `experimental_design` object.
+#' @param n Number of different choice situations per individual.
+#' Is NULL by default, ensuring that the function will retreive the n value from the `experimental_design`.
+#' @param size Population size for Z to be adjusted to.
+#' @return data.frame Z dataset
+#'
 #' @examples
+#' Z <- compose_random(experimental_design)
 #' @export
 #' @import foreach
 

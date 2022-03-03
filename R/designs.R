@@ -8,13 +8,28 @@
 # 1. Defining "random" design #
 ###############################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Randomized experimental design
+#' @description Create Fully Randomized experimental design.
+#' The design configuration assumes that all alternatives' attributes are defined by random generators:
+#' `declared using `r` class simulation functions.
+#' Other attribute types will be ignored.
+#'
+#' @param experimental_design Input experimnetal design object
+#' @param n The number of choice sets to be generated.
+#' @return data.frame A dataset of choice sets (Z) respecting randomized Design.
+#'
 #' @examples
+#' # Create alternatives
+#' alt1 <- alternative$new()
+#' alt1$add_attributes(Quality = purrr::rbernoulli(p = 0.6), Price = rnorm(mean = 5))
+#' alt2 <- alternative$new()
+#' alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+#'
+#' # Regroup alternatives into design
+#' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+#' Z <- random_design(edesign, n = 1)
 #' @export
+#' @import foreach
 
 random_design <- function(experimental_design, n) {
   # Idex attributes defined with c
@@ -70,14 +85,30 @@ random_design <- function(experimental_design, n) {
 # 2. Defining "factorail" design #
 ##################################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Full Factorail experimental design
+#' @description Create Full Factorail experimental design.
+#' The design configuration assumes that all alternatives' attributes are "factors":
+#' vectors declared using `c()` assignement.
+#' Other attribute types will be ignored.
+#'
+#' @param experimental_design Input experimnetal design object
+#' @param n The n is not used in current version
+#' @return data.frame A dataset of choice sets (Z) respecting FF Design.
+#'
 #' @examples
+#' # Create alternatives
+#' alt1 <- alternative$new()
+#' alt1$add_attributes(Quality = c(0:1), Price = c(2, 2.5))
+#' alt2 <- alternative$new()
+#' alt2$add_attributes(Size = c(1:3), Price = c(1.5, 2))
+#'
+#' # Regroup alternatives into design
+#' edesign <- experimental_design$new(alternatives = list(alt1, alt2), design = "factorial")
+#' Z <- random_design(edesign)
 #' @export
-#' @importFrom tidyr expand_grid pivot_longer
+#' @import foreach
+#' @importFrom tidyr expand_grid
+#' @importFrom tidyr pivot_longer
 
 factorial_design <- function(experimental_design, n, sample = FALSE) {
   # Idex attributes defined with c
@@ -144,14 +175,27 @@ factorial_design <- function(experimental_design, n, sample = FALSE) {
 # 3. Defining "mixed" design #
 ##############################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Mixed experimental design
+#' @description Create mixed experimental design.
+#' The design configuration assumes that alternatives' attributes are mixed:
+#' vectors declared using `c()` assignement and
+#' `declared using `r` class simulation functions.
+#'
+#' @param experimental_design Input experimnetal design object
+#' @param n The n is not used in current version
+#' @return data.frame A dataset of choice sets (Z) respecting FF Design.
+#'
 #' @examples
+#' # Create alternatives
+#' alt1 <- alternative$new()
+#' alt1$add_attributes(Quality = c(0:1), Price = rnorm(mean = 2, sd = 1))
+#' alt2 <- alternative$new()
+#' alt2$add_attributes(Size = c(1:3), Price = runif(min = 1, max = 3))
+#'
+#' # Regroup alternatives into design
+#' edesign <- experimental_design$new(alternatives = list(alt1, alt2), design = "mixed")
+#' Z <- random_design(edesign)
 #' @export
-#' @importFrom dplyr full_join
 
 mixed_design <- function(experimental_design, n) {
   # Part 1: Factorial design step

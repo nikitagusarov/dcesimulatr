@@ -2,18 +2,13 @@ Package: dcesimaltr
 Type: Package
 Title: Discrete Choice Experiment Simulator
 Version: 0.1.0
-Authors: Antoine Dubois, Nikita Gusarov, Amirreza Talebijamalabad
+Author: Antoine Dubois, Nikita Gusarov, Amirreza Talebijamalabad
 Maintainer: Nikita Gusarov <nikita.gusarov@univ-grenoble-alpes.fr>
 Imports:
   evd,
   foreach,
   rlang,
-  matrixcalc,
-  mvtnorm,
-  RColorBrewer,
-  scatterplot3d,
-  MASS,
-  optimx
+  mvtnorm
 Description: This package provides a flexible controlled environment for discrete choice experiment simulation. 
 License: GPL
 Encoding: UTF-8

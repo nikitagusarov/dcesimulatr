@@ -8,20 +8,28 @@
 # 1. Application of decision formula #
 ######################################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Run experiment
+#' @description This function simulates running of an experiment.
+#' First, the `experiment_compose` is executed to obtain a coupling between X and Z matrices.
+#' Then Deterministic Utilities (DU)  and Total Utilities (TU) are calculated using the specified formulas.
+#' Note, that even the TU abbreviation is used this still makes possible to recalibrate the generation functions, tranforms and decision tules to create a Regret Minimisation (RM) framework i.e.
+#'
+#' @param population A `population` object.
+#' @param experimental_design 1n `experimental_desing` object.
+#' @return data.frame A complete experimental dataset with associated utilities.
+#'
 #' @examples
+#' res <- experiment_run(population, experimental_design)
 #' @export
 
 experiment_run <- function(population,
-                           experimental_design) {
+                           experimental_design,
+                           seed = NULL) {
   # First we perform coupling
   XZ <- experiment_compose(
     population,
-    experimental_design
+    experimental_design,
+    seed
   )
 
   # Retrieve rules from population

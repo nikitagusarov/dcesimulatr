@@ -8,21 +8,31 @@
 # 1. Application of decision rule and choices #
 ###############################################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Experiment execution
+#' @description This function simulates the experimental procedure.
+#' The function calls on `experiment_run` procedure at the first step.
+#' Then the decision procedure is carried out.
+#' The transformation functions are applied to TU (functions output) and then the choice criteria is applied over the results.
+#'
+#' @param population A `population` object.
+#' @param experimental_design An `experimental_desing` object.
+#' @param seed The desired seed to be set before data generation.
+#' No seed is set by default (`seed = NULL`).
+#' @return data.frame A complete experimental dataset XZ
+#'
 #' @examples
+#' XZ <- experiment_run(population, experimental_design, seed = 10)
 #' @export
 
 experiment <- function(population,
-                       experimental_design) {
+                       experimental_design,
+                       seed = NULL) {
   # We start with generation of the datastructure
   # and applying utility formulas
   result <- experiment_run(
     population,
-    experimental_design
+    experimental_design,
+    seed
   )
 
   # Retrieve rules from population

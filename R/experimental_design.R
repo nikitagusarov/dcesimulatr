@@ -8,12 +8,43 @@
 # 1. Defining "experimental_design" class #
 ###########################################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Eperimental design class
+#' @docType class
+#'
+#' @description The `experimental_design` R6 class regroups different alternatives.
+#' It contains all the essential information of the desired experimental design.
+#' It serves as a wrapper for simultaneous interactions with alternative profiiles.
+#' The object is used for choice sets generation procedures.
+#'
+#' @field alternatives A list of alternatives to use for experimental design construction.
+#' @field design An experimental design specification.
+#' This field assumes that a savvy user may desire to extend the number of available experimental designs.
+#' In the default configuration available designs are: "random", "factorial" and "mixed".
+#' @field n A number of choice sets per individual for "random" design configuration.
+#' @field identical Logical.
+#' Declares whether the choice sets should be identical across individuals or not.
+#'
+#' @section Modifying methods
+#' @method add_alternative
+#' @description Add new alternative to the list of available alternatives.
+#' @method set_design
+#' @description Set a new `design` configuration.
+#'
+#' @section Querrying methods
+#' @method get_attributes
+#' @description Get a vector of available attributes' names across all alternatives.
+#' @method get_design
+#' @description Get specified design.
+#'
 #' @examples
+#' # Create alternatives
+#' alt1 <- alternative$new()
+#' alt1$add_attributes(Quality = purrr::rbernoulli(p = 0.6), Price = rnorm(mean = 5))
+#' alt2 <- alternative$new()
+#' alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+#'
+#' # Regroup alternatives into design
+#' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 #' @export
 
 experimental_design <- R6::R6Class(
@@ -21,8 +52,8 @@ experimental_design <- R6::R6Class(
   "experimental_design",
   # Architecture
   list(
-    design = NULL,
     alternatives = NULL,
+    design = NULL,
     n = NULL,
     identical = FALSE,
 
@@ -102,26 +133,48 @@ experimental_design <- R6::R6Class(
 
 # Experimental design testing
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Experimental design class testing
+#' @description Test if the given object has an `experimental_design` class.
+#'
+#' @param experimental_design Input object to test
+#' @return Logic
+#'
 #' @examples
+#' edesign <- experimental_design$new()
+#' is.population(edesign)
 #' @export
 
 is.experimental_design <- function(experimental_design) {
   any(class(experimental_design) == "experimental_design")
 }
 
-# Generation function (indivduals matrix)
+# Generation function (alternatives matrix)
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Generate experimental design (choice sets)
+#' @description Generate experimental design data (2 in standart notation) from an `experimental_design` object.
+#'
+#' @param experimental_design Input experimental design configuration
+#' @param n It is possible to generate different number of choice sets without directly modifying the `experimental_design` object.
+#' User may locally overwrite the `n` value for the particular execution.
+#' This parameter is for internal use in conjunction with various wrappers.
+#' @param seed The seed to be set before attempting to generate data.
+#' Defaults to NULL.
+#' @param format The resulting data format specification.
+#' At this tage only the "long" format is supported.
+#' Meaning each line contains one alternative.
+#' @return data.frame A data.frame (Z) with simulated choice sets
+#' (one row per alternative if élongé format was declared).
+#'
 #' @examples
+#' # Create alternatives
+#' alt1 <- alternative$new()
+#' alt1$add_attributes(Quality = purrr::rbernoulli(p = 0.6), Price = rnorm(mean = 5))
+#' alt2 <- alternative$new()
+#' alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+#'
+#' # Regroup alternatives into design
+#' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+#' Z <- alternatives_gen(edesign)
 #' @export
 
 alternatives_gen <- function(experimental_design,

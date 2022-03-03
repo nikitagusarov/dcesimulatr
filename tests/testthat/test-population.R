@@ -243,7 +243,7 @@ test_that(
       n = list(10, 15)
     )
     # Generate X
-    X <- population_gen(pop)
+    X <- population_gen(pop, class = TRUE)
 
     # Test
     expect_true(

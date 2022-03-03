@@ -8,14 +8,19 @@
 # 1. Coupled creation of Z and X into single data.frame #
 #########################################################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Compose experiment
+#' @description This function simulates the data preparation step for an experiment.
+#' The function performs coupling between X (population) and Z (experimental_design) datasets.
+#'
+#' @param population A `population` object.
+#' @param experimental_design An `experimental_desing` object.
+#' @param seed The desired seed to be set before data generation.
+#' No seed is set by default (`seed = NULL`).
+#' @return data.frame A complete experimental dataset XZ
+#'
 #' @examples
+#' XZ <- experiment_run(population, experimental_design, seed = 10)
 #' @export
-#' @importFrom dplyr slice
 
 experiment_compose <- function(population,
                                experimental_design,

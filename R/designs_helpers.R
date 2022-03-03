@@ -10,12 +10,16 @@
 
 # Guessing classes of provided attribute definitions
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Classify generating laws
+#' @description This is an internal function which classifies the attribute / characteristic generating functions.
+#' The function serves to distinguish between the different input formats.
+#' This ensures flexibility of the attributes' specifications.
+#'
+#' @param laws A list of generation rules (rules) as provided by single alternative.
+#' @return character A vector of classes in character format.
+#'
 #' @examples
+#' claws <- class_laws(laws)
 #' @export
 
 class_laws <- function(laws) {
@@ -43,12 +47,16 @@ class_laws <- function(laws) {
 
 # Checking attributes of Z aagainst full set
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Attributes check
+#' @description Verification that all desired characteristics are present in $Z$.
+#' This is an internal function which serves to simplify concatenation of multiple $Z$ when alternatives have different attributes.
+#'
+#' @param Z Input data.frame Z
+#' @param attributes Desired vector of attributes to be present in Z.
+#' @return Z With missing attributes filled with NA's.
+#'
 #' @examples
+#' Z <- check_attributes(Z, attributes)
 #' @export
 
 check_attributes <- function(Z, attributes) {
@@ -70,12 +78,20 @@ check_attributes <- function(Z, attributes) {
 
 # Wrapper for laws
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Index laws
+#' @description Index laws list according to desired class of law.
+#' This is an internal function which searches the laws of desired class in the lsit of laws.
+#' The classes should be obtained separately with a `class_laws` function.
+#'
+#' @param experimental_design Input object to test
+#' @param type Type (class) of the laws to be searched for.
+#' Multiple classes may be specified at the same time.
+#' This is an internal function which simplifies the treatment of different data generation procedures.
+#' Default value is "rand".
+#' @return Logic
+#'
 #' @examples
+#' index <- laws_index(experimental_design, type = c("rand", "c"))
 #' @export
 
 laws_index <- function(experimental_design, type = "rand") {
@@ -102,12 +118,21 @@ laws_index <- function(experimental_design, type = "rand") {
 
 # Index Z data.frame
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Index Z data
+#' @description Index Z experimental design data.
+#' This function adds alternative id (AID) and / or choice set id (CID).
+#' This is an internal function which simplifies indexation of data during generation procedures with complex designs.
+#'
+#' @param Z Input data.frame object to be indexed
+#' @param alt_id Alternative id to be assigned to whole dataset.
+#' @param type "AID" or "CID".
+#' Specify the desired index to be added to the dataset.
+#' By default both "AID" and "CID" are added.
+#' This is an internal function which is used in data generation procedures.
+#' @return data.frame Indexed dataset Z.
+#'
 #' @examples
+#' 2 <- index_z(Z, alt_id = 1)
 #' @export
 
 index_z <- function(Z, alt_id = NULL, type = c("AID", "CID")) {

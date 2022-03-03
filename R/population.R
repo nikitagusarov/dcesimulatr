@@ -8,12 +8,47 @@
 # 1. Defining "population" class #
 ##################################
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Population class
+#' @docType class
+#'
+#' @description The `population` R6 class regroups different individuals profiles.
+#' It serves as a wrapper for simultaneous interactions with multiple individual profiiles.
+#' The object is used for population description and  generation procedures.
+#'
+#' @field profiles A list of individual profile.
+#' @field n A list of individuals' numbers per profile (repecting the profiles' order).
+#'
+#' @section Modifying methods
+#' @method add_profile
+#' @description Add new individual profile and respective desired number of individuals.
+#'
+#' @section Querrying methods
+#' @method get_chars
+#' @description Get a vector of available characteristics' names across all individual profiles in population.
+#' @method get_n
+#' @description Get a vector regroupping individuals' numbers per profile
+#' @method get_rules
+#' @description Extract `decision_rule` objects across individual profiles
+#'
 #' @examples
+#' # Create individuals
+#' ind1 <- individual$new()
+#' ind1$add_characteristics(Age = rnorm(mean = 40, sd = 10))
+#' ind1$add_decision_rule(drule <- decision_rule$new())
+#' ind2 <- individual$new()
+#' ind2$add_characteristics(Age = rnorm(mean = 30, sd = 5))
+#' ind2$add_decision_rule(drule <- decision_rule$new())
+#'
+#' # Regroup individuals into population
+#' pop <- population$new(profiles = list(ind1, ind2), n = list(10, 15))
+#'
+#' # Add new profile
+#' ind3$add_characteristics(Age = rnorm(mean = 50, sd = 4), Salary = runif(min = 1, max = 5))
+#' ind3$add_decision_rule(drule <- decision_rule$new())
+#' pop$add_profile(ind3, 5)
+#' pop$get_chars()
+#' pop$get_n()
+#' pop$get_rules()
 #' @export
 
 population <- R6::R6Class(
@@ -105,12 +140,15 @@ population <- R6::R6Class(
 
 # Population testing
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Population class testing
+#' @description Test if the given object has an `population` class.
+#'
+#' @param population Input object to test
+#' @return Logic
+#'
 #' @examples
+#' pop <- population$new()
+#' is.population(pop)
 #' @export
 
 is.population <- function(population) {
@@ -119,15 +157,32 @@ is.population <- function(population) {
 
 # Generation function (indivduals matrix)
 
-#' @title
-#' @description
-#' @param
-#' @param
-#' @method
+#' @title Generate population
+#' @description Generate population data (X in standart notation) from a population object.
+#'
+#' @param population Input population configuration
+#' @param seed The seed to be set before attempting to generate population data.
+#' Defaults to NULL.
+#' @param class Logic.
+#' Indicates whether or not to include individual class information to the resulting data.frame.
+#' Defaults to NULL.
+#' @return data.frame A data.frame (X) with simulated population (one row per individual).
+#'
 #' @examples
+#' # Create individuals
+#' ind1 <- individual$new()
+#' ind1$add_characteristics(Age = rnorm(mean = 40, sd = 10))
+#' ind1$add_decision_rule(drule <- decision_rule$new())
+#' ind2 <- individual$new()
+#' ind2$add_characteristics(Age = rnorm(mean = 30, sd = 5))
+#' ind2$add_decision_rule(drule <- decision_rule$new())
+#'
+#' # Regroup individuals into population
+#' pop <- population$new(profiles = list(ind1, ind2), n = list(10, 15))
+#' X <- population_gen(pop)
 #' @export
 
-population_gen <- function(population, seed = NULL, class = NULL) {
+population_gen <- function(population, seed = NULL, class = TRUE) {
   # Verification
   if (!is.population(population)) {
     stop("No valid population object provided")
@@ -146,11 +201,14 @@ population_gen <- function(population, seed = NULL, class = NULL) {
   # Get unique characteristics' names
   chars <- population$get_chars()
 
-  # Set info variable for class
-  if (length(population$profiles) > 1 & is.null(class)) {
-    class <- TRUE
-  } else {
-    class <- FALSE
+  # Check class
+  if (class(class) != "logical") {
+    # Set info variable for class
+    if (length(population$profiles) > 1 & is.null(class)) {
+      class <- TRUE
+    } else {
+      class <- FALSE
+    }
   }
 
   # Run simulation
