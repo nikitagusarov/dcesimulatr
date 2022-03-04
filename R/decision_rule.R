@@ -17,9 +17,9 @@
 #' the associated random noise terms,
 #' transformation rules and choice selection pattern.
 #'
-#' @field formula A list of formulas associated with respective alternatives. 
-#' @field noise A list of noise specifications on per alternative basis. 
-#' @field transformation The desired transformation to be applied. 
+#' @field formula A list of formulas associated with respective alternatives.
+#' @field noise A list of noise specifications on per alternative basis.
+#' @field transformation The desired transformation to be applied.
 #' The transformation should be a function of Total Utility (TU).
 #' The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`
 #' @field choice The desired criteria should be declared as function.
@@ -30,7 +30,6 @@
 #' drule$add_formulas(Age + 2 * Quality, 1.5 * Age + Quality^2)
 #' drule$modify_transformation(TU)
 #' drule$modify_choice(min())
-#' 
 #' @export
 #' @import rlang R6
 
@@ -48,7 +47,7 @@ decision_rule <- R6::R6Class(
     # Methods
     #' @method add_noise decision_rule
     #' @description Append a list of `call` noise definitions to the noise field.
-    #' @param ... The noise is declared as randomisation function 
+    #' @param ... The noise is declared as randomisation function
     #' (ex: `evd::rgumbel(loc = 0, scale = 1)`)
     add_noise = function(...) {
       self$noise <- c(
@@ -59,7 +58,7 @@ decision_rule <- R6::R6Class(
     },
     #' @method add_formulas decision_rule
     #' @description Append a list of `call` formula definitions to the formula field.
-    #' @param ... The formulas should be defined in the same order as alternatives the individual will face 
+    #' @param ... The formulas should be defined in the same order as alternatives the individual will face
     #' (ex: `Age + 2*Quality, 1.5*Age + Quality^2`)
     add_formulas = function(...) {
       # A formula with parameters should be provided
@@ -70,8 +69,8 @@ decision_rule <- R6::R6Class(
       invisible(self)
     },
     #' @method modify_transformation decision_rule
-    #' @description Specify transformation to applied on Total Utility for individual within each choice set. 
-    #' @param transformation The desired transformation to be applied. 
+    #' @description Specify transformation to applied on Total Utility for individual within each choice set.
+    #' @param transformation The desired transformation to be applied.
     #' The transformation should be a function of Total Utility (TU).
     #' The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`
     modify_transformation = function(transformation) {

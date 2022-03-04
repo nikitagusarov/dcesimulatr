@@ -29,10 +29,9 @@
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
-#' 
+#'
 #' # Compose
 #' Z <- compose_identical(edesign, size = 2)
-#' 
 #' @export
 #' @import foreach
 
@@ -76,10 +75,9 @@ compose_identical <- function(experimental_design, n = NULL, size) {
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
-#' 
+#'
 #' # Compose
 #' Z <- compose_random(edesign, size = 2)
-#' 
 #' @export
 #' @import foreach
 

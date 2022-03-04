@@ -28,13 +28,12 @@
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 #' Z <- random_design(edesign, n = 1)
-#' 
 #' @export
 #' @import foreach
 
 random_design <- function(experimental_design, n) {
   # Avoid check failure
-  i <- NULL 
+  i <- NULL
 
   # Idex attributes defined with c
   index <- laws_index(
@@ -97,8 +96,8 @@ random_design <- function(experimental_design, n) {
 #'
 #' @param experimental_design Input experimnetal design object
 #' @param n The n is not used in current version
-#' @param sample Logical. 
-#' Declares whether the created design should be redused and randomly sampled. 
+#' @param sample Logical.
+#' Declares whether the created design should be redused and randomly sampled.
 #' @return data.frame A dataset of choice sets (Z) respecting FF Design.
 #'
 #' @examples
@@ -119,7 +118,7 @@ random_design <- function(experimental_design, n) {
 factorial_design <- function(experimental_design, n, sample = FALSE) {
   # Avoid check failure
   CID <- i <- NULL
-  
+
   # Idex attributes defined with c
   index <- laws_index(
     experimental_design,
@@ -192,8 +191,8 @@ factorial_design <- function(experimental_design, n, sample = FALSE) {
 #'
 #' @param experimental_design Input experimnetal design object
 #' @param n The n is not used in current version
-#' @param sample Logical. 
-#' Declares whether the created design should be redused and randomly sampled. 
+#' @param sample Logical.
+#' Declares whether the created design should be redused and randomly sampled.
 #' @return data.frame A dataset of choice sets (Z) respecting FF Design.
 #'
 #' @examples
@@ -206,7 +205,6 @@ factorial_design <- function(experimental_design, n, sample = FALSE) {
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), design = "mixed")
 #' Z <- random_design(edesign, n = 2)
-#' 
 #' @export
 
 mixed_design <- function(experimental_design, n, sample = FALSE) {

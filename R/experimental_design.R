@@ -33,7 +33,6 @@
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
-#' 
 #' @export
 
 experimental_design <- R6::R6Class(
@@ -48,19 +47,19 @@ experimental_design <- R6::R6Class(
 
     # Initialize
     #' @method initialize experimental_design
-    #' @description Create new experimental design object. 
+    #' @description Create new experimental design object.
     #' It's possible to create the whole object with one command.
     #' @param alternatives A list of alternatives to use for experimental design construction.
     #' @param design An experimental design specification.
     #' This field assumes that a savvy user may desire to extend the number of available experimental designs.
-    #' In the default configuration available designs are: "random", "factorial" and "mixed". 
-    #' The preset value is "random". 
+    #' In the default configuration available designs are: "random", "factorial" and "mixed".
+    #' The preset value is "random".
     #' @param n A number of choice sets per individual for "random" design configuration.
-    #' NULL by deafult. 
+    #' NULL by deafult.
     #' @param identical Logical.
     #' Declares whether the choice sets should be identical across individuals or not.
-    #' The default value if FALSE. 
-    #' @return An `experimental_design` object. 
+    #' The default value if FALSE.
+    #' @return An `experimental_design` object.
     initialize = function(alternatives = list(NULL),
                           design = "random",
                           n = NULL,
@@ -75,9 +74,9 @@ experimental_design <- R6::R6Class(
     # Methods to modify object
     #' @method add_alternative experimental_design
     #' @description Add new alternative to the list of available alternatives.
-    #' @param alternative An `alternative` object to be included into experimental design. 
-    #' @param alternative_name An added alternative name, not required. 
-    #' Is NULL by default. 
+    #' @param alternative An `alternative` object to be included into experimental design.
+    #' @param alternative_name An added alternative name, not required.
+    #' Is NULL by default.
     add_alternative = function(alternative, alternative_name = NULL) {
       # Verification
       if (!any(class(alternative) == "alternative")) {
@@ -95,8 +94,8 @@ experimental_design <- R6::R6Class(
     },
     #' @method set_design experimental_design
     #' @description Set a new `design` configuration.
-    #' @param design Specification of the desired design. 
-    #' The default designs are "random" (default), "factorial" and "mixed". 
+    #' @param design Specification of the desired design.
+    #' The default designs are "random" (default), "factorial" and "mixed".
     set_design = function(design = "random") {
       # Reset design
       self$design <- design
@@ -105,9 +104,9 @@ experimental_design <- R6::R6Class(
 
     # Methods to querry the object
     #' @method get_attributes experimental_design
-    #' @description Get a vector of available attributes' names across all alternatives. 
-    #' @param index A list of index of attributes to be querried. 
-    #' @return Character list of the attributes by alternative. 
+    #' @description Get a vector of available attributes' names across all alternatives.
+    #' @param index A list of index of attributes to be querried.
+    #' @return Character list of the attributes by alternative.
     get_attributes = function(index = NULL) {
       # Check index
       if (is.null(index)) {
@@ -135,7 +134,7 @@ experimental_design <- R6::R6Class(
     },
     #' @method get_design experimental_design
     #' @description Get specified design.
-    #' @return Character value of the experimental design. 
+    #' @return Character value of the experimental design.
     get_design = function() {
       # Get design as vector
       design <- self$design
@@ -161,7 +160,6 @@ experimental_design <- R6::R6Class(
 #' @examples
 #' edesign <- experimental_design$new()
 #' is.population(edesign)
-#' 
 #' @export
 
 is.experimental_design <- function(experimental_design) {
@@ -195,7 +193,6 @@ is.experimental_design <- function(experimental_design) {
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 #' Z <- alternatives_gen(edesign)
-#' 
 #' @export
 
 alternatives_gen <- function(experimental_design,
@@ -203,8 +200,8 @@ alternatives_gen <- function(experimental_design,
                              seed = NULL,
                              format = "long") {
   # Avoid check failure
-  CID <- NULL 
-  
+  CID <- NULL
+
   # Verification
   if (!is.experimental_design(experimental_design)) {
     stop("No valid experimental design object provided")

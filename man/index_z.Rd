@@ -37,5 +37,4 @@ Z <- random_design(edesign, n = 1)
 
 # Idendex data frame
 Z <- index_z(Z, alt_id = 1)
-
 }

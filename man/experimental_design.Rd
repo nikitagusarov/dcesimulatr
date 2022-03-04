@@ -19,7 +19,6 @@ alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 
 # Regroup alternatives into design
 edesign <- experimental_design$new(alternatives = list(alt1, alt2))
-
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -52,7 +51,7 @@ Declares whether the choice sets should be identical across individuals or not.}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Create new experimental design object. 
+Create new experimental design object.
 It's possible to create the whole object with one command.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{experimental_design$new(
@@ -70,7 +69,7 @@ It's possible to create the whole object with one command.
 
 \item{\code{design}}{An experimental design specification.
 This field assumes that a savvy user may desire to extend the number of available experimental designs.
-In the default configuration available designs are: "random", "factorial" and "mixed". 
+In the default configuration available designs are: "random", "factorial" and "mixed".
 The preset value is "random".}
 
 \item{\code{n}}{A number of choice sets per individual for "random" design configuration.
@@ -100,7 +99,7 @@ Add new alternative to the list of available alternatives.
 \describe{
 \item{\code{alternative}}{An `alternative` object to be included into experimental design.}
 
-\item{\code{alternative_name}}{An added alternative name, not required. 
+\item{\code{alternative_name}}{An added alternative name, not required.
 Is NULL by default.}
 }
 \if{html}{\out{</div>}}
@@ -118,7 +117,7 @@ Set a new `design` configuration.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{design}}{Specification of the desired design. 
+\item{\code{design}}{Specification of the desired design.
 The default designs are "random" (default), "factorial" and "mixed".}
 }
 \if{html}{\out{</div>}}

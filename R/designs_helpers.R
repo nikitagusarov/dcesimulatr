@@ -22,10 +22,9 @@
 #' # Create alternative
 #' alt1 <- alternative$new()
 #' alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
-#' 
+#'
 #' # Class laws
 #' claws <- class_laws(alt1$get_laws())
-#' 
 #' @export
 
 class_laws <- function(laws) {
@@ -71,11 +70,10 @@ class_laws <- function(laws) {
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 #' Z <- random_design(edesign, n = 1)
-#' 
+#'
 #' # Querry object
 #' attr <- edesign$get_attributes()
 #' Z <- check_attributes(Z, attr)
-#' 
 #' @export
 
 check_attributes <- function(Z, attributes) {
@@ -118,10 +116,9 @@ check_attributes <- function(Z, attributes) {
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
-#' 
+#'
 #' # Get index list
 #' index <- laws_index(edesign, type = c("rand"))
-#' 
 #' @export
 
 laws_index <- function(experimental_design, type = "rand") {
@@ -171,10 +168,9 @@ laws_index <- function(experimental_design, type = "rand") {
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 #' Z <- random_design(edesign, n = 1)
-#' 
+#'
 #' # Idendex data frame
 #' Z <- index_z(Z, alt_id = 1)
-#' 
 #' @export
 
 index_z <- function(Z, alt_id = NULL, type = c("AID", "CID")) {

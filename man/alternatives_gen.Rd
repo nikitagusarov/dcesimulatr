@@ -37,5 +37,4 @@ alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 # Regroup alternatives into design
 edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 Z <- alternatives_gen(edesign)
-
 }

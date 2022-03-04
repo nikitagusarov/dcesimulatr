@@ -11,7 +11,7 @@ experiment_run(population, experimental_design, seed = NULL)
 
 \item{experimental_design}{An `experimental_desing` object.}
 
-\item{seed}{The seed to be preset for data simulation purposes. 
+\item{seed}{The seed to be preset for data simulation purposes.
 The default is NULL to use system defined or random seed.}
 }
 \value{
@@ -39,5 +39,4 @@ edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 
 # Run experiment
 res <- experiment_run(pop, edesign)
-
 }

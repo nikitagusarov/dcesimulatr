@@ -34,5 +34,4 @@ edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 
 # Compose
 Z <- compose_random(edesign, size = 2)
-
 }

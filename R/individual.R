@@ -26,7 +26,6 @@
 #' ind$get_chars()
 #' ind$get_laws()
 #' ind$get_rule()
-#' 
 #' @export
 #' @import R6
 
@@ -69,21 +68,21 @@ individual <- R6::R6Class(
     # Querrying methods
     #' @method get_chars individual
     #' @description Get a vector of available characteristics' names
-    #' @return Character vector with unique characteristics names. 
+    #' @return Character vector with unique characteristics names.
     get_chars = function() {
       chars <- names(self$characteristics)
       return(chars)
     },
     #' @method get_laws individual
     #' @description Get a list of alternatives' generation rules
-    #' @return Get a list of laws associated to individual's characteristics. 
+    #' @return Get a list of laws associated to individual's characteristics.
     get_laws = function() {
       laws <- self$characteristics
       return(laws)
     },
     #' @method get_rule individual
     #' @description Extract `decision_rule` object
-    #' @return A `decisio_rule` object of the given individual profile.  
+    #' @return A `decisio_rule` object of the given individual profile.
     get_rule = function() {
       return(self$decision_rule)
     }

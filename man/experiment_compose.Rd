@@ -37,5 +37,4 @@ edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 
 # Compose dataset
 XZ <- experiment_run(pop, edesign, seed = 10)
-
 }

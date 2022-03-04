@@ -24,5 +24,4 @@ alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
 
 # Class laws
 claws <- class_laws(alt1$get_laws())
-
 }

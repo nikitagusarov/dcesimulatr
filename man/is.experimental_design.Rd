@@ -18,5 +18,4 @@ Test if the given object has an `experimental_design` class.
 \examples{
 edesign <- experimental_design$new()
 is.population(edesign)
-
 }

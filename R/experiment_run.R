@@ -16,8 +16,8 @@
 #'
 #' @param population A `population` object.
 #' @param experimental_design An `experimental_desing` object.
-#' @param seed The seed to be preset for data simulation purposes. 
-#' The default is NULL to use system defined or random seed. 
+#' @param seed The seed to be preset for data simulation purposes.
+#' The default is NULL to use system defined or random seed.
 #' @return data.frame A complete experimental dataset with associated utilities.
 #'
 #' @examples
@@ -26,17 +26,16 @@
 #' ind3$add_characteristics(Age = rnorm(mean = 50, sd = 4), Salary = runif(min = 1, max = 5))
 #' ind3$add_decision_rule(drule <- decision_rule$new())
 #' pop <- population$new(profiles = list(ind3), n = list(5))
-#' 
+#'
 #' # Create alternatives and regroup them into design
 #' alt1 <- alternative$new()
 #' alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
 #' alt2 <- alternative$new()
 #' alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
-#' 
+#'
 #' # Run experiment
 #' res <- experiment_run(pop, edesign)
-#' 
 #' @export
 
 experiment_run <- function(population,
@@ -44,7 +43,7 @@ experiment_run <- function(population,
                            seed = NULL) {
   # Avoid check error
   DU <- NULL
-  
+
   # First we perform coupling
   XZ <- experiment_compose(
     population,

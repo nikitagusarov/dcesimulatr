@@ -17,7 +17,6 @@ ind$add_decision_rule(drule <- decision_rule$new())
 ind$get_chars()
 ind$get_laws()
 ind$get_rule()
-
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

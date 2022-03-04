@@ -38,7 +38,6 @@
 #' pop$get_chars()
 #' pop$get_n()
 #' pop$get_rules()
-#' 
 #' @export
 #' @import R6
 
@@ -53,10 +52,10 @@ population <- R6::R6Class(
 
     # Initialize
     #' @method initialize population
-    #' @description Create a new `population` object. 
-    #' The function allows to create an object populated with individual profiles. 
-    #' @param profiles A list of individual profiles for population. 
-    #' @param n The associated numbers for each profile to appear in the dataset. 
+    #' @description Create a new `population` object.
+    #' The function allows to create an object populated with individual profiles.
+    #' @param profiles A list of individual profiles for population.
+    #' @param n The associated numbers for each profile to appear in the dataset.
     initialize = function(profiles = list(NULL),
                           n = list(NULL)) {
       if (length(profiles) != length(n)) {
@@ -77,8 +76,8 @@ population <- R6::R6Class(
     #' @description Add new individual profile and respective desired number of individuals.
     #' @param individual Individual profile to be added
     #' @param n A number associate to the added profile
-    #' @param profile_name An added profile name, not required. 
-    #' Is NULL by default. 
+    #' @param profile_name An added profile name, not required.
+    #' Is NULL by default.
     add_profile = function(individual, n, profile_name = NULL) {
       # Verification
       if (!any(class(individual) == "individual")) {
@@ -104,7 +103,7 @@ population <- R6::R6Class(
     # Methods to querry the object
     #' @method get_chars population
     #' @description Get a vector of available characteristics' names across all individual profiles in population.
-    #' @return Character vector with unique characteristics names within populatoin. 
+    #' @return Character vector with unique characteristics names within populatoin.
     get_chars = function() {
       # Get list of chars from all profiles
       chars <- lapply(
@@ -121,7 +120,7 @@ population <- R6::R6Class(
     },
     #' @method get_n population
     #' @description Get a vector regroupping individuals' numbers per profile
-    #' @return Numeric vector with numbers of n by individual profile. 
+    #' @return Numeric vector with numbers of n by individual profile.
     get_n = function() {
       # Get n as vector
       n <- unlist(self$n)
@@ -129,7 +128,7 @@ population <- R6::R6Class(
     },
     #' @method get_rules population
     #' @description Extract `decision_rule` objects across individual profiles
-    #' @return A list of rules present within population.  
+    #' @return A list of rules present within population.
     get_rules = function() {
       # Querry individuals for their rules
       rules <- lapply(
@@ -196,7 +195,7 @@ is.population <- function(population) {
 population_gen <- function(population, seed = NULL, class = TRUE) {
   # Avoid check failure
   i <- NULL
-  
+
   # Verification
   if (!is.population(population)) {
     stop("No valid population object provided")

@@ -32,5 +32,4 @@ Z <- random_design(edesign, n = 1)
 # Querry object
 attr <- edesign$get_attributes()
 Z <- check_attributes(Z, attr)
-
 }

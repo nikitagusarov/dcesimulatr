@@ -39,5 +39,4 @@ edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 
 # Full experiment
 XZ <- experiment(pop, edesign, seed = 10)
-
 }

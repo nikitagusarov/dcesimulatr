@@ -15,7 +15,6 @@ alt <- alternative$new()
 alt$add_attributes(Quality = c(0, 1), Price = rnorm(mean = 5))
 alt$get_attributes()
 alt$get_laws()
-
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -45,7 +44,7 @@ Append a list of `call` attributes definitions to the attributes.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{The attributes should have a name and generation procedure defined 
+\item{\code{...}}{The attributes should have a name and generation procedure defined
 (ex: `Quality = c(0:1)`)}
 }
 \if{html}{\out{</div>}}

@@ -17,7 +17,6 @@ drule$add_noise(rnorm(), rnorm(sd = 2))
 drule$add_formulas(Age + 2 * Quality, 1.5 * Age + Quality^2)
 drule$modify_transformation(TU)
 drule$modify_choice(min())
-
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -26,7 +25,7 @@ drule$modify_choice(min())
 
 \item{\code{noise}}{A list of noise specifications on per alternative basis.}
 
-\item{\code{transformation}}{The desired transformation to be applied. 
+\item{\code{transformation}}{The desired transformation to be applied.
 The transformation should be a function of Total Utility (TU).
 The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`}
 
@@ -56,7 +55,7 @@ Append a list of `call` noise definitions to the noise field.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{The noise is declared as randomisation function 
+\item{\code{...}}{The noise is declared as randomisation function
 (ex: `evd::rgumbel(loc = 0, scale = 1)`)}
 }
 \if{html}{\out{</div>}}
@@ -74,7 +73,7 @@ Append a list of `call` formula definitions to the formula field.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{The formulas should be defined in the same order as alternatives the individual will face 
+\item{\code{...}}{The formulas should be defined in the same order as alternatives the individual will face
 (ex: `Age + 2*Quality, 1.5*Age + Quality^2`)}
 }
 \if{html}{\out{</div>}}
@@ -92,7 +91,7 @@ Specify transformation to applied on Total Utility for individual within each ch
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{transformation}}{The desired transformation to be applied. 
+\item{\code{transformation}}{The desired transformation to be applied.
 The transformation should be a function of Total Utility (TU).
 The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`}
 }

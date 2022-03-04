@@ -29,7 +29,6 @@ pop$add_profile(ind3, 5)
 pop$get_chars()
 pop$get_n()
 pop$get_rules()
-
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -55,7 +54,7 @@ pop$get_rules()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `population` object. 
+Create a new `population` object.
 The function allows to create an object populated with individual profiles.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{population$new(profiles = list(NULL), n = list(NULL))}\if{html}{\out{</div>}}
@@ -87,7 +86,7 @@ Add new individual profile and respective desired number of individuals.
 
 \item{\code{n}}{A number associate to the added profile}
 
-\item{\code{profile_name}}{An added profile name, not required. 
+\item{\code{profile_name}}{An added profile name, not required.
 Is NULL by default.}
 }
 \if{html}{\out{</div>}}

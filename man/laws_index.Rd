@@ -34,5 +34,4 @@ edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 
 # Get index list
 index <- laws_index(edesign, type = c("rand"))
-
 }
