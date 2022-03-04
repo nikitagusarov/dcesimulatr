@@ -19,5 +19,18 @@ Verification that all desired characteristics are present in $Z$.
 This is an internal function which serves to simplify concatenation of multiple $Z$ when alternatives have different attributes.
 }
 \examples{
-Z <- check_attributes(Z, attributes)
+# Create alternatives
+alt1 <- alternative$new()
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+alt2 <- alternative$new()
+alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+
+# Regroup alternatives into design
+edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+Z <- random_design(edesign, n = 1)
+
+# Querry object
+attr <- edesign$get_attributes()
+Z <- check_attributes(Z, attr)
+
 }

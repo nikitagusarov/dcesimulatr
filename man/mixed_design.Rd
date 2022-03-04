@@ -4,12 +4,15 @@
 \alias{mixed_design}
 \title{Mixed experimental design}
 \usage{
-mixed_design(experimental_design, n)
+mixed_design(experimental_design, n, sample = FALSE)
 }
 \arguments{
 \item{experimental_design}{Input experimnetal design object}
 
 \item{n}{The n is not used in current version}
+
+\item{sample}{Logical. 
+Declares whether the created design should be redused and randomly sampled.}
 }
 \value{
 data.frame A dataset of choice sets (Z) respecting FF Design.
@@ -29,5 +32,6 @@ alt2$add_attributes(Size = c(1:3), Price = runif(min = 1, max = 3))
 
 # Regroup alternatives into design
 edesign <- experimental_design$new(alternatives = list(alt1, alt2), design = "mixed")
-Z <- random_design(edesign)
+Z <- random_design(edesign, n = 2)
+
 }

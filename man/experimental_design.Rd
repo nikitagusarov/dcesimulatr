@@ -9,32 +9,17 @@ The `experimental_design` R6 class regroups different alternatives.
 It contains all the essential information of the desired experimental design.
 It serves as a wrapper for simultaneous interactions with alternative profiiles.
 The object is used for choice sets generation procedures.
-
-Add new alternative to the list of available alternatives.
-
-Set a new `design` configuration.
-
-Get a vector of available attributes' names across all alternatives.
-
-Get specified design.
 }
-\section{Modifying methods}{
-NA
-}
-
-\section{Querrying methods}{
-NA
-}
-
 \examples{
 # Create alternatives
 alt1 <- alternative$new()
-alt1$add_attributes(Quality = purrr::rbernoulli(p = 0.6), Price = rnorm(mean = 5))
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
 alt2 <- alternative$new()
 alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 
 # Regroup alternatives into design
 edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -67,6 +52,8 @@ Declares whether the choice sets should be identical across individuals or not.}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Create new experimental design object. 
+It's possible to create the whole object with one command.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{experimental_design$new(
   alternatives = list(NULL),
@@ -76,42 +63,99 @@ Declares whether the choice sets should be identical across individuals or not.}
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alternatives}}{A list of alternatives to use for experimental design construction.}
+
+\item{\code{design}}{An experimental design specification.
+This field assumes that a savvy user may desire to extend the number of available experimental designs.
+In the default configuration available designs are: "random", "factorial" and "mixed". 
+The preset value is "random".}
+
+\item{\code{n}}{A number of choice sets per individual for "random" design configuration.
+NULL by deafult.}
+
+\item{\code{identical}}{Logical.
+Declares whether the choice sets should be identical across individuals or not.
+The default value if FALSE.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+An `experimental_design` object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_alternative"></a>}}
 \if{latex}{\out{\hypertarget{method-add_alternative}{}}}
 \subsection{Method \code{add_alternative()}}{
+Add new alternative to the list of available alternatives.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{experimental_design$add_alternative(alternative, alternative_name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alternative}}{An `alternative` object to be included into experimental design.}
+
+\item{\code{alternative_name}}{An added alternative name, not required. 
+Is NULL by default.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_design"></a>}}
 \if{latex}{\out{\hypertarget{method-set_design}{}}}
 \subsection{Method \code{set_design()}}{
+Set a new `design` configuration.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{experimental_design$set_design(design = "random")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{design}}{Specification of the desired design. 
+The default designs are "random" (default), "factorial" and "mixed".}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_attributes"></a>}}
 \if{latex}{\out{\hypertarget{method-get_attributes}{}}}
 \subsection{Method \code{get_attributes()}}{
+Get a vector of available attributes' names across all alternatives.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{experimental_design$get_attributes(index = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{index}}{A list of index of attributes to be querried.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Character list of the attributes by alternative.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_design"></a>}}
 \if{latex}{\out{\hypertarget{method-get_design}{}}}
 \subsection{Method \code{get_design()}}{
+Get specified design.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{experimental_design$get_design()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Character value of the experimental design.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

@@ -19,7 +19,22 @@
 #' @return data.frame A complete experimental dataset XZ
 #'
 #' @examples
-#' XZ <- experiment_run(population, experimental_design, seed = 10)
+#' # Generate individual profile and population
+#' ind3 <- individual$new()
+#' ind3$add_characteristics(Age = rnorm(mean = 50, sd = 4), Salary = runif(min = 1, max = 5))
+#' ind3$add_decision_rule(drule <- decision_rule$new())
+#' pop <- population$new(profiles = list(ind3), n = list(5))
+#' 
+#' # Create alternatives and regroup them into design
+#' alt1 <- alternative$new()
+#' alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+#' alt2 <- alternative$new()
+#' alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+#' edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
+#' 
+#' # Compose dataset
+#' XZ <- experiment_run(pop, edesign, seed = 10)
+#' 
 #' @export
 
 experiment_compose <- function(population,

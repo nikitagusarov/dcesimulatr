@@ -18,20 +18,14 @@
 #'
 #' @field attributes A list of attributes definitions
 #'
-#' @section Modifying methods
-#' @method add_attributes Append a list of `call` attributes definitions to the attributes.
-#' The attributes should have a name and generation procedure defined (ex: `Quality = c(0:1)`)
-#'
-#' @section Querrying methods
-#' @method get_attributes Get a vector of available attributes' names
-#' @method get_laws Get a list of alternatives' generation rules
-#'
 #' @examples
 #' alt <- alternative$new()
 #' alt$add_attributes(Quality = c(0, 1), Price = rnorm(mean = 5))
 #' alt$get_attributes()
 #' alt$get_laws()
+#' 
 #' @export
+#' @import R6
 
 alternative <- R6::R6Class(
   # Class name
@@ -41,6 +35,10 @@ alternative <- R6::R6Class(
     attributes = NULL,
 
     # Modifying methods
+    #' @method add_attributes alternative
+    #' @description Append a list of `call` attributes definitions to the attributes.
+    #' @param ... The attributes should have a name and generation procedure defined 
+    #' (ex: `Quality = c(0:1)`)
     add_attributes = function(...) {
       # Convert to quosure to avoid interpretation
       # The accepted calls for now should require n parameter
@@ -53,10 +51,16 @@ alternative <- R6::R6Class(
     },
 
     # Querrying methods
-    get_attriutes = function() {
+    #' @method get_attributes alternative
+    #' @description Get a vector of available attributes' names
+    #' @return Character vector with unique attributes names. 
+    get_attributes = function() {
       attr <- names(self$attributes)
       return(attr)
     },
+    #' @method get_laws alternative
+    #' @description Get a list of alternatives' generation rules
+    #' @return Get a list of laws associated to alternative's attributes. 
     get_laws = function() {
       laws <- self$attributes
       return(laws)

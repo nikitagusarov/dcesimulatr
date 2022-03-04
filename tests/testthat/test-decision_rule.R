@@ -40,7 +40,7 @@ test_that(
   {
     dr <- decision_rule$new()
     dr <- dr$add_noise(
-      evd::rgumbel(loc = 0, scale = 1)
+      rnorm(mean = 0, sd = 1)
     )
 
     # Test

@@ -23,5 +23,16 @@ This is an internal function which searches the laws of desired class in the lsi
 The classes should be obtained separately with a `class_laws` function.
 }
 \examples{
-index <- laws_index(experimental_design, type = c("rand", "c"))
+# Create alternatives
+alt1 <- alternative$new()
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+alt2 <- alternative$new()
+alt2$add_attributes(Size = c(0, 1), Price = rnorm(mean = 6))
+
+# Regroup alternatives into design
+edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+
+# Get index list
+index <- laws_index(edesign, type = c("rand"))
+
 }

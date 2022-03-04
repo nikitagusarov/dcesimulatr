@@ -21,17 +21,21 @@
 #' @examples
 #' # Create alternatives
 #' alt1 <- alternative$new()
-#' alt1$add_attributes(Quality = purrr::rbernoulli(p = 0.6), Price = rnorm(mean = 5))
+#' alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
 #' alt2 <- alternative$new()
 #' alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 #' Z <- random_design(edesign, n = 1)
+#' 
 #' @export
 #' @import foreach
 
 random_design <- function(experimental_design, n) {
+  # Avoid check failure
+  i <- NULL 
+
   # Idex attributes defined with c
   index <- laws_index(
     experimental_design,
@@ -93,6 +97,8 @@ random_design <- function(experimental_design, n) {
 #'
 #' @param experimental_design Input experimnetal design object
 #' @param n The n is not used in current version
+#' @param sample Logical. 
+#' Declares whether the created design should be redused and randomly sampled. 
 #' @return data.frame A dataset of choice sets (Z) respecting FF Design.
 #'
 #' @examples
@@ -111,6 +117,9 @@ random_design <- function(experimental_design, n) {
 #' @importFrom tidyr pivot_longer
 
 factorial_design <- function(experimental_design, n, sample = FALSE) {
+  # Avoid check failure
+  CID <- i <- NULL
+  
   # Idex attributes defined with c
   index <- laws_index(
     experimental_design,
@@ -183,6 +192,8 @@ factorial_design <- function(experimental_design, n, sample = FALSE) {
 #'
 #' @param experimental_design Input experimnetal design object
 #' @param n The n is not used in current version
+#' @param sample Logical. 
+#' Declares whether the created design should be redused and randomly sampled. 
 #' @return data.frame A dataset of choice sets (Z) respecting FF Design.
 #'
 #' @examples
@@ -194,10 +205,11 @@ factorial_design <- function(experimental_design, n, sample = FALSE) {
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), design = "mixed")
-#' Z <- random_design(edesign)
+#' Z <- random_design(edesign, n = 2)
+#' 
 #' @export
 
-mixed_design <- function(experimental_design, n) {
+mixed_design <- function(experimental_design, n, sample = FALSE) {
   # Part 1: Factorial design step
   Zf <- factorial_design(
     experimental_design,

@@ -23,5 +23,16 @@ The function simplifies the size adjustment of Z depending on the population siz
 Each individuals faces a personalised Z version.
 }
 \examples{
-Z <- compose_random(experimental_design)
+# Create alternatives
+alt1 <- alternative$new()
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+alt2 <- alternative$new()
+alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+
+# Regroup alternatives into design
+edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
+
+# Compose
+Z <- compose_random(edesign, size = 2)
+
 }

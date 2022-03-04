@@ -22,5 +22,16 @@ This is an internal function which creates identical choice sets configurations 
 The function simplifies the size adjustment of Z depending on the population size of X.
 }
 \examples{
-Z <- compose_identical(experimental_design)
+# Create alternatives
+alt1 <- alternative$new()
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+alt2 <- alternative$new()
+alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+
+# Regroup alternatives into design
+edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
+
+# Compose
+Z <- compose_identical(edesign, size = 2)
+
 }

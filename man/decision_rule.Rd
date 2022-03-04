@@ -10,46 +10,27 @@ The object stores information about the decision rule:
 a list of formulas to be applied on the data;
 the associated random noise terms,
 transformation rules and choice selection pattern.
-
-Append a list of `call` noise definitions to the noise field.
-The noise is declared as randomisation function (ex: `evd::rgumbel(loc = 0, scale = 1)`)
-
-Append a list of `call` formula definitions to the formula field.
-The formulas should be defined in the same order as alternatives the individual will face (ex: `Age + 2*Quality, 1.5*Age + Quality^2`)
-
-The transformation should be a function of Total Utility (TU).
-The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`
-
-The choice rule represents the criteria of individual's final choice.
-The desired criteria should be declared as function.
-The default value is `max()` (assuming the individual chooses the alternative with higher associated probability).
 }
-\section{Modifying methods}{
-NA
-}
-
 \examples{
 drule <- decision_rule$new()
-drule$add_noise(evd::rgumbel(loc = 0, scale = 1), evd::rgumbel(loc = 0, scale = 2))
+drule$add_noise(rnorm(), rnorm(sd = 2))
 drule$add_formulas(Age + 2 * Quality, 1.5 * Age + Quality^2)
 drule$modify_transformation(TU)
 drule$modify_choice(min())
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{characteristics}}{A list of characteristics' definitions}
+\item{\code{formula}}{A list of formulas associated with respective alternatives.}
 
-\item{\code{decision_rule}}{A decision rule object}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{characteristics}}{A list of characteristics' definitions}
+\item{\code{noise}}{A list of noise specifications on per alternative basis.}
 
-\item{\code{decision_rule}}{A decision rule object}
+\item{\code{transformation}}{The desired transformation to be applied. 
+The transformation should be a function of Total Utility (TU).
+The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`}
+
+\item{\code{choice}}{The desired criteria should be declared as function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -67,37 +48,74 @@ drule$modify_choice(min())
 \if{html}{\out{<a id="method-add_noise"></a>}}
 \if{latex}{\out{\hypertarget{method-add_noise}{}}}
 \subsection{Method \code{add_noise()}}{
+Append a list of `call` noise definitions to the noise field.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{decision_rule$add_noise(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{The noise is declared as randomisation function 
+(ex: `evd::rgumbel(loc = 0, scale = 1)`)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_formulas"></a>}}
 \if{latex}{\out{\hypertarget{method-add_formulas}{}}}
 \subsection{Method \code{add_formulas()}}{
+Append a list of `call` formula definitions to the formula field.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{decision_rule$add_formulas(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{The formulas should be defined in the same order as alternatives the individual will face 
+(ex: `Age + 2*Quality, 1.5*Age + Quality^2`)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-modify_transformation"></a>}}
 \if{latex}{\out{\hypertarget{method-modify_transformation}{}}}
 \subsection{Method \code{modify_transformation()}}{
+Specify transformation to applied on Total Utility for individual within each choice set.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{decision_rule$modify_transformation(transformation)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{transformation}}{The desired transformation to be applied. 
+The transformation should be a function of Total Utility (TU).
+The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-modify_choice"></a>}}
 \if{latex}{\out{\hypertarget{method-modify_choice}{}}}
 \subsection{Method \code{modify_choice()}}{
+The choice rule represents the criteria of individual's final choice.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{decision_rule$modify_choice(choice)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{choice}}{The desired criteria should be declared as function.
+The default value is `max()` (assuming the individual chooses the alternative with higher associated probability).}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

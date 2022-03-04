@@ -18,5 +18,11 @@ The function serves to distinguish between the different input formats.
 This ensures flexibility of the attributes' specifications.
 }
 \examples{
-claws <- class_laws(laws)
+# Create alternative
+alt1 <- alternative$new()
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+
+# Class laws
+claws <- class_laws(alt1$get_laws())
+
 }

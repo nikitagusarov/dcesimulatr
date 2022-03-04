@@ -1,9 +1,8 @@
+# Dependency
 library(testthat)
-library(R6)
-library(rlang)
-library(evd)
-library(foreach)
 
-library(dcesimaltr)
+# Package to test
+library(dcesimulatr)
 
-test_check("dcesimaltr")
+# Test
+test_check("dcesimulatr")

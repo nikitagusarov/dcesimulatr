@@ -25,5 +25,17 @@ This function adds alternative id (AID) and / or choice set id (CID).
 This is an internal function which simplifies indexation of data during generation procedures with complex designs.
 }
 \examples{
-2 <- index_z(Z, alt_id = 1)
+# Create alternatives
+alt1 <- alternative$new()
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
+alt2 <- alternative$new()
+alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
+
+# Regroup alternatives into design
+edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+Z <- random_design(edesign, n = 1)
+
+# Idendex data frame
+Z <- index_z(Z, alt_id = 1)
+
 }

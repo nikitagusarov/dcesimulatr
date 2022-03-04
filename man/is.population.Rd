@@ -10,7 +10,7 @@ is.population(population)
 \item{population}{Input object to test}
 }
 \value{
-Logic
+logic
 }
 \description{
 Test if the given object has an `population` class.

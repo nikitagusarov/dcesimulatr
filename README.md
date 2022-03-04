@@ -1,6 +1,6 @@
-# `dcesimaltr`
+# `dcesimulatr`
 
-The package `dcesimaltr` provide a flexible controlled environment for discrete choice experiment simulation. 
+The package `dcesimulatr` provide a flexible controlled environment for discrete choice experiment simulation. 
 
 At this moment, the package supports only minimal number of behavioural theories and preset experiment configuration. 
 We hope that in near future, the number of available functionnalities will increase. 

@@ -9,33 +9,15 @@ The `individual` R6 class serves to define individuals' profiles to be included 
 The object stores information about the individuals' characteristics, as well as the decision rules.
 The values may be specified as random declaration using statistical functions of `r` type.
 The object is initialized without attributes and should be later populated with them.
-
-Append a list of `call` attributes definitions to the attributes.
-The attributes should have a name and generation procedure defined (ex: `Age = rnorm(mean = 40, sd = 10)`)
-
-Create or replace an existing decision rule
-
-Get a vector of available characteristics' names
-
-Get a list of alternatives' generation rules
-
-Extract `decision_rule` object
 }
-\section{Modifying methods}{
-NA
-}
-
-\section{Querrying methods}{
-NA
-}
-
 \examples{
 ind <- individual$new()
 ind$add_characteristics(Age = rnorm(mean = 40, sd = 10))
 ind$add_decision_rule(drule <- decision_rule$new())
-ind$get_char()
+ind$get_chars()
 ind$get_laws()
 ind$get_rule()
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -61,46 +43,74 @@ ind$get_rule()
 \if{html}{\out{<a id="method-add_characteristics"></a>}}
 \if{latex}{\out{\hypertarget{method-add_characteristics}{}}}
 \subsection{Method \code{add_characteristics()}}{
+Append a list of `call` attributes definitions to the attributes.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{individual$add_characteristics(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{The attributes should have a name and generation procedure defined (ex: `Age = rnorm(mean = 40, sd = 10)`)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_decision_rule"></a>}}
 \if{latex}{\out{\hypertarget{method-add_decision_rule}{}}}
 \subsection{Method \code{add_decision_rule()}}{
+Create or replace an existing decision rule
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{individual$add_decision_rule(decision_rule)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{decision_rule}}{A decision rule to be assigned to individual profile}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_chars"></a>}}
 \if{latex}{\out{\hypertarget{method-get_chars}{}}}
 \subsection{Method \code{get_chars()}}{
+Get a vector of available characteristics' names
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{individual$get_chars()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Character vector with unique characteristics names.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_laws"></a>}}
 \if{latex}{\out{\hypertarget{method-get_laws}{}}}
 \subsection{Method \code{get_laws()}}{
+Get a list of alternatives' generation rules
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{individual$get_laws()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Get a list of laws associated to individual's characteristics.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_rule"></a>}}
 \if{latex}{\out{\hypertarget{method-get_rule}{}}}
 \subsection{Method \code{get_rule()}}{
+Extract `decision_rule` object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{individual$get_rule()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A `decisio_rule` object of the given individual profile.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

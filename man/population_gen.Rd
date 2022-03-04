@@ -12,7 +12,7 @@ population_gen(population, seed = NULL, class = TRUE)
 \item{seed}{The seed to be set before attempting to generate population data.
 Defaults to NULL.}
 
-\item{class}{Logic.
+\item{class}{Logical.
 Indicates whether or not to include individual class information to the resulting data.frame.
 Defaults to NULL.}
 }

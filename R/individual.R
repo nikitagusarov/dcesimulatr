@@ -19,29 +19,16 @@
 #' @field characteristics A list of characteristics' definitions
 #' @field decision_rule A decision rule object
 #'
-#' @section Modifying methods
-#' @method add_characteristics
-#' @description Append a list of `call` attributes definitions to the attributes.
-#' The attributes should have a name and generation procedure defined (ex: `Age = rnorm(mean = 40, sd = 10)`)
-#' @method add_decision_rule
-#' @description Create or replace an existing decision rule
-#'
-#' @section Querrying methods
-#' @method get_chars
-#' @description Get a vector of available characteristics' names
-#' @method get_laws
-#' @description Get a list of alternatives' generation rules
-#' @method get_rule
-#' @description Extract `decision_rule` object
-#'
 #' @examples
 #' ind <- individual$new()
 #' ind$add_characteristics(Age = rnorm(mean = 40, sd = 10))
 #' ind$add_decision_rule(drule <- decision_rule$new())
-#' ind$get_char()
+#' ind$get_chars()
 #' ind$get_laws()
 #' ind$get_rule()
+#' 
 #' @export
+#' @import R6
 
 individual <- R6::R6Class(
   # Class name
@@ -53,6 +40,9 @@ individual <- R6::R6Class(
     decision_rule = NULL,
 
     # Modifying methods
+    #' @method add_characteristics individual
+    #' @description Append a list of `call` attributes definitions to the attributes.
+    #' @param ... The attributes should have a name and generation procedure defined (ex: `Age = rnorm(mean = 40, sd = 10)`)
     add_characteristics = function(...) {
       # Convert to quosure to avoid interpretation
       # The accepted calls for now should require n parameter
@@ -63,6 +53,9 @@ individual <- R6::R6Class(
       )
       invisible(self)
     },
+    #' @method add_decision_rule individual
+    #' @description Create or replace an existing decision rule
+    #' @param decision_rule A decision rule to be assigned to individual profile
     add_decision_rule = function(decision_rule) {
       # Verification
       if (!is.decision_rule(decision_rule)) {
@@ -74,14 +67,23 @@ individual <- R6::R6Class(
     },
 
     # Querrying methods
+    #' @method get_chars individual
+    #' @description Get a vector of available characteristics' names
+    #' @return Character vector with unique characteristics names. 
     get_chars = function() {
       chars <- names(self$characteristics)
       return(chars)
     },
+    #' @method get_laws individual
+    #' @description Get a list of alternatives' generation rules
+    #' @return Get a list of laws associated to individual's characteristics. 
     get_laws = function() {
       laws <- self$characteristics
       return(laws)
     },
+    #' @method get_rule individual
+    #' @description Extract `decision_rule` object
+    #' @return A `decisio_rule` object of the given individual profile.  
     get_rule = function() {
       return(self$decision_rule)
     }

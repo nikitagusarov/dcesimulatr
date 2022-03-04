@@ -18,18 +18,6 @@
 #' @field profiles A list of individual profile.
 #' @field n A list of individuals' numbers per profile (repecting the profiles' order).
 #'
-#' @section Modifying methods
-#' @method add_profile
-#' @description Add new individual profile and respective desired number of individuals.
-#'
-#' @section Querrying methods
-#' @method get_chars
-#' @description Get a vector of available characteristics' names across all individual profiles in population.
-#' @method get_n
-#' @description Get a vector regroupping individuals' numbers per profile
-#' @method get_rules
-#' @description Extract `decision_rule` objects across individual profiles
-#'
 #' @examples
 #' # Create individuals
 #' ind1 <- individual$new()
@@ -43,13 +31,16 @@
 #' pop <- population$new(profiles = list(ind1, ind2), n = list(10, 15))
 #'
 #' # Add new profile
+#' ind3 <- individual$new()
 #' ind3$add_characteristics(Age = rnorm(mean = 50, sd = 4), Salary = runif(min = 1, max = 5))
 #' ind3$add_decision_rule(drule <- decision_rule$new())
 #' pop$add_profile(ind3, 5)
 #' pop$get_chars()
 #' pop$get_n()
 #' pop$get_rules()
+#' 
 #' @export
+#' @import R6
 
 population <- R6::R6Class(
   # Class name
@@ -61,6 +52,11 @@ population <- R6::R6Class(
     n = NULL,
 
     # Initialize
+    #' @method initialize population
+    #' @description Create a new `population` object. 
+    #' The function allows to create an object populated with individual profiles. 
+    #' @param profiles A list of individual profiles for population. 
+    #' @param n The associated numbers for each profile to appear in the dataset. 
     initialize = function(profiles = list(NULL),
                           n = list(NULL)) {
       if (length(profiles) != length(n)) {
@@ -77,6 +73,12 @@ population <- R6::R6Class(
     },
 
     # Methods to modify object
+    #' @method add_profile population
+    #' @description Add new individual profile and respective desired number of individuals.
+    #' @param individual Individual profile to be added
+    #' @param n A number associate to the added profile
+    #' @param profile_name An added profile name, not required. 
+    #' Is NULL by default. 
     add_profile = function(individual, n, profile_name = NULL) {
       # Verification
       if (!any(class(individual) == "individual")) {
@@ -100,6 +102,9 @@ population <- R6::R6Class(
     },
 
     # Methods to querry the object
+    #' @method get_chars population
+    #' @description Get a vector of available characteristics' names across all individual profiles in population.
+    #' @return Character vector with unique characteristics names within populatoin. 
     get_chars = function() {
       # Get list of chars from all profiles
       chars <- lapply(
@@ -114,11 +119,17 @@ population <- R6::R6Class(
       )
       return(chars)
     },
+    #' @method get_n population
+    #' @description Get a vector regroupping individuals' numbers per profile
+    #' @return Numeric vector with numbers of n by individual profile. 
     get_n = function() {
       # Get n as vector
       n <- unlist(self$n)
       return(n)
     },
+    #' @method get_rules population
+    #' @description Extract `decision_rule` objects across individual profiles
+    #' @return A list of rules present within population.  
     get_rules = function() {
       # Querry individuals for their rules
       rules <- lapply(
@@ -144,7 +155,7 @@ population <- R6::R6Class(
 #' @description Test if the given object has an `population` class.
 #'
 #' @param population Input object to test
-#' @return Logic
+#' @return logic
 #'
 #' @examples
 #' pop <- population$new()
@@ -163,7 +174,7 @@ is.population <- function(population) {
 #' @param population Input population configuration
 #' @param seed The seed to be set before attempting to generate population data.
 #' Defaults to NULL.
-#' @param class Logic.
+#' @param class Logical.
 #' Indicates whether or not to include individual class information to the resulting data.frame.
 #' Defaults to NULL.
 #' @return data.frame A data.frame (X) with simulated population (one row per individual).
@@ -183,6 +194,9 @@ is.population <- function(population) {
 #' @export
 
 population_gen <- function(population, seed = NULL, class = TRUE) {
+  # Avoid check failure
+  i <- NULL
+  
   # Verification
   if (!is.population(population)) {
     stop("No valid population object provided")

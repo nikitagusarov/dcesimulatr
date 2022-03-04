@@ -30,11 +30,12 @@ Generate experimental design data (2 in standart notation) from an `experimental
 \examples{
 # Create alternatives
 alt1 <- alternative$new()
-alt1$add_attributes(Quality = purrr::rbernoulli(p = 0.6), Price = rnorm(mean = 5))
+alt1$add_attributes(Quality = runif(min = 0, max = 1), Price = rnorm(mean = 5))
 alt2 <- alternative$new()
 alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 
 # Regroup alternatives into design
-edesign <- experimental_design$new(alternatives = list(alt1, alt2))
+edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 Z <- alternatives_gen(edesign)
+
 }

@@ -17,32 +17,22 @@
 #' the associated random noise terms,
 #' transformation rules and choice selection pattern.
 #'
-#' @field characteristics A list of characteristics' definitions
-#' @field decision_rule A decision rule object
-#'
-#' @section Modifying methods
-#' @method add_noise
-#' @description Append a list of `call` noise definitions to the noise field.
-#' The noise is declared as randomisation function (ex: `evd::rgumbel(loc = 0, scale = 1)`)
-#' @method add_formulas
-#' @description Append a list of `call` formula definitions to the formula field.
-#' The formulas should be defined in the same order as alternatives the individual will face (ex: `Age + 2*Quality, 1.5*Age + Quality^2`)
-#' @method modify_transformation
-#' @description The transformation should be a function of Total Utility (TU).
+#' @field formula A list of formulas associated with respective alternatives. 
+#' @field noise A list of noise specifications on per alternative basis. 
+#' @field transformation The desired transformation to be applied. 
+#' The transformation should be a function of Total Utility (TU).
 #' The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`
-#' @method modify_choice
-#' @description The choice rule represents the criteria of individual's final choice.
-#' The desired criteria should be declared as function.
-#' The default value is `max()` (assuming the individual chooses the alternative with higher associated probability).
+#' @field choice The desired criteria should be declared as function.
 #'
 #' @examples
 #' drule <- decision_rule$new()
-#' drule$add_noise(evd::rgumbel(loc = 0, scale = 1), evd::rgumbel(loc = 0, scale = 2))
+#' drule$add_noise(rnorm(), rnorm(sd = 2))
 #' drule$add_formulas(Age + 2 * Quality, 1.5 * Age + Quality^2)
 #' drule$modify_transformation(TU)
 #' drule$modify_choice(min())
+#' 
 #' @export
-#' @import rlang
+#' @import rlang R6
 
 decision_rule <- R6::R6Class(
   # Class name
@@ -56,6 +46,10 @@ decision_rule <- R6::R6Class(
     choice = rlang::expr(max()),
 
     # Methods
+    #' @method add_noise decision_rule
+    #' @description Append a list of `call` noise definitions to the noise field.
+    #' @param ... The noise is declared as randomisation function 
+    #' (ex: `evd::rgumbel(loc = 0, scale = 1)`)
     add_noise = function(...) {
       self$noise <- c(
         self$noise,
@@ -63,6 +57,10 @@ decision_rule <- R6::R6Class(
       )
       invisible(self)
     },
+    #' @method add_formulas decision_rule
+    #' @description Append a list of `call` formula definitions to the formula field.
+    #' @param ... The formulas should be defined in the same order as alternatives the individual will face 
+    #' (ex: `Age + 2*Quality, 1.5*Age + Quality^2`)
     add_formulas = function(...) {
       # A formula with parameters should be provided
       self$formula <- c(
@@ -71,10 +69,19 @@ decision_rule <- R6::R6Class(
       )
       invisible(self)
     },
+    #' @method modify_transformation decision_rule
+    #' @description Specify transformation to applied on Total Utility for individual within each choice set. 
+    #' @param transformation The desired transformation to be applied. 
+    #' The transformation should be a function of Total Utility (TU).
+    #' The default transforamtion is `expr(exp(TU) / sum(exp(TU)))`
     modify_transformation = function(transformation) {
-      self$transformation <- transformation
+      self$transformation <- enexpr(transformation)
       invisible(self)
     },
+    #' @method modify_choice decision_rule
+    #' @description The choice rule represents the criteria of individual's final choice.
+    #' @param choice The desired criteria should be declared as function.
+    #' The default value is `max()` (assuming the individual chooses the alternative with higher associated probability).
     modify_choice = function(choice) {
       self$choice <- enexpr(choice)
       invisible(self)

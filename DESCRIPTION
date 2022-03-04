@@ -1,18 +1,18 @@
-Package: dcesimaltr
+Package: dcesimulatr
 Type: Package
 Title: Discrete Choice Experiment Simulator
 Version: 0.1.0
 Author: Antoine Dubois, Nikita Gusarov, Amirreza Talebijamalabad
 Maintainer: Nikita Gusarov <nikita.gusarov@univ-grenoble-alpes.fr>
 Imports:
-  evd,
+  R6,
   foreach,
   rlang,
-  mvtnorm
+  tidyr,
+  dplyr
 Description: This package provides a flexible controlled environment for discrete choice experiment simulation. 
-License: GPL
+License: file LICENSE
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.2
 Suggests: 
   testthat (>= 3.0.0)

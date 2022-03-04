@@ -10,6 +10,9 @@ factorial_design(experimental_design, n, sample = FALSE)
 \item{experimental_design}{Input experimnetal design object}
 
 \item{n}{The n is not used in current version}
+
+\item{sample}{Logical. 
+Declares whether the created design should be redused and randomly sampled.}
 }
 \value{
 data.frame A dataset of choice sets (Z) respecting FF Design.
