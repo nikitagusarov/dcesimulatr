@@ -68,7 +68,7 @@ test_that(
     )
 
     # Generate Z
-    Z <- dcesimulatr(e_design, size = 2)
+    Z <- compose_distinct(e_design, size = 2)
 
     # Test
     expect_true(

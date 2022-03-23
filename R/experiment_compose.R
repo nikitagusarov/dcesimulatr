@@ -66,7 +66,7 @@ experiment_compose <- function(population,
       n = n, size = nrow(X)
     )
   } else {
-    Z <- dcesimulatr(
+    Z <- compose_distinct(
       experimental_design,
       n = n, size = nrow(X)
     )

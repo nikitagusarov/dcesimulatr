@@ -32,14 +32,14 @@
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2), n = 4)
 #'
 #' # Compose
-#' Z <- dcesimulatr(edesign, size = 2)
+#' Z <- compose_distinct(edesign, size = 2)
 #' @export
 #' @import foreach
 
-dcesimulatr <- function(experimental_design, n = NULL, size) {
+compose_distinct <- function(experimental_design, n = NULL, size) {
   if (is.null(n)) {
     n <- experimental_design$n
-    if (is.null(n)) stop("No valid 'n' passed to dcesimulatr")
+    if (is.null(n)) stop("No valid 'n' passed to compose_distinct")
   }
 
   # Regenerate Z for every individual
