@@ -68,7 +68,7 @@ test_that(
     )
 
     # Generate Z
-    Z <- compose_random(e_design, size = 2)
+    Z <- dcesimulatr(e_design, size = 2)
 
     # Test
     expect_true(

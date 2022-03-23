@@ -66,7 +66,7 @@ experiment_compose <- function(population,
       n = n, size = nrow(X)
     )
   } else {
-    Z <- compose_random(
+    Z <- dcesimulatr(
       experimental_design,
       n = n, size = nrow(X)
     )
