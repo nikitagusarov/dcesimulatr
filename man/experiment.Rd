@@ -4,7 +4,7 @@
 \alias{experiment}
 \title{Experiment execution}
 \usage{
-experiment(population, experimental_design, seed = NULL)
+experiment(population, experimental_design, seed = NULL, XZ = NULL)
 }
 \arguments{
 \item{population}{A `population` object.}
@@ -13,6 +13,8 @@ experiment(population, experimental_design, seed = NULL)
 
 \item{seed}{The desired seed to be set before data generation.
 No seed is set by default (`seed = NULL`).}
+
+\item{XZ}{The experimental data.frame to be used instead of generated one}
 }
 \value{
 data.frame A complete experimental dataset XZ

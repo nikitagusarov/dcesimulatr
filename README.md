@@ -15,10 +15,10 @@ For now, the package resides in an old repository, keeping the previous naming c
 devtools::install_github("nikitagusarov/dcesimulatr")
 ```
 
-Alternatively, you may use the old repository:
+Alternatively, you may use the old repository, which contains previous package version:
 
 ```
-devtools::install_github("AntoineDubois/dcesimulatr")
+devtools::install_github("AntoineDubois/sdcv2")
 ```
 
 

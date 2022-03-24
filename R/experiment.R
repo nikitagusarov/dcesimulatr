@@ -18,6 +18,7 @@
 #' @param experimental_design An `experimental_desing` object.
 #' @param seed The desired seed to be set before data generation.
 #' No seed is set by default (`seed = NULL`).
+#' @param XZ The experimental data.frame to be used instead of generated one
 #' @return data.frame A complete experimental dataset XZ
 #'
 #' @examples
@@ -40,7 +41,8 @@
 
 experiment <- function(population,
                        experimental_design,
-                       seed = NULL) {
+                       seed = NULL,
+                       XZ = NULL) {
   # Avoid check error
   TR <- CID <- NULL
 
@@ -49,7 +51,8 @@ experiment <- function(population,
   result <- experiment_run(
     population,
     experimental_design,
-    seed
+    seed,
+    XZ
   )
 
   # Retrieve rules from population

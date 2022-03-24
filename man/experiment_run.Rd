@@ -4,7 +4,7 @@
 \alias{experiment_run}
 \title{Run experiment}
 \usage{
-experiment_run(population, experimental_design, seed = NULL)
+experiment_run(population, experimental_design, seed = NULL, XZ = NULL)
 }
 \arguments{
 \item{population}{A `population` object.}
@@ -13,6 +13,8 @@ experiment_run(population, experimental_design, seed = NULL)
 
 \item{seed}{The seed to be preset for data simulation purposes.
 The default is NULL to use system defined or random seed.}
+
+\item{XZ}{The experimental data.frame to be used instead of generated one}
 }
 \value{
 data.frame A complete experimental dataset with associated utilities.

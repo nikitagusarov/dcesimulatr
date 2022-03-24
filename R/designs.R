@@ -96,7 +96,7 @@ random_design <- function(experimental_design, n) {
 #'
 #' @param experimental_design Input experimnetal design object
 #' @param n The n is not used in current version
-#' @param sample Logical.
+#' @param sample Logical
 #' Declares whether the created design should be redused and randomly sampled.
 #' @return data.frame A dataset of choice sets (Z) respecting FF Design.
 #'

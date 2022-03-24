@@ -11,7 +11,7 @@ factorial_design(experimental_design, n, sample = FALSE)
 
 \item{n}{The n is not used in current version}
 
-\item{sample}{Logical.
+\item{sample}{Logical
 Declares whether the created design should be redused and randomly sampled.}
 }
 \value{
