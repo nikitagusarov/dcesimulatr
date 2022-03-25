@@ -68,6 +68,7 @@ experiment <- function(population,
     result <- dplyr::mutate(
       dplyr::group_by(
         result,
+        IID,
         CID
       ),
       TR = eval(rules[[i]]$transformation),

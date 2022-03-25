@@ -67,7 +67,7 @@ experiment_run <- function(population,
   # Apply rules
   for (i in seq_along(population$profiles)) {
     # Get classes
-    cl <- unique(XZ$class)
+    cl <- unique(XZ$AID)
     # Update noise params
     noise <- rules[[i]]$noise
     # Update rules

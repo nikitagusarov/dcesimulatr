@@ -217,7 +217,7 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
   # Check class
   if (class(class) != "logical") {
     # Set info variable for class
-    if (length(population$profiles) > 1 & is.null(class)) {
+    if (length(population$profiles) >= 1 & is.null(class)) {
       class <- TRUE
     } else {
       class <- FALSE
