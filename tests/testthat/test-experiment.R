@@ -74,7 +74,8 @@ test_that(
       all(dim(res_fin) == c(150, 13))
     )
     expect_true(
-      length(unique(res_fin$CID)) ==
+      length(unique(res_fin$CID)) *
+        length(unique(res_fin$IID)) ==
         sum(res_fin$CH)
     )
   }
