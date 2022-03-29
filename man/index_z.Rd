@@ -33,7 +33,7 @@ alt2$add_attributes(Size = runif(min = 0, max = 1), Price = rnorm(mean = 6))
 
 # Regroup alternatives into design
 edesign <- experimental_design$new(alternatives = list(alt1, alt2))
-Z <- random_design(edesign, n = 1)
+Z <- designs_r(edesign, n = 1)
 
 # Idendex data frame
 Z <- index_z(Z, alt_id = 1)

@@ -69,7 +69,7 @@ class_laws <- function(laws) {
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
-#' Z <- random_design(edesign, n = 1)
+#' Z <- designs_r(edesign, n = 1)
 #'
 #' # Querry object
 #' attr <- edesign$get_attributes()
@@ -167,7 +167,7 @@ laws_index <- function(experimental_design, type = "rand") {
 #'
 #' # Regroup alternatives into design
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
-#' Z <- random_design(edesign, n = 1)
+#' Z <- designs_r(edesign, n = 1)
 #'
 #' # Idendex data frame
 #' Z <- index_z(Z, alt_id = 1)

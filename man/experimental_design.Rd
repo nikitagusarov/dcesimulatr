@@ -31,8 +31,15 @@ In the default configuration available designs are: "random", "factorial" and "m
 
 \item{\code{n}}{A number of choice sets per individual for "random" design configuration.}
 
+\item{\code{resample}}{Logical.
+Indicates whether the design part generated from factors should be resampled (shuffled)}
+
 \item{\code{identical}}{Logical.
 Declares whether the choice sets should be identical across individuals or not.}
+
+\item{\code{replace}}{Logical.
+States whether the replacement should be performed when sampling from full factorial design.
+Default to FALSE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -58,6 +65,8 @@ It's possible to create the whole object with one command.
   alternatives = list(NULL),
   design = "random",
   n = NULL,
+  resample = NULL,
+  replace = FALSE,
   identical = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -74,6 +83,11 @@ The preset value is "random".}
 
 \item{\code{n}}{A number of choice sets per individual for "random" design configuration.
 NULL by deafult.}
+
+\item{\code{resample}}{Declares whether the dataset should be resampled (shuffled) in case of factorial design element presence.}
+
+\item{\code{replace}}{Logical.
+If resampling strategy is used then this parameter indicates the resampling strategy, see sample() for more details.}
 
 \item{\code{identical}}{Logical.
 Declares whether the choice sets should be identical across individuals or not.

@@ -4,7 +4,13 @@
 \alias{alternatives_gen}
 \title{Generate experimental design (choice sets)}
 \usage{
-alternatives_gen(experimental_design, n = NULL, seed = NULL, format = "long")
+alternatives_gen(
+  experimental_design,
+  n = NULL,
+  resample = NULL,
+  seed = NULL,
+  format = "long"
+)
 }
 \arguments{
 \item{experimental_design}{Input experimental design configuration}
@@ -12,6 +18,9 @@ alternatives_gen(experimental_design, n = NULL, seed = NULL, format = "long")
 \item{n}{It is possible to generate different number of choice sets without directly modifying the `experimental_design` object.
 User may locally overwrite the `n` value for the particular execution.
 This parameter is for internal use in conjunction with various wrappers.}
+
+\item{resample}{Logical.
+Declares whether the created design should be redused and randomly sampled.}
 
 \item{seed}{The seed to be set before attempting to generate data.
 Defaults to NULL.}

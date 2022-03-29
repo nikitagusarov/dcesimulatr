@@ -34,7 +34,7 @@ test_that(
       class(Z) == "data.frame"
     )
     expect_true(
-      all(colnames(Z) == c("Price", "Opinion", "Quality", "AID", "CID"))
+      all(colnames(Z) == c("CID", "AID", "Price", "Opinion", "Quality"))
     )
     expect_true(
       all(dim(Z) == c(40, 5))

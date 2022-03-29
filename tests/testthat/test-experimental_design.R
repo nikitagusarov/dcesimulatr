@@ -103,7 +103,7 @@ test_that(
       class(Z) == "data.frame"
     )
     expect_true(
-      all(colnames(Z) == c("Price", "Opinion", "Quality", "AID", "CID"))
+      all(colnames(Z) == c("CID", "AID", "Price", "Opinion", "Quality"))
     )
     expect_true(
       all(dim(Z) == c(20, 5))
@@ -131,7 +131,7 @@ test_that(
     e_design <- experimental_design$new(
       list(alt1, alt2),
       design = "factorial",
-      n = 10
+      n = 16
     )
 
     # Generate Z
@@ -184,7 +184,7 @@ test_that(
       all(colnames(Z) == c("CID", "AID", "Price", "Opinion", "Quality"))
     )
     expect_true(
-      all(dim(Z) == c(16, 5))
+      all(dim(Z) == c(20, 5))
     )
   }
 )

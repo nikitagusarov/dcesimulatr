@@ -34,13 +34,13 @@ test_that(
       class(Z) == "data.frame"
     )
     expect_true(
-      all(colnames(Z) == c("Price", "Opinion", "Quality", "AID", "CID"))
+      all(colnames(Z) == c("CID", "AID", "Price", "Opinion", "Quality"))
     )
     expect_true(
       all(dim(Z) == c(40, 5))
     )
     expect_true(
-      sum(Z[1:20, 1:3] == Z[21:40, 1:3], na.rm = TRUE) == 0
+      sum(Z[1:20, 3:5] == Z[21:40, 3:5], na.rm = TRUE) == 0
     )
   }
 )

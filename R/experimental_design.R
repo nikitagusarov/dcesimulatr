@@ -21,8 +21,13 @@
 #' This field assumes that a savvy user may desire to extend the number of available experimental designs.
 #' In the default configuration available designs are: "random", "factorial" and "mixed".
 #' @field n A number of choice sets per individual for "random" design configuration.
+#' @field resample Logical.
+#' Indicates whether the design part generated from factors should be resampled (shuffled)
 #' @field identical Logical.
 #' Declares whether the choice sets should be identical across individuals or not.
+#' @field replace Logical.
+#' States whether the replacement should be performed when sampling from full factorial design.
+#' Default to FALSE.
 #'
 #' @examples
 #' # Create alternatives
@@ -43,6 +48,8 @@ experimental_design <- R6::R6Class(
     alternatives = NULL,
     design = NULL,
     n = NULL,
+    resample = NULL,
+    replace = FALSE,
     identical = FALSE,
 
     # Initialize
@@ -56,6 +63,9 @@ experimental_design <- R6::R6Class(
     #' The preset value is "random".
     #' @param n A number of choice sets per individual for "random" design configuration.
     #' NULL by deafult.
+    #' @param replace Logical.
+    #' If resampling strategy is used then this parameter indicates the resampling strategy, see sample() for more details.
+    #' @param resample Declares whether the dataset should be resampled (shuffled) in case of factorial design element presence.
     #' @param identical Logical.
     #' Declares whether the choice sets should be identical across individuals or not.
     #' The default value if FALSE.
@@ -63,11 +73,15 @@ experimental_design <- R6::R6Class(
     initialize = function(alternatives = list(NULL),
                           design = "random",
                           n = NULL,
+                          resample = NULL,
+                          replace = FALSE,
                           identical = FALSE) {
       # Write values
       self$alternatives <- alternatives
       self$design <- design
       self$n <- n
+      self$resample <- resample
+      self$replace <- replace
       self$identical <- identical
     },
 
@@ -180,6 +194,8 @@ is.experimental_design <- function(experimental_design) {
 #' @param format The resulting data format specification.
 #' At this tage only the "long" format is supported.
 #' Meaning each line contains one alternative.
+#' @param resample Logical.
+#' Declares whether the created design should be redused and randomly sampled.
 #' @return data.frame A data.frame (Z) with simulated choice sets
 #' (one row per alternative if élongé format was declared).
 #'
@@ -197,6 +213,7 @@ is.experimental_design <- function(experimental_design) {
 
 alternatives_gen <- function(experimental_design,
                              n = NULL,
+                             resample = NULL,
                              seed = NULL,
                              format = "long") {
   # Avoid check failure
@@ -215,41 +232,34 @@ alternatives_gen <- function(experimental_design,
     n <- experimental_design$n
     if (is.null(n)) stop("No valid 'n' provided")
   }
+  if (is.null(resample)) {
+    resample <- experimental_design$resample
+    if (is.null(resample)) {
+      resample <- FALSE
+    }
+  }
 
   # Reset seed if required
   if (!is.null(seed)) {
     set.seed(seed)
   }
 
-  # Random
-  if (experimental_design$design == "random") {
-    Z <- random_design(
-      experimental_design,
-      n = n
-    )
-  }
+  # Generate design
+  Z <- designs_gen(
+    experimental_design,
+    n = n
+  )
 
-  # Factorial
-  if (experimental_design$design == "factorial") {
-    Z <- factorial_design(
-      experimental_design,
-      n = n
-    )
-  }
+  # Verification
+  if (is.null(Z)) {
+    stop("The resulting experimental design appears empty, aborting.")
+  } else {
+    # Long format dataset
+    if (format == "long") {
+      Z <- dplyr::arrange(Z, CID)
+    }
 
-  # Mixed
-  if (experimental_design$design == "mixed") {
-    Z <- mixed_design(
-      experimental_design,
-      n = n
-    )
+    # Arrange results
+    return(Z)
   }
-
-  # Long format dataset
-  if (format == "long") {
-    Z <- dplyr::arrange(Z, CID)
-  }
-
-  # Arrange results
-  return(Z)
 }

@@ -25,7 +25,11 @@
 #' # Generate individual profile and population
 #' ind3 <- individual$new()
 #' ind3$add_characteristics(Age = rnorm(mean = 50, sd = 4), Salary = runif(min = 1, max = 5))
-#' ind3$add_decision_rule(drule <- decision_rule$new())
+#' drule <- decision_rule$new()
+#' drule$add_noise(rnorm(), rnorm(sd = 2))
+#' drule$add_formulas(Age + 2 * Quality, 1.5 * Age + Quality^2)
+#' ind3$add_decision_rule(drule)
+#' 
 #' pop <- population$new(profiles = list(ind3), n = list(5))
 #'
 #' # Create alternatives and regroup them into design
@@ -44,7 +48,7 @@ experiment <- function(population,
                        seed = NULL,
                        XZ = NULL) {
   # Avoid check error
-  TR <- CID <- NULL
+  TR <- CID <- IID <- NULL
 
   # We start with generation of the datastructure
   # and applying utility formulas
