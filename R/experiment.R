@@ -29,7 +29,7 @@
 #' drule$add_noise(rnorm(), rnorm(sd = 2))
 #' drule$add_formulas(Age + 2 * Quality, 1.5 * Age + Quality^2)
 #' ind3$add_decision_rule(drule)
-#' 
+#'
 #' pop <- population$new(profiles = list(ind3), n = list(5))
 #'
 #' # Create alternatives and regroup them into design

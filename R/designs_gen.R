@@ -31,11 +31,9 @@
 #' Z <- designs_gen(edesign, n = 2)
 #' @export
 
-designs_gen <- function(
-  experimental_design, 
-  n = NULL, 
-  resample = NULL
-) {
+designs_gen <- function(experimental_design,
+                        n = NULL,
+                        resample = NULL) {
   # Avoid warnings on undeclared variales
   CID <- AID <- NULL
 

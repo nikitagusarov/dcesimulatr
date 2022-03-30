@@ -5,7 +5,7 @@
 # nikita.gusarov@univ-grenoble-alpes.fr - February 2022
 
 #######################################
-# 2. Defining "full factorail" design #
+# 1. Defining "full factorail" design #
 #######################################
 
 #' @title Design matrix generation for factors
@@ -16,7 +16,7 @@
 #'
 #' @param experimental_design Input experimnetal design object
 #' @param n The n is not used in current version
-#' @param resample Logical. 
+#' @param resample Logical.
 #' Declares whether the dataset should be resampled (shuffled) in case of factorial design element presence.
 #' @return data.frame A dataset of choice sets (Z) respecting FF Design.
 #'
@@ -57,7 +57,7 @@ designs_f <- function(experimental_design, n = NULL, resample = NULL) {
     type = "c"
   )
 
-  # Verification step
+  # Z generation from laws step
   if (sum(sapply(index, length)) == 0) {
     Z <- NULL
   } else {
@@ -95,6 +95,7 @@ designs_f <- function(experimental_design, n = NULL, resample = NULL) {
     }
   }
 
+  # Z resampling part
   if (!is.null(Z)) {
     # Add possibility to get random draws from design
     if (nrow(Z) != n | resample == TRUE) {

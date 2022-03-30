@@ -11,7 +11,7 @@ designs_f(experimental_design, n = NULL, resample = NULL)
 
 \item{n}{The n is not used in current version}
 
-\item{resample}{Logical. 
+\item{resample}{Logical.
 Declares whether the dataset should be resampled (shuffled) in case of factorial design element presence.}
 }
 \value{

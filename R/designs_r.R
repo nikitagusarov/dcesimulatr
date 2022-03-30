@@ -31,10 +31,8 @@
 #' @export
 #' @import foreach
 
-designs_r <- function(
-  experimental_design, 
-  n = NULL
-) {
+designs_r <- function(experimental_design,
+                      n = NULL) {
   # Avoid warnings on undeclared variales
   CID <- AID <- NULL
 
