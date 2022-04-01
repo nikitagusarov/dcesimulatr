@@ -89,28 +89,64 @@ experiment_run <- function(population,
       (length(form) == 1) &
         (length(form) != length(cl))
     ) {
-      form <- rep(form, length(cl))
-    }
+      # Apply to XZ
+      for (k in unique(XZ$IID[XZ$class == i])) {
+          # Get respecive formula
+          formula_k <- form[[1]]
 
-    # Apply to XZ
-    for (j in seq_along(cl)) {
-      # Get noise params for alternative
-      noise_j <- noise[[j]]
-      noise_j$n <- nrow(XZ[
-        (XZ$class == i) & (XZ$AID == j),
-      ])
+          # Application
+          XZ[
+            (XZ$IID == k) & (XZ$class == i), 
+          ] <- dplyr::mutate(
+            XZ[
+              (XZ$IID == k) & (XZ$class == i),
+            ],
+            DU = !!formula_k
+          )
 
-      # Get respecive formula
-      formula_j <- form[[j]]
+          for (j in seq_along(cl)) {
+            # Get noise params for alternative
+            noise_j <- noise[[j]]
+            noise_j$n <- nrow(XZ[
+              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+            ])
 
-      # Application
-      XZ[(XZ$class == i) & (XZ$AID == j), ] <- dplyr::mutate(
-        XZ[
-          (XZ$class == i) & (XZ$AID == j),
-        ],
-        DU = !!formula_j,
-        TU = DU + !!noise_j
-      )
+            # Application
+            XZ[
+              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
+            ] <- dplyr::mutate(
+              XZ[
+                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+              ],
+              TU = DU + !!noise_j
+            )
+          }
+        }
+    } else {
+      # Apply to XZ
+      for (j in seq_along(cl)) {
+        for (k in unique(XZ$IID)) {
+          # Get noise params for alternative
+          noise_j <- noise[[j]]
+          noise_j$n <- nrow(XZ[
+            (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+          ])
+
+          # Get respecive formula
+          formula_j <- form[[j]]
+
+          # Application
+          XZ[
+            (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
+          ] <- dplyr::mutate(
+            XZ[
+              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+            ],
+            DU = !!formula_j,
+            TU = DU + !!noise_j
+          )
+        }
+      }
     }
   }
 
