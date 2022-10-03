@@ -16,6 +16,8 @@
 #' @param experimental_design An `experimental_desing` object.
 #' @param seed The desired seed to be set before data generation.
 #' No seed is set by default (`seed = NULL`).
+#' @param X The population characteristics matrix X. 
+#' If present the population object is not used. 
 #' @return data.frame A complete experimental dataset XZ
 #'
 #' @examples
@@ -41,7 +43,8 @@
 
 experiment_compose <- function(population,
                                experimental_design,
-                               seed = NULL) {
+                               seed = NULL,
+                               X = NULL) {
   # Set configuration variable
   # Number of observation per ind
   if (is.null(experimental_design$n)) {
@@ -57,10 +60,12 @@ experiment_compose <- function(population,
   identical <- experimental_design$identical
 
   # Generate population
-  X <- population_gen(
-    population,
-    seed = NULL, class = NULL
-  )
+  if (is.null(X)) {
+    X <- population_gen(
+      population,
+      seed = NULL, class = NULL
+    )
+  }
 
   # Generate alternatives
   if (identical == TRUE) {

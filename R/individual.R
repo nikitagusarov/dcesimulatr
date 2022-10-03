@@ -18,6 +18,7 @@
 #'
 #' @field characteristics A list of characteristics' definitions
 #' @field decision_rule A decision rule object
+#' @filed X A dataset describing individuals
 #'
 #' @examples
 #' ind <- individual$new()
@@ -37,6 +38,7 @@ individual <- R6::R6Class(
     # Values
     characteristics = NULL,
     decision_rule = NULL,
+    X = NULL,
 
     # Modifying methods
     #' @method add_characteristics individual
@@ -64,6 +66,15 @@ individual <- R6::R6Class(
       self$decision_rule <- decision_rule
       invisible(self)
     },
+    add_data = function(X) {
+      # Verification
+      if (!is.data.frame(X)) {
+        "An error occured, no valid data provided (supply a data.frame object"
+      }
+      # Assignement
+      self$X <- X
+      invisible(self)
+    },
 
     # Querrying methods
     #' @method get_chars individual
@@ -85,6 +96,12 @@ individual <- R6::R6Class(
     #' @return A `decisio_rule` object of the given individual profile.
     get_rule = function() {
       return(self$decision_rule)
+    },
+    #' @method get_data individual
+    #' @description Extract `data` object
+    #' @return A `data` object of the given individual profile.
+    get_data = function() {
+      return(self$X)
     }
   )
 )

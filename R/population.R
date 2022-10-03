@@ -17,7 +17,7 @@
 #'
 #' @field profiles A list of individual profile.
 #' @field n A list of individuals' numbers per profile (repecting the profiles' order).
-#'
+#' 
 #' @examples
 #' # Create individuals
 #' ind1 <- individual$new()
@@ -138,6 +138,16 @@ population <- R6::R6Class(
         }
       )
       return(rules)
+    },
+    get_data = function() {
+      # Querry individuals for their rules
+      X_list <- lapply(
+        self$profiles,
+        function(x) {
+          x$get_data()
+        }
+      )
+      return(X_list)
     }
   )
 )
@@ -224,40 +234,65 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
     }
   }
 
-  # Run simulation
-  X <- foreach(
-    i = seq_along(population$profiles),
-    .combine = "rbind"
-  ) %do% {
-    # Get profile chars, laws and obs numbers
-    laws <- population$profiles[[i]]$get_laws()
-    n <- population$get_n()[i]
-    # Update laws with required n
-    for (j in seq_along(laws)) {
-      laws[[j]]$n <- n
-    }
+  # Get data
+  X_list = population$get_data()
 
-    # Create DF per ind profile
-    X <- data.frame(
-      lapply(laws, eval)
-    )
+  if (all(unlist(lapply(X_list, is.null)))) {
+    # Run simulation
+    X <- foreach(
+      i = seq_along(population$profiles),
+      .combine = "rbind"
+    ) %do% {
+      # Get profile chars, laws and obs numbers
+      laws <- population$profiles[[i]]$get_laws()
+      n <- population$get_n()[i]
+      # Update laws with required n
+      for (j in seq_along(laws)) {
+        laws[[j]]$n <- n
+      }
 
-    # Check compeltenes
-    if (
-      !rlang::is_empty(
-        adchars <- setdiff(chars, colnames(X))
+      # Create DF per ind profile
+      X <- data.frame(
+        lapply(laws, eval)
       )
-    ) {
-      X[adchars] <- rep(NA, n)
-    }
 
-    # Add profile information
-    if (class == TRUE) {
-      X["class"] <- rep(i, n)
-    }
+      # Check compeltenes
+      if (
+        !rlang::is_empty(
+          adchars <- setdiff(chars, colnames(X))
+        )
+      ) {
+        X[adchars] <- rep(NA, n)
+      }
 
-    # Exit foreach loop
-    return(X)
+      # Add profile information
+      if (class == TRUE) {
+        X["class"] <- rep(i, n)
+      }
+
+      # Exit foreach loop
+      return(X)
+    }
+  } else 
+  if (all(!unlist(lapply(X_list, is.null)))) {
+    X <- foreach(
+      i = seq_along(X_list),
+      .combine = "rbind"
+    ) %do% {
+      X = X_list[[i]]
+
+      # Add profile information
+      if (class == TRUE) {
+        X["class"] <- rep(i, nrow(X))
+      }
+
+      # Exit foreach loop
+      return(X)
+    }
+  } else {
+    message(
+      "Please, avoid mixing manually defined individual profiles with those that should be generated."
+    )
   }
 
   # Add Individual ID

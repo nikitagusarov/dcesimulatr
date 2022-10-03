@@ -18,6 +18,8 @@
 #' @param experimental_design An `experimental_desing` object.
 #' @param seed The seed to be preset for data simulation purposes.
 #' The default is NULL to use system defined or random seed.
+#' @param X The population characteristics matrix X. 
+#' If present the population object will only be used for decision rules. 
 #' @param XZ The experimental data.frame to be used instead of generated one
 #' @return data.frame A complete experimental dataset with associated utilities.
 #'
@@ -45,17 +47,26 @@
 experiment_run <- function(population,
                            experimental_design,
                            seed = NULL,
+                           X = NULL, 
                            XZ = NULL) {
   # Avoid check error
   DU <- NULL
 
   # First we perform coupling
   if (is.null(XZ)) {
-    XZ <- experiment_compose(
-      population,
-      experimental_design,
-      seed
-    )
+    if (is.null(X)) {
+      XZ <- experiment_compose(
+        population,
+        experimental_design,
+        seed
+      )
+    } else {
+      XZ <- experiment_compose(
+        experimental_design,
+        seed,
+        X = X
+      )
+    }
   } else {
     stop("No means to create data provided.")
   }
