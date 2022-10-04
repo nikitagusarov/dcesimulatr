@@ -328,7 +328,7 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
       return(X)
     }
   } else {
-    message(
+    stop(
       "Please, avoid mixing manually defined individual profiles with those that should be generated."
     )
   }
