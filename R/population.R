@@ -17,6 +17,9 @@
 #'
 #' @field profiles A list of individual profile.
 #' @field n A list of individuals' numbers per profile (repecting the profiles' order).
+#' @field each A list of numbers. 
+#' Indicates how many times each individual from a supplied X data.frame (containing individual characteristics)
+#' should appear in the dataset. 
 #' 
 #' @examples
 #' # Create individuals
@@ -49,6 +52,7 @@ population <- R6::R6Class(
     # Values
     profiles = NULL,
     n = NULL,
+    each = NULL,
 
     # Initialize
     #' @method initialize population
@@ -56,8 +60,12 @@ population <- R6::R6Class(
     #' The function allows to create an object populated with individual profiles.
     #' @param profiles A list of individual profiles for population.
     #' @param n The associated numbers for each profile to appear in the dataset.
+    #' @param each A list of numbers. 
+    #' Indicates how many times each individual from a supplied X data.frame (containing individual characteristics)
+    #' should appear in the dataset. 
     initialize = function(profiles = list(NULL),
-                          n = list(NULL)) {
+                          n = list(NULL),
+                          each = list(NULL)) {
       if (length(profiles) != length(n)) {
         stop("Not all of profiles have corresponding n")
       }
@@ -69,6 +77,7 @@ population <- R6::R6Class(
       # Write values
       self$profiles <- profiles
       self$n <- n
+      self$each <- each
     },
 
     # Methods to modify object
@@ -76,9 +85,12 @@ population <- R6::R6Class(
     #' @description Add new individual profile and respective desired number of individuals.
     #' @param individual Individual profile to be added
     #' @param n A number associate to the added profile
+    #' @field each A list of numbers. 
+    #' Indicates how many times each individual from a supplied X data.frame (containing individual characteristics)
+    #' should appear in the dataset. 
     #' @param profile_name An added profile name, not required.
     #' Is NULL by default.
-    add_profile = function(individual, n, profile_name = NULL) {
+    add_profile = function(individual, n, each, profile_name = NULL) {
       # Verification
       if (!any(class(individual) == "individual")) {
         stop("No valid individual object provided")
@@ -96,6 +108,13 @@ population <- R6::R6Class(
         self$n[[{{ profile_name }}]] <- n
       } else {
         self$n[[length(self$n) + 1]] <- n
+      }
+
+      # Add each to list of n
+      if (!is.null(profile_name)) {
+        self$each[[{{ profile_name }}]] <- each
+      } else {
+        self$each[[length(self$n) + 1]] <- each
       }
       invisible(self)
     },
@@ -126,6 +145,14 @@ population <- R6::R6Class(
       n <- unlist(self$n)
       return(n)
     },
+    #' @method get_each population
+    #' @description Get a vector regroupping individuals' numbers per profile
+    #' @return Numeric vector with numbers of n by individual profile.
+    get_each = function() {
+      # Get n as vector
+      each <- unlist(self$each)
+      return(each)
+    },
     #' @method get_rules population
     #' @description Extract `decision_rule` objects across individual profiles
     #' @return A list of rules present within population.
@@ -139,6 +166,9 @@ population <- R6::R6Class(
       )
       return(rules)
     },
+    #' @method get_data population
+    #' @description Extract `data` objects across individual profiles
+    #' @return A list of rules present within population.
     get_data = function() {
       # Querry individuals for their rules
       X_list <- lapply(
@@ -235,9 +265,9 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
   }
 
   # Get data
-  X_list = population$get_data()
+  X_null = unlist(lapply(population$get_data(), is.null))
 
-  if (all(unlist(lapply(X_list, is.null)))) {
+  if (all(X_null)) {
     # Run simulation
     X <- foreach(
       i = seq_along(population$profiles),
@@ -274,12 +304,20 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
       return(X)
     }
   } else 
-  if (all(!unlist(lapply(X_list, is.null)))) {
+  if (all(!X_null)) {
     X <- foreach(
-      i = seq_along(X_list),
+      i = seq_along(population$profiles),
       .combine = "rbind"
     ) %do% {
-      X = X_list[[i]]
+      # Get data
+      each <- population$get_each()[i]
+      X <- population$profiles[[i]]$get_data() %>%
+        dplyr::slice(
+          rep(
+            1:n(), 
+            each = ifelse(is.null(each), 1, each)
+          )
+        )
 
       # Add profile information
       if (class == TRUE) {
