@@ -76,6 +76,7 @@ experiment_run <- function(population,
 
   # Create deterministic utility dummy
   XZ$DU <- rep(NA, nrow(XZ))
+  XZ$ER <- rep(NA, nrow(XZ))
   XZ$TU <- rep(NA, nrow(XZ))
 
   # Apply rules
@@ -129,7 +130,8 @@ experiment_run <- function(population,
               XZ[
                 (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
               ],
-              TU = DU + !!noise_j
+              TU = DU + !!noise_j,
+              ER = TU - DU
             )
           }
         }
@@ -156,7 +158,8 @@ experiment_run <- function(population,
                 (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
               ],
               DU = !!formula_j,
-              TU = DU + noise_local[j]
+              ER = noise_local[j],
+              TU = DU + ER
             )
           }
         }
@@ -179,7 +182,8 @@ experiment_run <- function(population,
                 (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
               ],
               DU = !!formula_j,
-              TU = DU + !!noise_j
+              TU = DU + !!noise_j,
+              ER = TU - DU
             )
           }
         }
