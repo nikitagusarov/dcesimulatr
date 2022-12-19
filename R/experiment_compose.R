@@ -59,26 +59,40 @@ experiment_compose <- function(population,
   # Whether we desire identical choice sets across ind
   identical <- experimental_design$identical
 
-  # Generate population
+  st <- system.time({
+    # Generate population
+    if (is.null(X)) {
+      X <- population_gen(
+        population,
+        seed = NULL, class = NULL
+      )
+    }
+  })
   if (is.null(X)) {
-    X <- population_gen(
-      population,
-      seed = NULL, class = NULL
+    message(
+      "Population generated in :\n\t",
+      cat(paste(st, sep = " "))
     )
   }
 
-  # Generate alternatives
-  if (identical == TRUE) {
-    Z <- compose_identical(
-      experimental_design,
-      n = n, size = nrow(X)
-    )
-  } else {
-    Z <- compose_distinct(
-      experimental_design,
-      n = n, size = nrow(X)
-    )
-  }
+  st <- system.time({
+    # Generate alternatives
+    if (identical == TRUE) {
+      Z <- compose_identical(
+        experimental_design,
+        n = n, size = nrow(X)
+      )
+    } else {
+      Z <- compose_distinct(
+        experimental_design,
+        n = n, size = nrow(X)
+      )
+    }
+  })
+  message(
+    "Alternative profiles generated in :\n\t",
+    cat(paste(st, sep = " "))
+  )
 
   # Bind frames
   XZ <- cbind(

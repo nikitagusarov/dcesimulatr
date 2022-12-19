@@ -52,144 +52,155 @@ experiment_run <- function(population,
   # Avoid check error
   DU <- NULL
 
-  # First we perform coupling
-  if (is.null(XZ)) {
-    if (is.null(X)) {
-      XZ <- experiment_compose(
-        population,
-        experimental_design,
-        seed
-      )
+  st <- system.time({
+    # First we perform coupling
+    if (is.null(XZ)) {
+      if (is.null(X)) {
+        XZ <- experiment_compose(
+          population,
+          experimental_design,
+          seed
+        )
+      } else {
+        XZ <- experiment_compose(
+          experimental_design,
+          seed,
+          X = X
+        )
+      }
     } else {
-      XZ <- experiment_compose(
-        experimental_design,
-        seed,
-        X = X
-      )
+      stop("No means to create data provided.")
     }
-  } else {
-    stop("No means to create data provided.")
-  }
+  })
+  message(
+    "Experimental dataset composed in :\n\t", 
+    paste(st, sep = " ")
+  )
 
-  # Retrieve rules from population
-  rules <- population$get_rules()
+  st <- system.time({
+    # Retrieve rules from population
+    rules <- population$get_rules()
 
-  # Create deterministic utility dummy
-  XZ$DU <- rep(NA, nrow(XZ))
-  XZ$ER <- rep(NA, nrow(XZ))
-  XZ$TU <- rep(NA, nrow(XZ))
+    # Create deterministic utility dummy
+    XZ$DU <- rep(NA, nrow(XZ))
+    XZ$ER <- rep(NA, nrow(XZ))
+    XZ$TU <- rep(NA, nrow(XZ))
 
-  # Apply rules
-  for (i in seq_along(population$profiles)) {
-    # Get classes
-    cl <- unique(XZ$AID)
-    # Update noise params
-    noise <- rules[[i]]$noise
-    # Update rules
-    form <- rules[[i]]$formula
+    # Apply rules
+    for (i in seq_along(population$profiles)) {
+      # Get classes
+      cl <- unique(XZ$AID)
+      # Update noise params
+      noise <- rules[[i]]$noise
+      # Update rules
+      form <- rules[[i]]$formula
 
-    # Verify length of noise
-    if (
-      (length(noise) == 1) &
-        (length(noise) != length(cl))
-    ) {
-      # noise <- rep(noise, length(cl))
-    }
-
-    # Verify length of formula
-    if (
-      (length(form) == 1) &
-        (length(form) != length(cl))
-    ) {
-      # Apply to XZ
-      for (k in unique(XZ$IID[XZ$class == i])) {
-          # Get respecive formula
-          formula_k <- form[[1]]
-
-          # Application
-          XZ[
-            (XZ$IID == k) & (XZ$class == i), 
-          ] <- dplyr::mutate(
-            XZ[
-              (XZ$IID == k) & (XZ$class == i),
-            ],
-            DU = !!formula_k
-          )
-
-          for (j in seq_along(cl)) {
-            # Get noise params for alternative
-            noise_j <- noise[[j]]
-            n <- nrow(XZ[
-              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-            ])
-
-            # Application
-            XZ[
-              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
-            ] <- dplyr::mutate(
-              XZ[
-                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-              ],
-              TU = DU + !!noise_j,
-              ER = TU - DU
-            )
-          }
-        }
-    } else {
+      # Verify length of noise
       if (
         (length(noise) == 1) &
           (length(noise) != length(cl))
       ) {
-        for (k in unique(XZ$IID)) {
-          noise_local <- eval(noise[[1]])
-          message("Noise configuration is :", noise_local)
-          for (j in seq_along(cl)) {
-            n <- nrow(XZ[
-              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-            ]); 
-            # message("Detected ", n, " rows ...")
+        # noise <- rep(noise, length(cl))
+      }
+
+      # Verify length of formula
+      if (
+        (length(form) == 1) &
+          (length(form) != length(cl))
+      ) {
+        # Apply to XZ
+        for (k in unique(XZ$IID[XZ$class == i])) {
             # Get respecive formula
-            formula_j <- form[[j]]
+            formula_k <- form[[1]]
+
             # Application
             XZ[
-              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
+              (XZ$IID == k) & (XZ$class == i), 
             ] <- dplyr::mutate(
               XZ[
-                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+                (XZ$IID == k) & (XZ$class == i),
               ],
-              DU = !!formula_j,
-              ER = noise_local[j],
-              TU = DU + ER
+              DU = !!formula_k
             )
+
+            for (j in seq_along(cl)) {
+              # Get noise params for alternative
+              noise_j <- noise[[j]]
+              n <- nrow(XZ[
+                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+              ])
+
+              # Application
+              XZ[
+                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
+              ] <- dplyr::mutate(
+                XZ[
+                  (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+                ],
+                TU = DU + !!noise_j,
+                ER = TU - DU
+              )
+            }
           }
-        }
       } else {
-      # Apply to XZ
-        for (j in seq_along(cl)) {
+        if (
+          (length(noise) == 1) &
+            (length(noise) != length(cl))
+        ) {
           for (k in unique(XZ$IID)) {
-            # Get noise params for alternative
-            noise_j <- noise[[j]]
-            n <- nrow(XZ[
-              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-            ])
-            # Get respecive formula
-            formula_j <- form[[j]]
-            # Application
-            XZ[
-              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
-            ] <- dplyr::mutate(
-              XZ[
+            noise_local <- eval(noise[[1]])
+            for (j in seq_along(cl)) {
+              n <- nrow(XZ[
                 (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-              ],
-              DU = !!formula_j,
-              TU = DU + !!noise_j,
-              ER = TU - DU
-            )
+              ]); 
+              # message("Detected ", n, " rows ...")
+              # Get respecive formula
+              formula_j <- form[[j]]
+              # Application
+              XZ[
+                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
+              ] <- dplyr::mutate(
+                XZ[
+                  (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+                ],
+                DU = !!formula_j,
+                ER = noise_local[j],
+                TU = DU + ER
+              )
+            }
+          }
+        } else {
+        # Apply to XZ
+          for (j in seq_along(cl)) {
+            for (k in unique(XZ$IID)) {
+              # Get noise params for alternative
+              noise_j <- noise[[j]]
+              n <- nrow(XZ[
+                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+              ])
+              # Get respecive formula
+              formula_j <- form[[j]]
+              # Application
+              XZ[
+                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
+              ] <- dplyr::mutate(
+                XZ[
+                  (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+                ],
+                DU = !!formula_j,
+                TU = DU + !!noise_j,
+                ER = TU - DU
+              )
+            }
           }
         }
       }
     }
-  }
+  })
+  message(
+    "Decision rules applied in :\n\t",
+    cat(paste(st, sep = " "))
+  )
 
   # Output
   return(XZ)

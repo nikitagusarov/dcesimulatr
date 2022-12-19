@@ -65,6 +65,7 @@ designs_f <- function(experimental_design, n = NULL, resample = NULL) {
     attr <- experimental_design$get_attributes(index)
 
     # Generate Z - Run simulation
+    # Here we tolerate Z in combination with `expand_grid`
     Z <- foreach(
       i = seq_along(experimental_design$alternatives),
       .combine = "expand_grid"

@@ -31,7 +31,6 @@
 #' Z <- designs_f(edesign, n = 3)
 #' designs_fractioning(Z)
 #' @export
-#' @import foreach
 #' @importFrom tidyr pivot_longer
 #' @importFrom tidyr pivot_wider
 #' @importFrom dplyr mutate
@@ -62,22 +61,36 @@ designs_fractioning <- function(Z) {
   # Get remaining colnames
   cnames <- colnames(Z_reduced)
   # Transform to binary factors
-  Z_factorial <- foreach(i = seq(ncol(Z_reduced)), .combine = "cbind") %do% {
+  Z_l <- list()
+  for (i in seq(ncol(Z_reduced))) {
     main <- Z_reduced[, i]
     lv <- levels(main)
     if (length(lv) > 2) {
-      out <- foreach(j = lv, .combine = "cbind") %do% {
-        res <- data.frame(as.numeric(main == j))
-        colnames(res) <- paste0(cnames[i], ".", j)
-        return(res)
+      out_l <- list()
+      for (j in seq_along(lv)) {
+        res <- data.frame(as.numeric(main == lv[j]))
+        colnames(res) <- paste0(cnames[i], ".", lv[j])
+        out_l[[j]] <- res
       }
-      return(out[, -1])
+      out <- do.call(
+        "cbind",
+        out_l
+      )
+      rm(out_l)
+      Z_l[[i]] <- out[, -1]; rm(out)
     } else {
       out <- data.frame(main)
       colnames(out) <- cnames[i]
-      return(out)
+      Z_l[[i]] <- out; rm(out)
     }
   }
+  Z_factorial <- do.call(
+    "cbind",
+    Z_l
+  )
+
+  # Clean
+  rm(Z_l); gc()
 
   # Output
   return(Z_factorial)

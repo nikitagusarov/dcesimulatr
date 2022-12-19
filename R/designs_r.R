@@ -29,7 +29,6 @@
 #' edesign <- experimental_design$new(alternatives = list(alt1, alt2))
 #' Z <- designs_r(edesign, n = 1)
 #' @export
-#' @import foreach
 
 designs_r <- function(experimental_design,
                       n = NULL) {
@@ -59,10 +58,8 @@ designs_r <- function(experimental_design,
     attr <- experimental_design$get_attributes(index)
 
     # Generate Z - Run simulation
-    Z <- foreach(
-      i = seq_along(experimental_design$alternatives),
-      .combine = "rbind"
-    ) %do% {
+    Z_l <- list()
+    for (i in seq_along(experimental_design$alternatives)) {
       # Get profile chars, laws and obs numbers
       laws <- experimental_design$alternatives[[i]]$get_laws()
       laws <- laws[index[[i]]]
@@ -90,8 +87,18 @@ designs_r <- function(experimental_design,
       Z <- index_z(Z, alt_id = i)
 
       # Exit foreach loop
-      return(as.data.frame(Z))
+      Z_l[[i]] <- as.data.frame(Z)
+
+      # Clean
+      rm(Z)
     }
+    Z <- do.call(
+      "rbind",
+      Z_l
+    )
+
+    # Clean
+    rm(Z_l)
 
     if (!is.null(Z)) {
       # Rearrange by CID

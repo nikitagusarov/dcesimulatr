@@ -269,10 +269,8 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
 
   if (all(X_null)) {
     # Run simulation
-    X <- foreach(
-      i = seq_along(population$profiles),
-      .combine = "rbind"
-    ) %do% {
+    X_l <- list()
+    for (i in seq_along(population$profiles)) {
       # Get profile chars, laws and obs numbers
       laws <- population$profiles[[i]]$get_laws()
       n <- population$get_n()[i]
@@ -301,14 +299,18 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
       }
 
       # Exit foreach loop
-      return(X)
+      X_l[[i]] <- X; rm(X)
     }
+    X <- do.call(
+      "rbind",
+      X_l
+    )
+    # Clean 
+    rm(X_l); gc()
   } else 
   if (all(!X_null)) {
-    X <- foreach(
-      i = seq_along(population$profiles),
-      .combine = "rbind"
-    ) %do% {
+    X_l <- list()
+    for (i in seq_along(population$profiles)) {
       # Get data
       each <- population$get_each()[i]
       X <- population$profiles[[i]]$get_data() %>%
@@ -325,8 +327,14 @@ population_gen <- function(population, seed = NULL, class = TRUE) {
       }
 
       # Exit foreach loop
-      return(X)
+      X_l[[i]] <- X; rm(X)
     }
+    X <- do.call(
+      "rbind",
+      X_l
+    )
+    # Clean
+    rm(X_l); gc()
   } else {
     stop(
       "Please, avoid mixing manually defined individual profiles with those that should be generated."

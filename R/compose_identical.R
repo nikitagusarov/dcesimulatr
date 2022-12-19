@@ -33,7 +33,7 @@
 #' # Compose
 #' Z <- compose_identical(edesign, size = 2)
 #' @export
-#' @import foreach
+#' @importFrom dplyr slice
 
 compose_identical <- function(experimental_design, n = NULL, size) {
   if (is.null(n)) {

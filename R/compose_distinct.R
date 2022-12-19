@@ -34,7 +34,6 @@
 #' # Compose
 #' Z <- compose_distinct(edesign, size = 2)
 #' @export
-#' @import foreach
 
 compose_distinct <- function(experimental_design, n = NULL, size) {
   if (is.null(n)) {
@@ -43,13 +42,21 @@ compose_distinct <- function(experimental_design, n = NULL, size) {
   }
 
   # Regenerate Z for every individual
-  Z <- foreach(i = seq(size), .combine = "rbind") %do% {
+  Z_l <- list()
+  for (i in seq(size)) {
     # Generate Z for all individuals
-    Z <- alternatives_gen(
+    Z_l[[i]] <- alternatives_gen(
       experimental_design,
       n = n
     )
   }
+  Z <- do.call(
+    "rbind",
+    Z_l
+  )
+
+  # Clean memory
+  rm(Z_l); gc()
 
   # Output
   return(Z)
