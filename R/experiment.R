@@ -62,7 +62,7 @@ experiment <- function(population,
   })
   message(
     "Experiment completed in :\n\t", 
-    cat(paste(st, collapse = " "))
+    paste(st, collapse = " ")
   )
 
     # Retrieve rules from population

@@ -199,7 +199,7 @@ experiment_run <- function(population,
   })
   message(
     "Decision rules applied in :\n\t",
-    cat(paste(st, collapse = " "))
+    paste(st, collapse = " ")
   )
 
   # Output
