@@ -52,15 +52,21 @@ experiment <- function(population,
 
   # We start with generation of the datastructure
   # and applying utility formulas
-  result <- experiment_run(
-    population,
-    experimental_design,
-    seed,
-    XZ
+  st <- system.time({
+    result <- experiment_run(
+      population,
+      experimental_design,
+      seed,
+      XZ
+    )
+  })
+  message(
+    "Experiment completed in :\n\t", 
+    cat(paste(st, sep = " "))
   )
 
-  # Retrieve rules from population
-  rules <- population$get_rules()
+    # Retrieve rules from population
+    rules <- population$get_rules()
 
   # Apply computation
   for (i in seq_along(population$profiles)) {
@@ -68,17 +74,17 @@ experiment <- function(population,
     choice <- rules[[i]]$choice
     choice[[2]] <- expr(TR)
 
-    # Apply rules and select
-    result <- dplyr::mutate(
-      dplyr::group_by(
-        result,
-        IID,
-        CID
-      ),
-      TR = eval(rules[[i]]$transformation),
-      CH = TR == eval(choice)
-    )
-  }
+      # Apply rules and select
+      result <- dplyr::mutate(
+        dplyr::group_by(
+          result,
+          IID,
+          CID
+        ),
+        TR = eval(rules[[i]]$transformation),
+        CH = TR == eval(choice)
+      )
+    }
 
   # Output
   return(as.data.frame(result))
