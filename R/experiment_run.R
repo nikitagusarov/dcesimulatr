@@ -74,7 +74,7 @@ experiment_run <- function(population,
   })
   message(
     "Experimental dataset composed in :\n\t", 
-    paste(st, sep = " ")
+    paste(st, collapse = " ")
   )
 
   st <- system.time({
@@ -199,7 +199,7 @@ experiment_run <- function(population,
   })
   message(
     "Decision rules applied in :\n\t",
-    cat(paste(st, sep = " "))
+    paste(st, collapse = " ")
   )
 
   # Output

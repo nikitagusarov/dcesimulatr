@@ -71,7 +71,7 @@ experiment_compose <- function(population,
   if (is.null(X)) {
     message(
       "Population generated in :\n\t",
-      cat(paste(st, sep = " "))
+      paste(st, collapse = " ")
     )
   }
 
@@ -91,7 +91,7 @@ experiment_compose <- function(population,
   })
   message(
     "Alternative profiles generated in :\n\t",
-    cat(paste(st, sep = " "))
+    paste(st, collapse = " ")
   )
 
   # Bind frames
