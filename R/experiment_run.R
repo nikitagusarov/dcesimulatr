@@ -110,38 +110,38 @@ experiment_run <- function(population,
       ) {
         # Apply to XZ
         for (k in unique(XZ$IID[XZ$class == i])) {
-            # Get respecive formula
-            formula_k <- form[[1]]
+          # Get respecive formula
+          formula_k <- form[[1]]
+
+          # Application
+          XZ[
+            (XZ$IID == k) & (XZ$class == i), 
+          ] <- dplyr::mutate(
+            XZ[
+              (XZ$IID == k) & (XZ$class == i),
+            ],
+            DU = !!formula_k
+          )
+
+          for (j in seq_along(cl)) {
+            # Get noise params for alternative
+            noise_j <- noise[[j]]
+            n <- nrow(XZ[
+              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
+            ])
 
             # Application
             XZ[
-              (XZ$IID == k) & (XZ$class == i), 
+              (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
             ] <- dplyr::mutate(
               XZ[
-                (XZ$IID == k) & (XZ$class == i),
-              ],
-              DU = !!formula_k
-            )
-
-            for (j in seq_along(cl)) {
-              # Get noise params for alternative
-              noise_j <- noise[[j]]
-              n <- nrow(XZ[
                 (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-              ])
-
-              # Application
-              XZ[
-                (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j), 
-              ] <- dplyr::mutate(
-                XZ[
-                  (XZ$IID == k) & (XZ$class == i) & (XZ$AID == j),
-                ],
-                TU = DU + !!noise_j,
-                ER = TU - DU
-              )
-            }
+              ],
+              TU = DU + !!noise_j,
+              ER = TU - DU
+            )
           }
+        }
       } else {
         if (
           (length(noise) == 1) &
