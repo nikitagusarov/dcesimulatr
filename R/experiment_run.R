@@ -95,13 +95,13 @@ experiment_run <- function(population,
       # Update rules
       form <- rules[[i]]$formula
 
-      # Verify length of noise
-      if (
-        (length(noise) == 1) &
-          (length(noise) != length(cl))
-      ) {
-        # noise <- rep(noise, length(cl))
-      }
+      # # Verify length of noise
+      # if (
+      #   (length(noise) == 1) &
+      #     (length(noise) != length(cl))
+      # ) {
+      #   # noise <- rep(noise, length(cl))
+      # }
 
       # Verify length of formula
       if (
