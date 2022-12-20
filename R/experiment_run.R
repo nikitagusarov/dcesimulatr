@@ -73,7 +73,7 @@ experiment_run <- function(population,
     }
   })
   message(
-    "Experimental dataset composed in :\n\t", 
+    "Experimental dataset composed in :\t", 
     paste(st, collapse = " ")
   )
 
@@ -198,7 +198,7 @@ experiment_run <- function(population,
     }
   })
   message(
-    "Decision rules applied in :\n\t",
+    "Decision rules applied in :\t\t",
     paste(st, collapse = " ")
   )
 

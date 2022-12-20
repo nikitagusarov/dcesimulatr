@@ -70,7 +70,7 @@ experiment_compose <- function(population,
   })
   if (is.null(X)) {
     message(
-      "Population generated in :\n\t",
+      "Population generated in :\t",
       paste(st, collapse = " ")
     )
   }
@@ -90,7 +90,7 @@ experiment_compose <- function(population,
     }
   })
   message(
-    "Alternative profiles generated in :\n\t",
+    "Alternative profiles generated in :\t",
     paste(st, collapse = " ")
   )
 

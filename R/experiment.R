@@ -61,7 +61,7 @@ experiment <- function(population,
     )
   })
   message(
-    "Experiment completed in :\n\t", 
+    "Experiment completed in :\t\t", 
     paste(st, collapse = " ")
   )
 
